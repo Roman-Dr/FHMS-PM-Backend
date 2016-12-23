@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 
 //var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
+var userstorys = require('./server/routes/userstorys');
 
 var session      = require('express-session');
 var flash = require('connect-flash');
@@ -50,6 +51,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // REGISTER API MODULES
 //
 app.use('/api', users);
+app.use('/api', userstorys);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);
