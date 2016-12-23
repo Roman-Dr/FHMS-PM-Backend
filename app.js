@@ -24,6 +24,8 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.options('*', cors()); // include before other routes
+
 app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser());
