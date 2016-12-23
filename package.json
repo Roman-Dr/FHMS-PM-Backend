@@ -23,6 +23,8 @@
     "bcrypt-nodejs" : "latest",
 
     "method-override": "~2.3.6",
-    "express-session": "~1.14.1"
+    "express-session": "~1.14.1",
+
+    "cors": "~2.8.1"
   }
 }
