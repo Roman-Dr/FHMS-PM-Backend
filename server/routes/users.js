@@ -3,7 +3,7 @@ var router = express.Router();
 
 var User = require('./../models/user');
 
-router.route('/users')
+router.route('/user')
 //
 // GET ALL USERS
 //
@@ -34,7 +34,7 @@ router.route('/users')
         });
     });
 
-router.route('/users/:user_id')
+router.route('/user/users/:user_id')
 //
 // GET SINGLE USER
 //
