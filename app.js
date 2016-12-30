@@ -28,7 +28,7 @@ app.set('view engine', 'ejs');
 
 app.options('*', cors());
 
-app.use(express.static('doc'));
+app.use('/doc', express.static('doc'));
 
 app.use(cors());
 app.use(logger('dev'));
