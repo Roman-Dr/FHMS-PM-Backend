@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 
 //var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
+var projects = require('./server/routes/projects');
 var userstorys = require('./server/routes/userstorys');
 
 var session      = require('express-session');
@@ -25,7 +26,7 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.options('*', cors()); // include before other routes
+app.options('*', cors());
 
 app.use(cors());
 app.use(logger('dev'));
@@ -36,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //required for passport
 app.use(session({
-    secret: 'topsecret', // session secret zum hashen
+    secret: 'topsecret', // Server side secret to encrypt the passwords
     resave: true,
     saveUninitialized: true
 }));
@@ -52,6 +53,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 //
 app.use('/api', users);
 app.use('/api', userstorys);
+app.use('/api', projects);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);

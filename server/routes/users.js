@@ -4,9 +4,17 @@ var router = express.Router();
 var User = require('./../models/user');
 
 router.route('/user')
-//
-// GET ALL USERS
-//
+    /**
+     * @api {get} /user/ Get all users.
+     * @apiName GetUsers
+     * @apiGroup Benutzerverwaltung
+     *
+     * @apiSuccess {User[]} users List of users.
+     * @apiSuccess {ObjectId} users.id Users unique identifier.
+     * @apiSuccess {String} users.firstName First name of the user.
+     * @apiSuccess {String} users.lastName Last name of the user.
+     * @apiSuccess {Date} users.birthDate Date of birth of the user.
+     */
     .get(function (req, res) {
         User.find(function (err, users) {
             if (err)
@@ -15,9 +23,21 @@ router.route('/user')
             res.json(users);
         });
     })
-    //
-    // CREATE SINGLE USER
-    //
+    /**
+     * @api {post} /user/ Create a new single user.
+     * @apiName AddUser
+     * @apiGroup Benutzerverwaltung
+     *
+     * @apiParam {String} firstName First name of the user.
+     * @apiParam {String} lastName Last name of the user.
+     * @apiParam {Date} birthDate Date of birth of the user.
+     *
+     * @apiSuccess {ObjectId} id Users unique identifier.
+     * @apiSuccess {String} firstName First name of the user.
+     * @apiSuccess {String} lastName Last name of the user.
+     * @apiSuccess {Date} birthDate Date of birth of the user.
+     *
+     */
     .post(function (req, res) {
         // var newUser = new User(req.body);
         var newUser = new User();
@@ -30,14 +50,24 @@ router.route('/user')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'New user ' + newUser.displayName() + ' was created!', data: newUser });
+            res.json(newUser);
         });
     });
 
 router.route('/user/users/:user_id')
-//
-// GET SINGLE USER
-//
+    /**
+     * @api {get} /user/:id Retrieve an existing user by his id.
+     * @apiName GetUser
+     * @apiGroup Benutzerverwaltung
+     *
+     * @apiParam {ObjectId} id Users unique identifier.
+     *
+     * @apiSuccess {ObjectId} id Users unique identifier.
+     * @apiSuccess {String} firstName First name of the user.
+     * @apiSuccess {String} lastName Last name of the user.
+     * @apiSuccess {Date} birthDate Date of birth of the user.
+     *
+     */
     .get(function (req, res) {
         User.findById(req.params.user_id, function (err, user) {
             if (err)
@@ -46,9 +76,22 @@ router.route('/user/users/:user_id')
             res.json(user);
         });
     })
-    //
-    // UPDATE SINGLE USER
-    //
+    /**
+     * @api {put} /user/:id Update an existing user.
+     * @apiName UpdateUser
+     * @apiGroup Benutzerverwaltung
+     *
+     * @apiParam {ObjectId} id Users unique identifier.
+     * @apiParam {String} firstName First name of the user.
+     * @apiParam {String} lastName Last name of the user.
+     * @apiParam {Date} birthDate Date of birth of the user.
+     *
+     * @apiSuccess {ObjectId} id Users unique identifier.
+     * @apiSuccess {String} firstName First name of the user.
+     * @apiSuccess {String} lastName Last name of the user.
+     * @apiSuccess {Date} birthDate Date of birth of the user.
+     *
+     */
     .put(function (req, res) {
         User.findById(req.params.user_id,
             function (err, user) {
@@ -65,13 +108,18 @@ router.route('/user/users/:user_id')
                     if (err)
                         res.send(err);
 
-                    res.json({ message: 'User was updated!', data: user });
+                    res.json(user);
                 });
             });
     })
-    //
-    // DELETE SINGLE USER
-    //
+    /**
+     * @api {delete} /user/:id Delete an existing user.
+     * @apiName DeleteUser
+     * @apiGroup Benutzerverwaltung
+     *
+     * @apiParam {ObjectId} id Users unique identifier.
+     *
+     */
     .delete(function (req, res) {
         User.findByIdAndRemove(req.params.user_id,
             function (deleteErr, deleteRes) {
