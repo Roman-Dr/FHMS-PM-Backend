@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 //var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
 var projects = require('./server/routes/projects');
-var userstorys = require('./server/routes/userstorys');
+var userstories = require('./server/routes/userstories');
 
 var session      = require('express-session');
 var flash = require('connect-flash');
@@ -54,7 +54,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // REGISTER API MODULES
 //
 app.use('/api', users);
-app.use('/api', userstorys);
+app.use('/api', userstories);
 app.use('/api', projects);
 // END REGISTER API MODULES
 
