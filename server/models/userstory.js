@@ -3,7 +3,7 @@ var schema = mongoose.Schema;
 
 var userStorySchema = new schema({
         title: String,
-        autor: String,
+        author: String,
         complete: Boolean,
         timestmp: Date
     },

@@ -22,7 +22,7 @@ router.route('/userstories')
         var newUserStory = new UserStory();
 
         newUserStory.title = req.body.title;
-        newUserStory.autor = req.body.autor;
+        newUserStory.author = req.body.author;
         newUserStory.complete = req.body.complete;
         newUserStory.timestmp = req.body.timestmp;
 
@@ -63,7 +63,7 @@ router.route('/userstory/:id')
                     return res.sendStatus(404);
                 }
                 newUserStory.title = req.body.title;
-                newUserStory.autor = req.body.autor;
+                newUserStory.author = req.body.author;
                 newUserStory.complete = req.body.complete;
                 newUserStory.timestmp = req.body.timestmp;
 
