@@ -1,11 +1,21 @@
 var express = require('express');
 var router = express.Router();
+
 var UserStory = require('./../models/userstory');
 
 router.route('/userstories')
-//
-// GET ALL USERSSTORYS
-//
+/**
+ * @api {get} /userstories/ Get all user stories.
+ * @apiName GetUserStories
+ * @apiGroup Backlog
+ *
+ * @apiSuccess {Userstory[]} userstories List of user stories.
+ * @apiSuccess {ObjectId} userstories._id User stories unique identifier.
+ * @apiSuccess {String} userstories.title The text of the user story.
+ * @apiSuccess {String} userstories.author Author of the user story.
+ * @apiSuccess {Boolean} userstories.complete State of the user story.
+ * @apiSuccess {Date} userstories.timestmp Timestmp of the user story.
+ */
     .get(function (req, res) {
         UserStory.find(function (err, userstories) {
             if (err)
@@ -14,10 +24,23 @@ router.route('/userstories')
             res.json(userstories);
         });
     })
-
-    //
-    // CREATE SINGLE USERSSTORY
-    //
+    /**
+     * @api {post} /userstories/ Create a new single user story.
+     * @apiName AddUserStory
+     * @apiGroup Backlog
+     *
+     * @apiParam {String} title The text of the user story.
+     * @apiParam {String} author Author of the user story.
+     * @apiParam {Boolean} complete State of the user story.
+     * @apiParam {Date} timestmp Timestmp of the user story.
+     *
+     * @apiSuccess {ObjectId} _id User stories unique identifier.
+     * @apiSuccess {String} title The text of the user story.
+     * @apiSuccess {String} author Author of the user story.
+     * @apiSuccess {Boolean} complete State of the user story.
+     * @apiSuccess {Date} timestmp Timestmp of the user story.
+     *
+     */
     .post(function (req, res) {
         var newUserStory = new UserStory();
 
@@ -37,9 +60,20 @@ router.route('/userstories')
     });
 
 router.route('/userstory/:id')
-//
-// GET SINGLE USERSSTORY
-//
+/**
+ * @api {get} /userstory/:id Retrieve an existing user story by her id.
+ * @apiName GetUserStory
+ * @apiGroup Backlog
+ *
+ * @apiParam {ObjectId} _id Userstories unique identifier.
+ *
+ * @apiSuccess {ObjectId} _id User stories unique identifier.
+ * @apiSuccess {String} title The text of the user story.
+ * @apiSuccess {String} author Author of the user story.
+ * @apiSuccess {Boolean} complete State of the user story.
+ * @apiSuccess {Date} timestmp Timestmp of the user story.
+ *
+ */
     .get(function (req, res) {
         User.findById(req.params.id, function (err, userstory) {
             if (err) {
@@ -51,9 +85,24 @@ router.route('/userstory/:id')
         });
     })
 
-    //
-    // UPDATE SINGLE USERSSTORY
-    //
+    /**
+     * @api {put} /userstory/:id Update an existing user story.
+     * @apiName UpdateUserStory
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} _id User stories unique identifier.
+     * @apiParam {String} title The text of the user story.
+     * @apiParam {String} author Author of the user story.
+     * @apiParam {Boolean} complete State of the user story.
+     * @apiParam {Date} timestmp Timestmp of the user story.
+     *
+     * @apiSuccess {ObjectId} _id User stories unique identifier.
+     * @apiSuccess {String} title The text of the user story.
+     * @apiSuccess {String} author Author of the user story.
+     * @apiSuccess {Boolean} complete State of the user story.
+     * @apiSuccess {Date} timestmp Timestmp of the user story.
+     *
+     */
     .put(function (req, res) {
         User.findById(req.params.id,
             function (err, userstory) {
@@ -78,9 +127,14 @@ router.route('/userstory/:id')
             });
     })
 
-    //
-    // DELETE SINGLE USERSSTORY
-    //
+    /**
+     * @api {delete} /userstory/:id Delete an existing user story.
+     * @apiName DeleteUserStory
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} _id User stories unique identifier.
+     *
+     */
     .delete(function (req, res) {
         User.findByIdAndRemove(req.params.id,
             function (err, deleteRes) {
