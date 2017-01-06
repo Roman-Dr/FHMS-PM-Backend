@@ -44,7 +44,7 @@ router.route('/projects')
     .get(function (req, res) {
         Project.find(function (err, items) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json(items);
         });
@@ -90,7 +90,7 @@ router.route('/projects')
 
         newItem.save(function (err) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json({ "id":newItem._id });
         });
@@ -127,7 +127,7 @@ router.route('/projects/:id')
     .get(function (req, res) {
         Project.findById(req.params.id, function (err, item) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json(item);
         });
@@ -165,7 +165,7 @@ router.route('/projects/:id')
 
                 item.save(function (err) {
                     if (err)
-                        res.send(err);
+                        return res.send(err);
 
                     res.json({ "id":item._id });
                 });

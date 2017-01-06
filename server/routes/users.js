@@ -18,7 +18,7 @@ router.route('/user')
     .get(function (req, res) {
         User.find(function (err, users) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json(users);
         });
@@ -48,7 +48,7 @@ router.route('/user')
 
         newUser.save(function (err) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json(newUser);
         });
@@ -71,7 +71,7 @@ router.route('/user/users/:user_id')
     .get(function (req, res) {
         User.findById(req.params.user_id, function (err, user) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json(user);
         });
@@ -106,7 +106,7 @@ router.route('/user/users/:user_id')
 
                 user.save(function (err) {
                     if (err)
-                        res.send(err);
+                        return res.send(err);
 
                     res.json(user);
                 });
