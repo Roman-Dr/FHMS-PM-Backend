@@ -43,8 +43,10 @@ router.route('/projects')
      */
     .get(function (req, res) {
         Project.find(function (err, items) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
 
             res.json(items);
         });
@@ -89,8 +91,10 @@ router.route('/projects')
         newItem.contributors = req.body.contributors;  // TODO: Check if contributors exists
 
         newItem.save(function (err) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
 
             res.json({ "id":newItem._id });
         });
@@ -126,8 +130,10 @@ router.route('/projects/:id')
      */
     .get(function (req, res) {
         Project.findById(req.params.id, function (err, item) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
 
             res.json(item);
         });
@@ -152,7 +158,6 @@ router.route('/projects/:id')
             function (err, item) {
                 if (err) {
                     console.error(err);
-
                     return res.sendStatus(404);
                 }
 
@@ -164,8 +169,10 @@ router.route('/projects/:id')
                 item.contributors = req.body.contributors;  // TODO: Check if contributors exists
 
                 item.save(function (err) {
-                    if (err)
+                    if (err) {
+                        console.error(err);
                         return res.send(err);
+                    }
 
                     res.json({ "id":item._id });
                 });

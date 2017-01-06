@@ -18,8 +18,10 @@ router.route('/userstories')
  */
     .get(function (req, res) {
         UserStory.find(function (err, userstories) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
             console.log('Alle User Stories wurden per GET aufgerufen');
             res.json(userstories);
         });

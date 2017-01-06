@@ -17,8 +17,10 @@ router.route('/user')
      */
     .get(function (req, res) {
         User.find(function (err, users) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
 
             res.json(users);
         });
@@ -47,8 +49,10 @@ router.route('/user')
         newUser.birthDate = req.body.birthDate;
 
         newUser.save(function (err) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
 
             res.json(newUser);
         });
@@ -70,8 +74,10 @@ router.route('/user/users/:user_id')
      */
     .get(function (req, res) {
         User.findById(req.params.user_id, function (err, user) {
-            if (err)
+            if (err) {
+                console.error(err);
                 return res.send(err);
+            }
 
             res.json(user);
         });
@@ -105,8 +111,10 @@ router.route('/user/users/:user_id')
                 user.birthDate = req.body.birthDate;
 
                 user.save(function (err) {
-                    if (err)
+                    if (err) {
+                        console.error(err);
                         return res.send(err);
+                    }
 
                     res.json(user);
                 });
