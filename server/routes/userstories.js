@@ -135,8 +135,6 @@ router.route('/projects/:project_id/userStories/:id')
      * @apiParam {ObjectId} authorId Author´s identifier of the user story.
      * @apiParam {Boolean} complete State of the user story.
      *
-     * @apiSuccess (200)
-     *
      */
     .put(function (req, res) {
         var projectId = req.params.project_id;
