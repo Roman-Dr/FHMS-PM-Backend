@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var Project = require('./../models/project');
+var Project = require('./../models/project').Project;
 
 router.route('/projects')
     /**

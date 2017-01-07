@@ -19,5 +19,7 @@ var projectSchema = new schema({
     userStories: [ userStorySchema ]
 }, { versionKey: false});
 
-module.exports = mongoose.model('Project', projectSchema);
-module.exports = mongoose.model('UserStory', userStorySchema);
+module.exports = {
+    Project: mongoose.model('Project', projectSchema),
+    UserStory: mongoose.model('UserStory', userStorySchema)
+};
