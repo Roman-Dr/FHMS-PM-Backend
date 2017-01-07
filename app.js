@@ -6,10 +6,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
+// IMPORT MODELS
+require('./server/models/user');
+require('./server/models/project');
+// END IMPORT MODELS
+
 //var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
 var projects = require('./server/routes/projects');
 var userstories = require('./server/routes/userstories');
+
+
 
 var session      = require('express-session');
 var flash = require('connect-flash');
