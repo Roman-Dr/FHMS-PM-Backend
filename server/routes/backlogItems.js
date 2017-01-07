@@ -17,7 +17,7 @@ router.route('/backlogitems')
      * @apiSuccess {String} backlogitems.author Author of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
-     * @apiSuccess {Enum: New, Approved, Committed, Done, Removed} backlogitems.state State of the backlogitem.
+     * @apiSuccess {Enum 'New' 'Approved' 'Committed' 'Done' 'Removed'} backlogitems.state State of the backlogitem.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
@@ -39,7 +39,7 @@ router.route('/backlogitems')
      * @apiParam {String} backlogitems.author Author of the backlogitem.
      * @apiParam {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiParam {ObjectId} backlogitems.assignedTo ID of assignes user.
-     * @apiParam {Enum: New, Approved, Committed, Done, Removed} backlogitems.state State of the backlogitem.
+     * @apiParam {Enum 'New' 'Approved' 'Committed' 'Done' 'Removed'} backlogitems.state State of the backlogitem.
      * @apiParam {String} backlogitems.description Description of the backlogitem.
      * @apiParam {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiParam {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
@@ -49,7 +49,7 @@ router.route('/backlogitems')
      * @apiSuccess {String} backlogitems.author Author of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
-     * @apiSuccess {Enum: New, Approved, Committed, Done, Removed} backlogitems.state State of the backlogitem.
+     * @apiSuccess {Enum 'New' 'Approved' 'Committed' 'Done' 'Removed'} backlogitems.state State of the backlogitem.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
@@ -89,7 +89,7 @@ router.route('/backlogitem/:id')
      * @apiSuccess {String} backlogitems.author Author of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
-     * @apiSuccess {Enum: New, Approved, Committed, Done, Removed} backlogitems.state State of the backlogitem.
+     * @apiSuccess {Enum 'New' 'Approved' 'Committed' 'Done' 'Removed'} backlogitems.state State of the backlogitem.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
@@ -114,7 +114,7 @@ router.route('/backlogitem/:id')
      * @apiParam {String} backlogitems.author Author of the backlogitem.
      * @apiParam {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiParam {ObjectId} backlogitems.assignedTo ID of assignes user.
-     * @apiParam {Enum: New, Approved, Committed, Done, Removed} backlogitems.state State of the backlogitem.
+     * @apiParam {Enum 'New' 'Approved' 'Committed' 'Done' 'Removed'} backlogitems.state State of the backlogitem.
      * @apiParam {String} backlogitems.description Description of the backlogitem.
      * @apiParam {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiParam {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
@@ -124,7 +124,7 @@ router.route('/backlogitem/:id')
      * @apiSuccess {String} backlogitems.author Author of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
-     * @apiSuccess {Enum: New, Approved, Committed, Done, Removed} backlogitems.state State of the backlogitem.
+     * @apiSuccess {Enum 'New' 'Approved' 'Committed' 'Done' 'Removed'} backlogitems.state State of the backlogitem.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
