@@ -13,7 +13,7 @@ var userSchema = new schema({
     );
 
 userSchema.methods.displayName = function (cb) {
-    return this.firstName + " " + this.lastName;
+    return this.firstname + " " + this.lastname;
 };
 
 // generating a hash

@@ -1,152 +1,222 @@
 var express = require('express');
+var mongoose = require('mongoose');
+
 var router = express.Router();
 
-var UserStory = require('./../models/userstory');
+var UserStory = mongoose.model('UserStory');
+var Project =  mongoose.model('Project');
+var User =  mongoose.model('User');
 
-router.route('/userstories')
-/**
- * @api {get} /userstories/ Get all user stories.
- * @apiName GetUserStories
- * @apiGroup Backlog
- *
- * @apiSuccess {Userstory[]} userstories List of user stories.
- * @apiSuccess {ObjectId} userstories._id User stories unique identifier.
- * @apiSuccess {String} userstories.title The text of the user story.
- * @apiSuccess {String} userstories.author Author of the user story.
- * @apiSuccess {Boolean} userstories.complete State of the user story.
- * @apiSuccess {Date} userstories.timestmp Timestmp of the user story.
- */
+router.route('/projects/:project_id/userStories')
+    /**
+     * @api {get} /projects/:project_id/userStories Get all user stories.
+     * @apiName GetUserStories
+     * @apiGroup Backlog
+     *
+     * @apiSuccess {Userstory[]} userstories List of user stories.
+     * @apiSuccess {ObjectId} userstories._id User stories unique identifier.
+     * @apiSuccess {String} userstories.title The text of the user story.
+     * @apiSuccess {ObjectId} userstories.authorId AuthorId of the user story.
+     * @apiSuccess {String} userstories.authorDisplayName Author´s first and last name of the user story.
+     * @apiSuccess {Boolean} userstories.complete State of the user story.
+     * @apiSuccess {Date} userstories.creationDate Date of creation of the user story.
+     */
     .get(function (req, res) {
-        UserStory.find(function (err, userstories) {
+        var projectId = req.params.project_id;
+
+        Project.findById(projectId, function (err, item) {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
-            console.log('Alle User Stories wurden per GET aufgerufen');
-            res.json(userstories);
+
+            console.log('GET: UserStories for project id ' + projectId);
+
+            res.json(item.userStories);
         });
     })
     /**
-     * @api {post} /userstories/ Create a new single user story.
+     * @api {post} /projects/:project_id/userStories Create a new user story.
      * @apiName AddUserStory
      * @apiGroup Backlog
      *
      * @apiParam {String} title The text of the user story.
-     * @apiParam {String} author Author of the user story.
+     * @apiParam {ObjectId} authorId Author´s identifier of the user story.
      * @apiParam {Boolean} complete State of the user story.
-     * @apiParam {Date} timestmp Timestmp of the user story.
      *
      * @apiSuccess {ObjectId} _id User stories unique identifier.
-     * @apiSuccess {String} title The text of the user story.
-     * @apiSuccess {String} author Author of the user story.
-     * @apiSuccess {Boolean} complete State of the user story.
-     * @apiSuccess {Date} timestmp Timestmp of the user story.
      *
      */
     .post(function (req, res) {
-        var newUserStory = new UserStory();
+        var projectId = req.params.project_id;
+        var authorId = req.body.authorId;
 
-        newUserStory.title = req.body.title;
-        newUserStory.author = req.body.author;
-        newUserStory.complete = req.body.complete;
-        newUserStory.timestmp = req.body.timestmp;
-
-        newUserStory.save(function (err) {
+        Project.findById(projectId, function (err, project) {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
-            console.log('Eine neue User Stories wurde angelegt');
-            res.json({message: 'New story ' + newUserStory.displayTitle() + ' was created!', data: newUserStory});
+
+            console.log('POST: Create new UserStory for project id ' + projectId);
+
+            User.findById(authorId, function (err, user) {
+                if(err) {
+                    console.error(error);
+                }
+
+                var newUserStory = new UserStory();
+
+                newUserStory.title = req.body.title;
+                newUserStory.authorId = authorId;
+                newUserStory.complete = req.body.complete;
+                newUserStory.creationDate = Date.now();
+
+                if(user == undefined) {
+                    newUserStory.authorDisplayName = undefined;
+                } else {
+                    newUserStory.authorDisplayName = user.displayName();
+                }
+
+                project.userStories.push(newUserStory);
+
+                project.save(function (err) {
+                    if(err){
+                        console.error(err);
+                        return res.send(err);
+                    }else {
+                        console.log('UserStory in project ' + projectId + ' created.');
+
+                        return res.json(newUserStory._id);
+                    }
+                });
+            });
         });
     });
 
-router.route('/userstory/:id')
-/**
- * @api {get} /userstory/:id Retrieve an existing user story by her id.
- * @apiName GetUserStory
- * @apiGroup Backlog
- *
- * @apiParam {ObjectId} _id Userstories unique identifier.
- *
- * @apiSuccess {ObjectId} _id User stories unique identifier.
- * @apiSuccess {String} title The text of the user story.
- * @apiSuccess {String} author Author of the user story.
- * @apiSuccess {Boolean} complete State of the user story.
- * @apiSuccess {Date} timestmp Timestmp of the user story.
- *
- */
+router.route('/projects/:project_id/userStories/:id')
+    /**
+     * @api {get} /projects/:project_id/userStories/:id Retrieve an existing user story by her id.
+     * @apiName GetUserStory
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} _id Userstories unique identifier.
+     *
+     * @apiSuccess {ObjectId} _id User stories unique identifier.
+     * @apiSuccess {String} title The text of the user story.
+     * @apiSuccess {ObjectId} authorId AuthorId of the user story.
+     * @apiSuccess {String} authorDisplayName Author´s first and last name of the user story.
+     * @apiSuccess {Boolean} complete State of the user story.
+     * @apiSuccess {Date} creationDate Date of creation of the user story.
+     *
+     */
     .get(function (req, res) {
-        User.findById(req.params.id, function (err, userstory) {
+        var projectId = req.params.project_id;
+        var userStoryId = req.params.id;
+
+        Project.findById(projectId, function (err, project) {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
-            console.log('Eine User Stories wurde aufgerufen');
-            res.json(userstory);
+
+            console.log('Get UserStory ' + userStoryId + ' from Project ' + projectId);
+
+            res.json(project.userStories.id(userStoryId));
         });
     })
 
     /**
-     * @api {put} /userstory/:id Update an existing user story.
+     * @api {put} /projects/:project_id/userStories/:id Update an existing user story.
      * @apiName UpdateUserStory
      * @apiGroup Backlog
      *
      * @apiParam {ObjectId} _id User stories unique identifier.
      * @apiParam {String} title The text of the user story.
-     * @apiParam {String} author Author of the user story.
+     * @apiParam {ObjectId} authorId Author´s identifier of the user story.
      * @apiParam {Boolean} complete State of the user story.
-     * @apiParam {Date} timestmp Timestmp of the user story.
      *
-     * @apiSuccess {ObjectId} _id User stories unique identifier.
-     * @apiSuccess {String} title The text of the user story.
-     * @apiSuccess {String} author Author of the user story.
-     * @apiSuccess {Boolean} complete State of the user story.
-     * @apiSuccess {Date} timestmp Timestmp of the user story.
+     * @apiSuccess (200)
      *
      */
     .put(function (req, res) {
-        User.findById(req.params.id,
-            function (err, userstory) {
-                if (err) {
-                    console.error(err);
+        var projectId = req.params.project_id;
+        var userStoryId = req.params.id;
+        var authorId = req.body.authorId;
 
-                    return res.sendStatus(404);
+        Project.findById(projectId, function (err, project) {
+            if (err) {
+                console.error(err);
+                return res.send(err);
+            }
+
+            var userStory = project.userStories.id(userStoryId);
+
+            console.log('PUT: Update a UserStory for project id ' + projectId);
+
+            User.findById(authorId, function (err, user) {
+                if(err) {
+                    console.error(error);
                 }
-                newUserStory.title = req.body.title;
-                newUserStory.author = req.body.author;
-                newUserStory.complete = req.body.complete;
-                newUserStory.timestmp = req.body.timestmp;
 
-                user.save(function (err) {
-                    if (err) {
+                userStory.title = req.body.title;
+                userStory.authorId = authorId;
+                userStory.complete = req.body.complete;
+
+                if(user == undefined) {
+                    userStory.authorDisplayName = undefined;
+                } else {
+                    userStory.authorDisplayName = user.displayName();
+                }
+
+                project.save(function (err) {
+                    if(err){
                         console.error(err);
                         return res.send(err);
+                    }else {
+                        console.log('UserStory ' + userStoryId + ' in project ' + projectId + ' updated.');
+
+                        return res.json(200);
                     }
-                    console.log('Eine User Stories wurde aktualisiert');
-                    res.json({message: 'Userstory was updated!', data: userstory});
                 });
             });
+        });
     })
 
     /**
-     * @api {delete} /userstory/:id Delete an existing user story.
+     * @api {delete} /projects/:project_id/userStories/:id Delete an existing user story.
      * @apiName DeleteUserStory
      * @apiGroup Backlog
      *
-     * @apiParam {ObjectId} _id User stories unique identifier.
+     * @apiParam (200)
      *
      */
     .delete(function (req, res) {
-        User.findByIdAndRemove(req.params.id,
-            function (err, deleteRes) {
-                if (err) {
+        var projectId = req.params.project_id;
+        var userStoryId = req.params.id;
+
+        Project.findById(projectId, function (err, project) {
+            if (err) {
+                console.error(err);
+                return res.send(err);
+            }
+
+            var userStory = project.userStories.id(userStoryId);
+
+            if (userStory != undefined) {
+                userStory.remove();
+
+                console.log('UserStory ' + userStoryId + ' removed from project ' + projectId);
+            }
+
+            project.save(function (err) {
+                if(err){
                     console.error(err);
                     return res.send(err);
+                }else {
+                    return res.json(200);
                 }
-                console.log('Eine User Stories wurde gelöscht');
             });
-        return res.json(200);
+        });
     });
 
 module.exports = router;
