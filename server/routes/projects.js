@@ -1,7 +1,8 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var router = express.Router();
 
-var Project = require('./../models/project').Project;
+var Project =  mongoose.model('Project');
 
 router.route('/projects')
     /**
