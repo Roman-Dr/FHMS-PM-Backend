@@ -10,16 +10,18 @@ var bodyParser = require('body-parser');
 // IMPORT MODELS
 require('./server/models/user');
 require('./server/models/project');
+require('./server/models/backlogItem');
 // END IMPORT MODELS
 
 //var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
 var projects = require('./server/routes/projects');
 var userstories = require('./server/routes/userstories');
+var backlogItems = require('./server/routes/backlogItems');
 
 
 
-var session      = require('express-session');
+var session = require('express-session');
 var flash = require('connect-flash');
 
 var mongoose = require('mongoose');
@@ -64,6 +66,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use('/api', users);
 app.use('/api', userstories);
 app.use('/api', projects);
+app.use('/api', backlogItems);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);

@@ -12,15 +12,13 @@ module.exports = function(app, passport) {
 
     // PROFILE SECTION =========================
     app.get('/api/user/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user
-        });
+        return res.status(200);
     });
 
 
     /**
-     * @api {get} /logout/ User Logout.
-     * @apiName GetLogout
+     * @api {get} /user/logout/ User Logout.
+     * @apiName Logout
      * @apiGroup Benutzerverwaltung
      *
      * @apiSuccess {StatusCode} StatusCode 200 for successful logout.
@@ -38,8 +36,8 @@ module.exports = function(app, passport) {
 
 
     /**
-     * @api {post} /login/ User Login.
-     * @apiName PostLogin
+     * @api {post} /user/login/ User Login.
+     * @apiName Login
      * @apiGroup Benutzerverwaltung
      *
      * @apiSuccess {StatusCode} StatusCode 200 for successful login.
@@ -65,8 +63,8 @@ module.exports = function(app, passport) {
 
 
     /**
-     * @api {post} /signup/ User Signup.
-     * @apiName PostSignup
+     * @api {post} /user/signup/ User Signup.
+     * @apiName Signup
      * @apiGroup Benutzerverwaltung
      *
      * @apiSuccess {StatusCode} StatusCode 201 for creating an Account successfully..
@@ -98,8 +96,8 @@ module.exports = function(app, passport) {
     // user account will stay active in case they want to reconnect in the future
 
     /**
-     * @api {get} /unlink/ Unlink User Account.
-     * @apiName GetUnlink
+     * @api {get} /user/unlink/ Unlink User Account.
+     * @apiName Unlink
      * @apiGroup Benutzerverwaltung
      *
      * @apiSuccess {StatusCode} StatusCode 200 for unlinking an Account successfully.
