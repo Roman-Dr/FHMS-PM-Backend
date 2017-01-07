@@ -187,7 +187,7 @@ router.route('/projects/:project_id/userStories/:id')
      * @apiName DeleteUserStory
      * @apiGroup Backlog
      *
-     * @apiParam (200)
+     * @apiParam {ObjectId} _id User stories unique identifier.
      *
      */
     .delete(function (req, res) {
