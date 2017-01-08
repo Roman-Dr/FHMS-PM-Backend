@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var router = express.Router();
 
 var BacklogItem =  mongoose.model('BacklogItem');
+var User =  mongoose.model('User');
+var Project = mongoose.model('Project');
 
 router.route('/backlogitems')
 
@@ -14,13 +16,16 @@ router.route('/backlogitems')
      * @apiSuccess {BacklogItem[]} backlogitems List of backlogitems.
      * @apiSuccess {ObjectId} backlogitems._id Unique identifier of the backlogitem.
      * @apiSuccess {String} backlogitems.title The text of the backlogitem.
-     * @apiSuccess {String} backlogitems.author Author of the backlogitem.
+     * @apiSuccess {ObjectId} backlogitems.authorId Assigned author of the backlogitem
+     * @apiSuccess {String} backlogitems.author Authorname of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
-     * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
+     * @apiSuccess {ObjectId} backlogitems.assignedToId ID of assigned user.
+     * @apiSuccess {String} backlogitems.assignedToDisplayName Name of assigned user.
      * @apiSuccess {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
+     * @apiSuccess {String} backlogitems.projectDisplayTitle Displaytitle for the assigned project.
      */
     .get(function (req, res) {
         BacklogItem.find(function (err, backlogItems) {
@@ -36,9 +41,9 @@ router.route('/backlogitems')
      * @apiGroup Backlog
      *
      * @apiParam {String} backlogitems.title The text of the backlogitem.
-     * @apiParam {String} backlogitems.author Author of the backlogitem.
+     * @apiParam {ObjectId} backlogitems.authorId Assigned author of the backlogitem
      * @apiParam {Date} backlogitems.timestamp Timestamp of the user story.
-     * @apiParam {ObjectId} backlogitems.assignedTo ID of assignes user.
+     * @apiParam {ObjectId} backlogitems.assignedToId ID of assigned user.
      * @apiParam {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiParam {String} backlogitems.description Description of the backlogitem.
      * @apiParam {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
@@ -46,33 +51,65 @@ router.route('/backlogitems')
      *
      * @apiSuccess {ObjectId} backlogitems._id Unique identifier of the backlogitem.
      * @apiSuccess {String} backlogitems.title The text of the backlogitem.
-     * @apiSuccess {String} backlogitems.author Author of the backlogitem.
+     * @apiSuccess {ObjectId} backlogitems.authorId Assigned author of the backlogitem
+     * @apiSuccess {String} backlogitems.author Authorname of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
-     * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
+     * @apiSuccess {ObjectId} backlogitems.assignedToId ID of assigned user.
+     * @apiSuccess {String} backlogitems.assignedToDisplayName Name of assigned user.
      * @apiSuccess {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
+     * @apiSuccess {String} backlogitems.projectDisplayTitle Displaytitle for the assigned project.
      */
     .post(function (req, res) {
-        var newBacklogItem = new BacklogItem();
+        var projectId = req.body.projectId;
+        var authorId = req.body.authorId;
+        var assignedToId = req.body.assignedToId;
 
-        newBacklogItem.title = req.body.title;
-        newBacklogItem.author = req.body.author;
-        newBacklogItem.timestmp = req.body.timestmp;
-        newBacklogItem.assignedTo = req.body.assignedTo;
-        newBacklogItem.state = req.body.state;
-        newBacklogItem.description = req.body.description;
-        newBacklogItem.sprint = req.body.sprintId;
-        newBacklogItem.project = req.body.projectId;
-
-        newBacklogItem.save(function (err) {
+        Project.findById(projectId, function(err, project){
             if (err) {
-                console.error(err);
                 return res.send(err);
             }
-            return res.json(newBacklogItem);
+            User.findById(authorId, function(err, author){
+                if (err){
+                    return res.send(err);
+                }
+                User.findById(assignedToId, function(err, assignedTo){
+                   if (err){
+                       return res.send(err);
+                   }
+
+                    var newBacklogItem = new BacklogItem();
+
+                    newBacklogItem.title = req.body.title;
+                    newBacklogItem.authorId = authorId;
+                    newBacklogItem.authorDisplayName = author.displayName();
+                    newBacklogItem.timestmp = req.body.timestmp;
+                    newBacklogItem.assignedToId = assignedToId;
+                    if(assignedTo == undefined) {
+                        newBacklogItem.assignedToDisplayName = undefined;
+                    } else {
+                        newBacklogItem.assignedToDisplayName = assignedTo.displayName();
+                    }
+                    newBacklogItem.state = req.body.state;
+                    newBacklogItem.description = req.body.description;
+                    newBacklogItem.sprintId = req.body.sprintId;
+                    newBacklogItem.projectId = projectId;
+                    newBacklogItem.projectDisplayTitle = project.displayName;
+
+                    newBacklogItem.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        }
+                        return res.json(newBacklogItem);
+                    });
+
+                });
+            });
         });
+
     });
 
 router.route('/backlogitem/:id')
@@ -86,13 +123,16 @@ router.route('/backlogitem/:id')
      *
      * @apiSuccess {ObjectId} backlogitems._id Unique identifier of the backlogitem.
      * @apiSuccess {String} backlogitems.title The text of the backlogitem.
-     * @apiSuccess {String} backlogitems.author Author of the backlogitem.
+     * @apiSuccess {ObjectId} backlogitems.authorId Assigned author of the backlogitem
+     * @apiSuccess {String} backlogitems.author Authorname of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
-     * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
+     * @apiSuccess {ObjectId} backlogitems.assignedToId ID of assigned user.
+     * @apiSuccess {String} backlogitems.assignedToDisplayName Name of assigned user.
      * @apiSuccess {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
+     * @apiSuccess {String} backlogitems.projectDisplayTitle Displaytitle for the assigned project.
      *
      */
     .get(function (req, res) {
@@ -111,9 +151,9 @@ router.route('/backlogitem/:id')
      * @apiGroup Backlog
      *
      * @apiParam {String} backlogitems.title The text of the backlogitem.
-     * @apiParam {String} backlogitems.author Author of the backlogitem.
+     * @apiParam {ObjectId} backlogitems.authorId Assigned author of the backlogitem
      * @apiParam {Date} backlogitems.timestamp Timestamp of the user story.
-     * @apiParam {ObjectId} backlogitems.assignedTo ID of assignes user.
+     * @apiParam {ObjectId} backlogitems.assignedToId ID of assigned user.
      * @apiParam {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiParam {String} backlogitems.description Description of the backlogitem.
      * @apiParam {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
@@ -121,13 +161,16 @@ router.route('/backlogitem/:id')
      *
      * @apiSuccess {ObjectId} backlogitems._id Unique identifier of the backlogitem.
      * @apiSuccess {String} backlogitems.title The text of the backlogitem.
-     * @apiSuccess {String} backlogitems.author Author of the backlogitem.
+     * @apiSuccess {ObjectId} backlogitems.authorId Assigned author of the backlogitem
+     * @apiSuccess {String} backlogitems.author Authorname of the backlogitem.
      * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
-     * @apiSuccess {ObjectId} backlogitems.assignedTo ID of assignes user.
+     * @apiSuccess {ObjectId} backlogitems.assignedToId ID of assigned user.
+     * @apiSuccess {String} backlogitems.assignedToDisplayName Name of assigned user.
      * @apiSuccess {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiSuccess {String} backlogitems.description Description of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
      * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
+     * @apiSuccess {String} backlogitems.projectDisplayTitle Displaytitle for the assigned project.
      *
      */
     .put(function (req, res) {
@@ -138,21 +181,49 @@ router.route('/backlogitem/:id')
 
                     return res.status(404);
                 }
-                newBacklogItem.title = req.body.title;
-                newBacklogItem.author = req.body.author;
-                newBacklogItem.timestmp = req.body.timestmp;
-                newBacklogItem.assignedTo = req.body.assignedTo;
-                newBacklogItem.state = req.body.state;
-                newBacklogItem.description = req.body.description;
-                newBacklogItem.sprint = req.body.sprintId;
-                newBacklogItem.project = req.body.projectId;
+                var projectId = req.body.projectId;
+                var authorId = req.body.authorId;
+                var assignedToId = req.body.assignedToId;
 
-                newBacklogItem.save(function (err) {
+                Project.findById(projectId, function(err, project){
                     if (err) {
-                        console.error(err);
                         return res.send(err);
                     }
-                    return res.json({message: 'BacklogItem was updated!', data: newBacklogItem});
+                    User.findById(authorId, function(err, author){
+                        if (err){
+                            return res.send(err);
+                        }
+                        User.findById(assignedToId, function(err, assignedTo){
+                            if (err){
+                                return res.send(err);
+                            }
+
+                            newBacklogItem.title = req.body.title;
+                            newBacklogItem.authorId = authorId;
+                            newBacklogItem.authorDisplayName = author.displayName();
+                            newBacklogItem.timestmp = req.body.timestmp;
+                            newBacklogItem.assignedToId = assignedToId;
+                            if(assignedTo == undefined) {
+                                newBacklogItem.assignedToDisplayName = undefined;
+                            } else {
+                                newBacklogItem.assignedToDisplayName = assignedTo.displayName();
+                            }
+                            newBacklogItem.state = req.body.state;
+                            newBacklogItem.description = req.body.description;
+                            newBacklogItem.sprintId = req.body.sprintId;
+                            newBacklogItem.projectId = projectId;
+                            newBacklogItem.projectDisplayTitle = project.displayName;
+
+                            newBacklogItem.save(function (err) {
+                                if (err) {
+                                    console.error(err);
+                                    return res.send(err);
+                                }
+                                return res.json(newBacklogItem);
+                            });
+
+                        });
+                    });
                 });
             });
     })

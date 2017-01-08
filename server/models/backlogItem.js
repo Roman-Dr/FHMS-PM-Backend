@@ -3,17 +3,20 @@ var schema = mongoose.Schema;
 
 var backlogItemSchema = new schema({
         title: String,
-        author: String,
+        authorId: mongoose.schema.Types.ObjectId,
+        authorDisplayName: String,
         timestamp: Date,
-        assignedTo: mongoose.Schema.Types.ObjectId,
+        assignedToId: mongoose.Schema.Types.ObjectId,
+        assignedToDisplayName: String,
         state: {
             type: String,
             enum: ['New', 'Approved', 'Committed', 'Done', 'Removed'],
             default: 'New'
         },
         description: String,
-        sprint: mongoose.Schema.Types.ObjectId,
-        project: mongoose.Schema.Types.ObjectId
+        sprintId: mongoose.Schema.Types.ObjectId,
+        projectId: mongoose.Schema.Types.ObjectId,
+        projectDisplayTitle: String
     },
     {versionKey: false} // DISABLE VERSIONING (_v)
 );
