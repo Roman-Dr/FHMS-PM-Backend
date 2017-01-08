@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var router = express.Router();
 
@@ -52,6 +53,7 @@ router.route('/databaseInitialisation')
         project1.displayName = "Miracle List";
         project1.description = "Klon der Wunderlist App";
         project1.owner = user1._id;
+        project1.dueDate =  moment().add(180, 'days');
         project1.stakeholders.push(user2._id, user3._id);
         project1.contributors.push(user1._id, user2._id);
         project1.save();
@@ -60,6 +62,7 @@ router.route('/databaseInitialisation')
         project2.displayName = "Taschenrechner";
         project2.description = "Der echte Alleskönner!";
         project2.owner = user2._id;
+        project2.dueDate =  moment().add(360, 'days');
         project2.stakeholders.push(user1._id, user3._id);
         project2.contributors.push(user1._id, user2._id);
         project2.save();

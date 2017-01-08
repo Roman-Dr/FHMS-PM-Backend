@@ -1,8 +1,10 @@
 var express = require('express');
 var mongoose = require('mongoose');
+
 var router = express.Router();
 
 var Project =  mongoose.model('Project');
+var ProjectValidator = require('./../validation/projectValidator');
 
 router.route('/projects')
     /**
@@ -58,11 +60,11 @@ router.route('/projects')
      * @apiGroup Multiprojektfaehigkeit
      *
      * @apiParam {String} displayName Name of the project.
-     * @apiParam {String} description Short description of the project.
-     * @apiParam {Date} dueDate Deadline of the project.
+     * @apiParam {String} [description] Short description of the project.
+     * @apiParam {Date} dueDate Deadline of the project - must be greater than today´s date.
      * @apiParam {ObjectId} owner Identifier of the project owner.
-     * @apiParam {ObjectId[]} stakeholders List of stakeholders.
-     * @apiParam {ObjectId[]} contributors List of contributors.
+     * @apiParam {ObjectId[]} [stakeholders} List of stakeholders.
+     * @apiParam {ObjectId[]} [contributors] List of contributors.
      *
      * @apiDescription Sample request:
      * {
@@ -82,6 +84,15 @@ router.route('/projects')
      *     }
      */
     .post(function (req, res) {
+
+        // Validate input
+        var validator = new ProjectValidator();
+        var validationResult = validator.validate(req.body);
+
+        if(!validationResult.isValid()) {
+            return res.status(400).send(validationResult.toResult());
+        }
+
         var newItem = new Project();
 
         newItem.displayName = req.body.displayName;
@@ -146,11 +157,11 @@ router.route('/projects/:id')
      *
      * @apiParam {ObjectId} id Projects unique identifier.
      * @apiParam {String} displayName Name of the project.
-     * @apiParam {String} description Short description of the project.
+     * @apiParam {String} [description] Short description of the project.
      * @apiParam {Date} dueDate Deadline of the project.
      * @apiParam {ObjectId} owner Identifier of the project owner.
-     * @apiParam {ObjectId[]} stakeholders List of stakeholders.
-     * @apiParam {ObjectId[]} contributors List of contributors.
+     * @apiParam {ObjectId[]} [stakeholders] List of stakeholders.
+     * @apiParam {ObjectId[]} [contributors] List of contributors.
      *
      * @apiSuccess (200) {ObjectId} Unique identifier of the new project.
      */
@@ -160,6 +171,13 @@ router.route('/projects/:id')
                 if (err) {
                     console.error(err);
                     return res.sendStatus(404);
+                }
+
+                var validator = new ProjectValidator();
+                var validationResult = validator.validate(req.body);
+
+                if(!validationResult.isValid()) {
+                    return res.status(400).send(validationResult.toResult());
                 }
 
                 item.displayName = req.body.displayName;
