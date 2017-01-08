@@ -20,18 +20,24 @@ router.route('/databaseInitialisation')
         // CREATE USERS
         //
         var user1 = new User();
+        user1.email = "m.mustermann@scrumjs.de";
+        user1.password = "geheim";
         user1.firstname = "Max";
         user1.lastname = "Mustermann";
         user1.birthdate = "1990-01-01";
         user1.save();
 
         var user2 = new User();
+        user2.email = "f.fietersen@scrumjs.de";
+        user2.password = "geheim";
         user2.firstname = "Fiete";
         user2.lastname = "Fietersen";
         user2.birthdate = "1991-03-05";
         user2.save();
 
         var user3 = new User();
+        user3.email = "p.petersen@scrumjs.de";
+        user3.password = "geheim";
         user3.firstname = "Peter";
         user3.lastname = "Petersen";
         user3.birthdate = "1995-04-20";
