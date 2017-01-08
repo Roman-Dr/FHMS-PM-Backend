@@ -43,7 +43,7 @@ router.route('/projects')
      *     ]
      */
     .get(function (req, res) {
-        Project.find(function (err, items) {
+        Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
             if (err) {
                 console.error(err);
                 return res.send(err);
@@ -130,7 +130,7 @@ router.route('/projects/:id')
      *     }
      */
     .get(function (req, res) {
-        Project.findById(req.params.id, function (err, item) {
+        Project.findById(req.params.id, 'owner dueDate description displayName contributors stakeholders', function (err, item) {
             if (err) {
                 console.error(err);
                 return res.send(err);
