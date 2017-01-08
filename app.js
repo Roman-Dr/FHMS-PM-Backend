@@ -68,6 +68,7 @@ app.use('/api', users);
 app.use('/api', userstories);
 app.use('/api', projects);
 app.use('/api', backlogItems);
+app.use('/system', databaseInitializer);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);
