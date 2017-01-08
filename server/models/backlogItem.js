@@ -3,7 +3,7 @@ var schema = mongoose.Schema;
 
 var backlogItemSchema = new schema({
         title: String,
-        authorId: mongoose.schema.Types.ObjectId,
+        authorId: mongoose.Schema.Types.ObjectId,
         authorDisplayName: String,
         timestamp: Date,
         assignedToId: mongoose.Schema.Types.ObjectId,
