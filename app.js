@@ -17,11 +17,12 @@ require('./server/models/backlogItem');
 var users = require('./server/routes/users');
 var projects = require('./server/routes/projects');
 var userstories = require('./server/routes/userstories');
+var databaseInitializer = require('./server/routes/databaseInitializer');
 var backlogItems = require('./server/routes/backlogItems');
 
 
 
-var session = require('express-session');
+var session      = require('express-session');
 var flash = require('connect-flash');
 
 var mongoose = require('mongoose');
