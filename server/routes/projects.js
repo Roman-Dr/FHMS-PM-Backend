@@ -82,6 +82,19 @@ router.route('/projects')
      *     {
      *       "id": "5866c1212867481cd4fed616"
      *     }
+     *
+     * @apiError {ValidationResult[]} result Array of key value pairs.
+     * @apiError {String} result.owner Invalid user id.
+     * @apiError {String} result.displayName If displayName is undefined, empty or whitespace.
+     * @apiError {String} result.dueDate If dueDate is undefined or dueDate < today.
+     *
+     * @apiErrorExample {json} Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     [
+     *      {"propertyName":"owner","message":"Owner does not exists."},
+     *      {"propertyName":"displayName","message":"DisplayName must not be null or empty."},
+     *      {"propertyName":"dueDate","message":"Due date must be later than todays date."}
+     *     ]
      */
     .post(function (req, res) {
 
@@ -139,12 +152,14 @@ router.route('/projects/:id')
      *         "contributors": ["584ee64035141e2f8006dee8"],
      *         "stakeholders": ["584edcda8138b903c8738e12","584ee76281946b3a14242877"]
      *     }
+     *
+     * @apiError (404) ProjectNotFound Project with id does not exists.
      */
     .get(function (req, res) {
         Project.findById(req.params.id, 'owner dueDate description displayName contributors stakeholders', function (err, item) {
             if (err) {
                 console.error(err);
-                return res.send(err);
+                return res.status(404).send('Project does not exists.');
             }
 
             res.json(item);
