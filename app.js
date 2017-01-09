@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 require('./server/models/user');
 require('./server/models/project');
 require('./server/models/backlogItem');
+require('./server/models/sprint');
 // END IMPORT MODELS
 
 //var routes = require('./server/routes/index');
@@ -19,7 +20,7 @@ var projects = require('./server/routes/projects');
 var userstories = require('./server/routes/userstories');
 var databaseInitializer = require('./server/routes/databaseInitializer');
 var backlogItems = require('./server/routes/backlogItems');
-
+var sprints = require('./server/routes/sprints');
 
 
 var session      = require('express-session');
@@ -69,6 +70,7 @@ app.use('/api', users);
 app.use('/api', userstories);
 app.use('/api', projects);
 app.use('/api', backlogItems);
+app.use('/api', sprints);
 app.use('/system', databaseInitializer);
 // END REGISTER API MODULES
 
