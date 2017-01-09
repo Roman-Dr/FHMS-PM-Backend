@@ -16,18 +16,18 @@ ProjectValidator.prototype.validate = function(project) {
 
 
     if(!this.helper.isUserIdValid(project.owner)) {
-        validationResult.add('owner', 'Owner does not exists.');
+        validationResult.add('owner', 'Die Id für den Besitzer ist ungültig.');
     }
 
     if(!project.displayName) {
-        validationResult.add('displayName', 'DisplayName must not be null or empty.');
+        validationResult.add('displayName', 'Die Bezeichnung darf nicht leer sein.');
     }
 
     if (!project.dueDate) {
-        validationResult.add('dueDate', 'Due date must be not be null.');
+        validationResult.add('dueDate', 'Das Fälligkeitsdatum muss gesetzt werden.');
     }else {
         if(!moment().isBefore(moment(project.dueDate))) {
-            validationResult.add('dueDate', 'Due date must be later than todays date.');
+            validationResult.add('dueDate', 'Das Fälligkeitsdatum muss in der Zukunft liegen.');
         }
     }
 

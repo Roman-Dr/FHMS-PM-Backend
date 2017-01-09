@@ -103,7 +103,7 @@ router.route('/projects')
         var validationResult = validator.validate(req.body);
 
         if(!validationResult.isValid()) {
-            return res.status(400).send(validationResult.toResult());
+            return res.status(460).send(validationResult.toResult());
         }
 
         var newItem = new Project();
@@ -192,7 +192,7 @@ router.route('/projects/:id')
                 var validationResult = validator.validate(req.body);
 
                 if(!validationResult.isValid()) {
-                    return res.status(400).send(validationResult.toResult());
+                    return res.status(460).send(validationResult.toResult());
                 }
 
                 item.displayName = req.body.displayName;

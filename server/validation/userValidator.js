@@ -14,18 +14,17 @@ function UserValidator() {
 UserValidator.prototype.validate = function(user) {
     var validationResult = new ValidationResult();
 
-    if(!this.helper.isUserIdValid(user._id)) {
-        validationResult.add('id', 'Id does not exists.');
-    }
-
     if(!user.email) {
-        validationResult.add('email', 'E-Mail must not be null or empty.');
+        validationResult.add('email', 'Die E-Mail darf nicht leer sein.');
+    }
+    if(!user.password) {
+        validationResult.add('email', 'Das Passwort darf nicht leer sein.');
     }
     if(!user.firstname) {
-        validationResult.add('firstname', 'First name must not be null or empty.');
+        validationResult.add('firstname', 'Der Vorname darf nicht leer sein.');
     }
     if(!user.lastname) {
-        validationResult.add('firstname', 'Last name must not be null or empty.');
+        validationResult.add('firstname', 'Der Nachname darf nicht leer sein.');
     }
 
     return validationResult;
