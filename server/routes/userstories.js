@@ -7,6 +7,8 @@ var UserStory = mongoose.model('UserStory');
 var Project =  mongoose.model('Project');
 var User =  mongoose.model('User');
 
+var UserStoryValidator = require('./../validation/userStoryValidator');
+
 router.route('/projects/:project_id/userStories')
     /**
      * @api {get} /projects/:project_id/userStories Get all user stories.
@@ -50,6 +52,12 @@ router.route('/projects/:project_id/userStories')
     .post(function (req, res) {
         var projectId = req.params.project_id;
         var authorId = req.body.authorId;
+
+        var validator = new UserStoryValidator();
+        var validationResult = validator.validate(req.body);
+        if(!validationResult.isValid()) {
+            return res.status(460).send(validationResult.toResult());
+        }
 
         Project.findById(projectId, function (err, project) {
             if (err) {
@@ -140,6 +148,12 @@ router.route('/projects/:project_id/userStories/:id')
         var projectId = req.params.project_id;
         var userStoryId = req.params.id;
         var authorId = req.body.authorId;
+
+        var validator = new UserStoryValidator();
+        var validationResult = validator.validate(req.body);
+        if(!validationResult.isValid()) {
+            return res.status(460).send(validationResult.toResult());
+        }
 
         Project.findById(projectId, function (err, project) {
             if (err) {
