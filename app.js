@@ -52,7 +52,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'topsecret', // Server side secret to encrypt the passwords
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { httpOnly: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
