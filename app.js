@@ -64,7 +64,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://:10.60.67.20:4200');
+    res.setHeader('Access-Control-Allow-Origin', 'http://10.60.67.20:4200');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
