@@ -39,6 +39,7 @@ router.route('/projects/:project_id/backlogitems')
             return res.json(backlogItems);
         });
     })
+
     /**
      * @api {post} /projects/:project_id/backlogitems/ Create a new backlogitem.
      * @apiName AddBacklogItem
@@ -69,7 +70,7 @@ router.route('/projects/:project_id/backlogitems')
     .post(function (req, res) {
         var projectId = req.params.project_id;
         var authorId = req.body.authorId;
-        //var assignedToId = req.body.assignedToId;
+        var assignedToId = req.body.assignedToId;
 
         Project.findById(projectId, function (err, project) {
             if (err) {
@@ -79,23 +80,26 @@ router.route('/projects/:project_id/backlogitems')
                 if (err) {
                     return res.send(err);
                 }
-                // User.findById(assignedToId, function (err, assignedTo) {
-                //     if (err) {
-                //         return res.send(err);
-                //     }
+                User.findById(assignedToId, function (err, assignedTo) {
+                    if (err) {
+                        return res.send(err);
+                    }
 
                     var newBacklogItem = new BacklogItem();
+
+
+                    newBacklogItem.assignedToId = assignedToId;
+                    if (assignedTo == undefined) {
+                        newBacklogItem.assignedToDisplayName = undefined;
+                    } else {
+                        newBacklogItem.assignedToDisplayName = assignedTo.displayName();
+                    }
 
                     newBacklogItem.title = req.body.title;
                     newBacklogItem.authorId = authorId;
                     newBacklogItem.authorDisplayName = author.displayName();
                     newBacklogItem.timestmp = req.body.timestmp;
-                    //newBacklogItem.assignedToId = assignedToId;
-                    // if (assignedTo == undefined) {
-                    //     newBacklogItem.assignedToDisplayName = undefined;
-                    // } else {
-                    //     newBacklogItem.assignedToDisplayName = assignedTo.displayName();
-                    // }
+
                     newBacklogItem.state = req.body.state;
                     newBacklogItem.description = req.body.description;
                     newBacklogItem.sprintId = req.body.sprintId;
@@ -109,8 +113,7 @@ router.route('/projects/:project_id/backlogitems')
                         }
                         return res.json(newBacklogItem);
                     });
-
-                // });
+                });
             });
         });
 
