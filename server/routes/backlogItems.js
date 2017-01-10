@@ -47,7 +47,6 @@ router.route('/projects/:project_id/backlogitems')
      * @apiParam {ObjectId} backlogitems.project_id Unique identifier of a project.
      * @apiParam {String} backlogitems.title The text of the backlogitem.
      * @apiParam {ObjectId} backlogitems.authorId Assigned author of the backlogitem
-     * @apiParam {Date} backlogitems.timestamp Timestamp of the user story.
      * @apiParam {ObjectId} backlogitems.assignedToId ID of assigned user.
      * @apiParam {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiParam {String} backlogitems.description Description of the backlogitem.
@@ -80,10 +79,10 @@ router.route('/projects/:project_id/backlogitems')
                 if (err) {
                     return res.send(err);
                 }
-                User.findById(assignedToId, function (err, assignedTo) {
-                    if (err) {
-                        return res.send(err);
-                    }
+                // User.findById(assignedToId, function (err, assignedTo) {
+                //     if (err) {
+                //         return res.send(err);
+                //     }
 
                     var newBacklogItem = new BacklogItem();
 
@@ -111,7 +110,7 @@ router.route('/projects/:project_id/backlogitems')
                         return res.json(newBacklogItem);
                     });
 
-                });
+                // });
             });
         });
 
