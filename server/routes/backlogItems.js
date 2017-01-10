@@ -69,7 +69,7 @@ router.route('/projects/:project_id/backlogitems')
     .post(function (req, res) {
         var projectId = req.params.project_id;
         var authorId = req.body.authorId;
-        var assignedToId = req.body.assignedToId;
+        //var assignedToId = req.body.assignedToId;
 
         Project.findById(projectId, function (err, project) {
             if (err) {
@@ -90,12 +90,12 @@ router.route('/projects/:project_id/backlogitems')
                     newBacklogItem.authorId = authorId;
                     newBacklogItem.authorDisplayName = author.displayName();
                     newBacklogItem.timestmp = req.body.timestmp;
-                    newBacklogItem.assignedToId = assignedToId;
-                    if (assignedTo == undefined) {
-                        newBacklogItem.assignedToDisplayName = undefined;
-                    } else {
-                        newBacklogItem.assignedToDisplayName = assignedTo.displayName();
-                    }
+                    //newBacklogItem.assignedToId = assignedToId;
+                    // if (assignedTo == undefined) {
+                    //     newBacklogItem.assignedToDisplayName = undefined;
+                    // } else {
+                    //     newBacklogItem.assignedToDisplayName = assignedTo.displayName();
+                    // }
                     newBacklogItem.state = req.body.state;
                     newBacklogItem.description = req.body.description;
                     newBacklogItem.sprintId = req.body.sprintId;
