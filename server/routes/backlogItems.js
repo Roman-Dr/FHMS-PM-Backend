@@ -67,7 +67,7 @@ router.route('/projects/:project_id/backlogitems')
      * @apiSuccess {String} backlogitems.projectDisplayTitle Displaytitle for the assigned project.
      */
     .post(function (req, res) {
-        var projectId = req.params.projectId;
+        var projectId = req.params.project_id;
         var authorId = req.body.authorId;
         var assignedToId = req.body.assignedToId;
 
