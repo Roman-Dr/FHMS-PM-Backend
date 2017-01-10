@@ -97,31 +97,30 @@ router.route('/projects')
      *     ]
      */
     .post(function (req, res) {
-
         // Validate input
         var validator = new ProjectValidator();
-        var validationResult = validator.validate(req.body);
+        validator.validate(req.body, function(validationResult) {
+            if(!validationResult.isValid()) {
+                return res.status(460).send(validationResult.toResult());
+            }else {
+                var newItem = new Project();
 
-        if(!validationResult.isValid()) {
-            return res.status(460).send(validationResult.toResult());
-        }
+                newItem.displayName = req.body.displayName;
+                newItem.description = req.body.description;
+                newItem.dueDate = req.body.dueDate;
+                newItem.owner = req.body.owner; // TODO: Check if owner exists
+                newItem.stakeholders = req.body.stakeholders;  // TODO: Check if stakeholders exists
+                newItem.contributors = req.body.contributors;  // TODO: Check if contributors exists
 
-        var newItem = new Project();
+                newItem.save(function (err) {
+                    if (err) {
+                        console.error(err);
+                        return res.send(err);
+                    }
 
-        newItem.displayName = req.body.displayName;
-        newItem.description = req.body.description;
-        newItem.dueDate = req.body.dueDate;
-        newItem.owner = req.body.owner; // TODO: Check if owner exists
-        newItem.stakeholders = req.body.stakeholders;  // TODO: Check if stakeholders exists
-        newItem.contributors = req.body.contributors;  // TODO: Check if contributors exists
-
-        newItem.save(function (err) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
+                    res.json({ "id":newItem._id });
+                });
             }
-
-            res.json({ "id":newItem._id });
         });
     });
 
@@ -188,27 +187,28 @@ router.route('/projects/:id')
                     return res.sendStatus(404);
                 }
 
+                // Validate input
                 var validator = new ProjectValidator();
-                var validationResult = validator.validate(req.body);
+                validator.validate(req.body, function(validationResult) {
+                    if(!validationResult.isValid()) {
+                        return res.status(460).send(validationResult.toResult());
+                    }else {
+                        item.displayName = req.body.displayName;
+                        item.description = req.body.description;
+                        item.dueDate = req.body.dueDate;
+                        item.owner = req.body.owner; // TODO: Check if owner exists
+                        item.stakeholders = req.body.stakeholders;  // TODO: Check if stakeholders exists
+                        item.contributors = req.body.contributors;  // TODO: Check if contributors exists
 
-                if(!validationResult.isValid()) {
-                    return res.status(460).send(validationResult.toResult());
-                }
+                        item.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.send(err);
+                            }
 
-                item.displayName = req.body.displayName;
-                item.description = req.body.description;
-                item.dueDate = req.body.dueDate;
-                item.owner = req.body.owner; // TODO: Check if owner exists
-                item.stakeholders = req.body.stakeholders;  // TODO: Check if stakeholders exists
-                item.contributors = req.body.contributors;  // TODO: Check if contributors exists
-
-                item.save(function (err) {
-                    if (err) {
-                        console.error(err);
-                        return res.send(err);
+                            res.json({ "id":item._id });
+                        });
                     }
-
-                    res.json({ "id":item._id });
                 });
             });
     })

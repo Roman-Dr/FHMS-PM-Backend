@@ -11,27 +11,28 @@ function ProjectValidator() {
     this.helper = new Validator();
 }
 
-ProjectValidator.prototype.validate = function(project) {
-    var validationResult = new ValidationResult();
+ProjectValidator.prototype.validate = function(project, callback) {
+    this.helper.isUserIdValid(project.owner, function(isUserValid) {
+        var validationResult = new ValidationResult();
 
-
-    if(!this.helper.isUserIdValid(project.owner)) {
-        validationResult.add('owner', 'Die Id für den Besitzer ist ungültig.');
-    }
-
-    if(!project.displayName) {
-        validationResult.add('displayName', 'Die Bezeichnung darf nicht leer sein.');
-    }
-
-    if (!project.dueDate) {
-        validationResult.add('dueDate', 'Das Fälligkeitsdatum muss gesetzt werden.');
-    }else {
-        if(!moment().isBefore(moment(project.dueDate))) {
-            validationResult.add('dueDate', 'Das Fälligkeitsdatum muss in der Zukunft liegen.');
+        if(!isUserValid) {
+            validationResult.add('owner', 'Die Id für den Besitzer ist ungültig.');
         }
-    }
 
-    return validationResult;
+        if(!project.displayName) {
+            validationResult.add('displayName', 'Die Bezeichnung darf nicht leer sein.');
+        }
+
+        if (!project.dueDate) {
+            validationResult.add('dueDate', 'Das Fälligkeitsdatum muss gesetzt werden.');
+        }else {
+            if(!moment().isBefore(moment(project.dueDate))) {
+                validationResult.add('dueDate', 'Das Fälligkeitsdatum muss in der Zukunft liegen.');
+            }
+        }
+
+        callback(validationResult);
+    });
 };
 
 module.exports = ProjectValidator;

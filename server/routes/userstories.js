@@ -54,50 +54,51 @@ router.route('/projects/:project_id/userStories')
         var authorId = req.body.authorId;
 
         var validator = new UserStoryValidator();
-        var validationResult = validator.validate(req.body);
-        if(!validationResult.isValid()) {
-            return res.status(460).send(validationResult.toResult());
-        }
-
-        Project.findById(projectId, function (err, project) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-
-            console.log('POST: Create new UserStory for project id ' + projectId);
-
-            User.findById(authorId, function (err, user) {
-                if(err) {
-                    console.error(error);
-                }
-
-                var newUserStory = new UserStory();
-
-                newUserStory.title = req.body.title;
-                newUserStory.authorId = authorId;
-                newUserStory.complete = req.body.complete;
-                newUserStory.creationDate = Date.now();
-
-                if(user == undefined) {
-                    newUserStory.authorDisplayName = undefined;
-                } else {
-                    newUserStory.authorDisplayName = user.displayName();
-                }
-
-                project.userStories.push(newUserStory);
-
-                project.save(function (err) {
-                    if(err){
+        validator.validate(req.body, function(validationResult) {
+            if(!validationResult.isValid()) {
+                return res.status(460).send(validationResult.toResult());
+            } else {
+                Project.findById(projectId, function (err, project) {
+                    if (err) {
                         console.error(err);
                         return res.send(err);
-                    }else {
-                        console.log('UserStory in project ' + projectId + ' created.');
-
-                        return res.json(newUserStory._id);
                     }
+
+                    console.log('POST: Create new UserStory for project id ' + projectId);
+
+                    User.findById(authorId, function (err, user) {
+                        if(err) {
+                            console.error(error);
+                        }
+
+                        var newUserStory = new UserStory();
+
+                        newUserStory.title = req.body.title;
+                        newUserStory.authorId = authorId;
+                        newUserStory.complete = req.body.complete;
+                        newUserStory.creationDate = Date.now();
+
+                        if(user == undefined) {
+                            newUserStory.authorDisplayName = undefined;
+                        } else {
+                            newUserStory.authorDisplayName = user.displayName();
+                        }
+
+                        project.userStories.push(newUserStory);
+
+                        project.save(function (err) {
+                            if(err){
+                                console.error(err);
+                                return res.send(err);
+                            }else {
+                                console.log('UserStory in project ' + projectId + ' created.');
+
+                                return res.json(newUserStory._id);
+                            }
+                        });
+                    });
                 });
-            });
+            }
         });
     });
 
@@ -150,47 +151,48 @@ router.route('/projects/:project_id/userStories/:id')
         var authorId = req.body.authorId;
 
         var validator = new UserStoryValidator();
-        var validationResult = validator.validate(req.body);
-        if(!validationResult.isValid()) {
-            return res.status(460).send(validationResult.toResult());
-        }
-
-        Project.findById(projectId, function (err, project) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-
-            var userStory = project.userStories.id(userStoryId);
-
-            console.log('PUT: Update a UserStory for project id ' + projectId);
-
-            User.findById(authorId, function (err, user) {
-                if(err) {
-                    console.error(error);
-                }
-
-                userStory.title = req.body.title;
-                userStory.authorId = authorId;
-                userStory.complete = req.body.complete;
-
-                if(user == undefined) {
-                    userStory.authorDisplayName = undefined;
-                } else {
-                    userStory.authorDisplayName = user.displayName();
-                }
-
-                project.save(function (err) {
-                    if(err){
+        validator.validate(req.body, function(validationResult) {
+            if(!validationResult.isValid()) {
+                return res.status(460).send(validationResult.toResult());
+            } else {
+                Project.findById(projectId, function (err, project) {
+                    if (err) {
                         console.error(err);
                         return res.send(err);
-                    }else {
-                        console.log('UserStory ' + userStoryId + ' in project ' + projectId + ' updated.');
-
-                        return res.json(200);
                     }
+
+                    var userStory = project.userStories.id(userStoryId);
+
+                    console.log('PUT: Update a UserStory for project id ' + projectId);
+
+                    User.findById(authorId, function (err, user) {
+                        if(err) {
+                            console.error(error);
+                        }
+
+                        userStory.title = req.body.title;
+                        userStory.authorId = authorId;
+                        userStory.complete = req.body.complete;
+
+                        if(user == undefined) {
+                            userStory.authorDisplayName = undefined;
+                        } else {
+                            userStory.authorDisplayName = user.displayName();
+                        }
+
+                        project.save(function (err) {
+                            if(err){
+                                console.error(err);
+                                return res.send(err);
+                            }else {
+                                console.log('UserStory ' + userStoryId + ' in project ' + projectId + ' updated.');
+
+                                return res.json(200);
+                            }
+                        });
+                    });
                 });
-            });
+            }
         });
     })
 
