@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var moment = require('moment');
 var router = express.Router();
 
 var BacklogItem = mongoose.model('BacklogItem');
@@ -20,7 +21,7 @@ router.route('/projects/:project_id/backlogitems')
  * @apiSuccess {String} backlogitems.title The text of the backlogitem.
  * @apiSuccess {ObjectId} backlogitems.authorId Assigned author of the backlogitem
  * @apiSuccess {String} backlogitems.author Authorname of the backlogitem.
- * @apiSuccess {Date} backlogitems.timestamp Timestamp of the user story.
+ * @apiSuccess {Date} backlogitems.creationDate CreationDate of the user story.
  * @apiSuccess {ObjectId} backlogitems.assignedToId ID of assigned user.
  * @apiSuccess {String} backlogitems.assignedToDisplayName Name of assigned user.
  * @apiSuccess {Enum} backlogitems.state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
@@ -28,6 +29,9 @@ router.route('/projects/:project_id/backlogitems')
  * @apiSuccess {ObjectId} backlogitems.sprintId Assigned sprint of the backlogitem.
  * @apiSuccess {ObjectId} backlogitems.projectId Assigned project of the backlogitem.
  * @apiSuccess {String} backlogitems.projectDisplayTitle Displaytitle for the assigned project.
+ * @apiSuccess {Task[]} backlogitems.tasks List of tasks for the backlogitem.
+ * @apiSuccess {Number} backlogitems.effort Effort in hours.
+ * @apiSuccess {Number} backlogitems.priority Priority for backlogitem.
  */
     .get(function (req, res) {
         var projectId = req.params.project_id;
@@ -98,13 +102,15 @@ router.route('/projects/:project_id/backlogitems')
                     newBacklogItem.title = req.body.title;
                     newBacklogItem.authorId = authorId;
                     newBacklogItem.authorDisplayName = author.displayName();
-                    newBacklogItem.timestmp = req.body.timestmp;
+                    newBacklogItem.creationDate = moment();
 
                     newBacklogItem.state = req.body.state;
                     newBacklogItem.description = req.body.description;
                     newBacklogItem.sprintId = req.body.sprintId;
                     newBacklogItem.projectId = projectId;
                     newBacklogItem.projectDisplayTitle = project.displayName;
+                    newBacklogItem.priority = req.body.priority;
+                    newBacklogItem.effort = req.body.effort;
 
                     newBacklogItem.save(function (err) {
                         if (err) {
@@ -189,18 +195,14 @@ router.route('/projects/:project_id/backlogitems/:id')
     .put(function (req, res) {
         var id = req.params.id;
         var projectId = req.params.project_id;
+        var authorId = req.body.authorId;
+        var assignedToId = req.body.assignedToId;
 
         BacklogItem.findOne({_id: id, projectId: projectId},
             function (err, newBacklogItem) {
                 if (err) {
-                    console.error(err);
-
-                    return res.status(404);
+                    return res.send(err);
                 }
-                var authorId = req.body.authorId;
-                var assignedToId = req.body.assignedToId;
-
-
                 User.findById(authorId, function (err, author) {
                     if (err) {
                         return res.send(err);
@@ -210,21 +212,26 @@ router.route('/projects/:project_id/backlogitems/:id')
                             return res.send(err);
                         }
 
-                        newBacklogItem.title = req.body.title;
-                        newBacklogItem.authorId = authorId;
-                        newBacklogItem.authorDisplayName = author.displayName();
-                        newBacklogItem.timestmp = req.body.timestmp;
+
                         newBacklogItem.assignedToId = assignedToId;
                         if (assignedTo == undefined) {
                             newBacklogItem.assignedToDisplayName = undefined;
                         } else {
                             newBacklogItem.assignedToDisplayName = assignedTo.displayName();
                         }
+
+                        newBacklogItem.title = req.body.title;
+                        newBacklogItem.authorId = authorId;
+                        newBacklogItem.authorDisplayName = author.displayName();
+                        newBacklogItem.creationDate = moment();
+
                         newBacklogItem.state = req.body.state;
                         newBacklogItem.description = req.body.description;
                         newBacklogItem.sprintId = req.body.sprintId;
                         newBacklogItem.projectId = projectId;
                         newBacklogItem.projectDisplayTitle = project.displayName;
+                        newBacklogItem.priority = req.body.priority;
+                        newBacklogItem.effort = req.body.effort;
 
                         newBacklogItem.save(function (err) {
                             if (err) {
@@ -233,7 +240,6 @@ router.route('/projects/:project_id/backlogitems/:id')
                             }
                             return res.json(newBacklogItem);
                         });
-
                     });
                 });
 
@@ -250,17 +256,17 @@ router.route('/projects/:project_id/backlogitems/:id')
      *
      */
     .delete(function (req, res) {
+        console.log("test")
         var id = req.params.id;
-        var projectId = req.params.project_id;
 
-        BacklogItem.findOneAndRemove({_id: id, projectId: projectId},
+        BacklogItem.findByIdAndRemove(id ,
             function (err, res) {
                 if (err) {
                     console.error(err);
                     return res.send(err);
                 }
             });
-        return res.status(200);
+        return res.status(200).send();
     });
 
 module.exports = router;
