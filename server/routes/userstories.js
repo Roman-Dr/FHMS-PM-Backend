@@ -34,7 +34,11 @@ router.route('/projects/:project_id/userStories')
 
             console.log('GET: UserStories for project id ' + projectId);
 
-            res.json(item.userStories);
+            if(item.userStories) {
+                res.json(item.userStories);
+            } else {
+                res.send();
+            }
         });
     })
     /**
@@ -90,7 +94,7 @@ router.route('/projects/:project_id/userStories')
                             if(err){
                                 console.error(err);
                                 return res.send(err);
-                            }else {
+                            } else {
                                 console.log('UserStory in project ' + projectId + ' created.');
 
                                 return res.json(newUserStory._id);
