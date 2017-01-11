@@ -128,7 +128,7 @@ router.route('/projects/:project_id/backlogitems')
                         newBacklogItem.priority = req.body.priority;
                         newBacklogItem.effort = req.body.effort;
                         newBacklogItem.userStoryId = userStoryId;
-                        newBacklogItem.userStoryDisplayName = userstory.title;
+                        newBacklogItem.userStoryDisplayName = userStory.title;
 
                         newBacklogItem.save(function (err) {
                             if (err) {
