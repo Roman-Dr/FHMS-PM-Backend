@@ -12,6 +12,7 @@ require('./server/models/user');
 require('./server/models/project');
 require('./server/models/backlogItem');
 require('./server/models/sprint');
+require('./server/models/planningPoker');
 // END IMPORT MODELS
 
 //var routes = require('./server/routes/index');
@@ -21,6 +22,7 @@ var userstories = require('./server/routes/userstories');
 var databaseInitializer = require('./server/routes/databaseInitializer');
 var backlogItems = require('./server/routes/backlogItems');
 var sprints = require('./server/routes/sprints');
+var planningPoker = require('./server/routes/planningPoker');
 
 
 var session      = require('express-session');
@@ -91,6 +93,7 @@ app.use('/api', userstories);
 app.use('/api', projects);
 app.use('/api', backlogItems);
 app.use('/api', sprints);
+app.use('/api', planningPoker);
 app.use('/system', databaseInitializer);
 // END REGISTER API MODULES
 
