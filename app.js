@@ -63,7 +63,7 @@ app.use(session({
     secret: 'topsecret', // Server side secret to encrypt the passwords
     resave: true,
     saveUninitialized: true,
-    cookie: { httpOnly: false }
+    cookie: { httpOnly: false, path: '' }
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
