@@ -44,7 +44,7 @@ app.set('view engine', 'ejs');
 
 app.use('/doc', express.static('doc'));
 
-app.use(cors());
+//app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser('topsecret'));
 app.use(bodyParser.json());
