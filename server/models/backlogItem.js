@@ -37,7 +37,9 @@ var backlogItemSchema = new schema({
         tasks: [taskSchema],
         sprintId: mongoose.Schema.Types.ObjectId,
         projectId: mongoose.Schema.Types.ObjectId,
-        projectDisplayTitle: String
+        projectDisplayTitle: String,
+        userStoryId: mongoose.Schema.Types.ObjectId,
+        userStoryDisplayName: String
     }, {versionKey: false} // DISABLE VERSIONING (_v)
 );
 
