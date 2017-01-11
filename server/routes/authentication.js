@@ -12,7 +12,7 @@ module.exports = function(app, passport) {
 
     // PROFILE SECTION =========================
     app.get('/api/user/profile', isLoggedIn, function(req, res) {
-        return res.json(200);
+        return res.status(200).send();
     });
 
 
@@ -120,5 +120,5 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()){
         return next();
     }
-    return res.json(400);
+    return res.status(400).send();
 }
