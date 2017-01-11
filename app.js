@@ -1,5 +1,5 @@
 var express = require('express');
-//var cors = require('cors');
+var cors = require('cors');
 var app = express();
 var path = require('path');
 var logger = require('morgan');
@@ -40,11 +40,11 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//app.options('*', cors());
+app.options('http://localhost:4200', cors());
 
 app.use('/doc', express.static('doc'));
 
-//app.use(cors());
+app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser('topsecret'));
 app.use(bodyParser.json());
