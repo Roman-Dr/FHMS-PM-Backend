@@ -40,7 +40,12 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.options('http://localhost:4200', cors());
+var corsOptions = {
+    origin: 'http://localhost:4200',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.options('*', cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
 
