@@ -23,7 +23,7 @@ var backlogItems = require('./server/routes/backlogItems');
 var sprints = require('./server/routes/sprints');
 
 
-var session      = require('express-session');
+var session = require('express-session');
 var flash = require('connect-flash');
 
 var mongoose = require('mongoose');
@@ -44,7 +44,7 @@ app.use('/doc', express.static('doc'));
 
 app.use(cors());
 app.use(logger('dev'));
-app.use(cookieParser());
+app.use(cookieParser('topsecret'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -64,7 +64,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:4200');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
