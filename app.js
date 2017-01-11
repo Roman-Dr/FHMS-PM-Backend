@@ -1,5 +1,5 @@
 var express = require('express');
-var cors = require('cors');
+//var cors = require('cors');
 var app = express();
 var path = require('path');
 var logger = require('morgan');
@@ -40,11 +40,11 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.options('*', cors());
+//app.options('*', cors());
 
 app.use('/doc', express.static('doc'));
 
-app.use(cors());
+//app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser('topsecret'));
 app.use(bodyParser.json());
@@ -66,7 +66,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
