@@ -40,9 +40,16 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.options('*', cors());
+var corsOptions = {
+    origin: 'http://localhost:4200',
+    optionsSuccessStatus: 200,
+    credentials: true
+};
+
+app.options('*', cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
+
 
 app.use(cors());
 app.use(logger('dev'));
@@ -56,17 +63,18 @@ app.use(session({
     secret: 'topsecret', // Server side secret to encrypt the passwords
     resave: true,
     saveUninitialized: true,
-    cookie: { httpOnly: false }
+    cookie: { httpOnly: false, path: '' }
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+app.disable('etag');
 
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
