@@ -26,10 +26,14 @@ router.route('/projects/:project_id/sprints')
 
         Sprint.find({projectId: projectId}, function (err, sprints) {
             if (err) {
+                console.error(err);
                 return res.send(err);
             }
+
             console.log('GET: Sprints for project id ' + projectId);
+
             return res.json(sprints);
+
         });
     })
     /**
@@ -59,21 +63,23 @@ router.route('/projects/:project_id/sprints')
                 console.error(err);
                 return res.send(err);
             }
+            else {
+                var newSprint = new Sprint();
 
-            var newSprint = new Sprint();
+                newSprint.sprintName = req.body.sprintName;
+                newSprint.startDate = req.body.startDate;
+                newSprint.endDate = req.body.endDate;
+                // sprintCapacity ergänzen
+                newSprint.projectId = projectId;
 
-            newSprint.sprintName = req.body.sprintName;
-            newSprint.startDate = req.body.startDate;
-            newSprint.endDate = req.body.endDate;
-            newSprint.project_id = project_id;
-
-            newSprint.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    return res.send(err);
-                }
-                return res.json(newSprint);
-            });
+                newSprint.save(function (err) {
+                    if (err) {
+                        console.error(err);
+                        return res.send(err);
+                    }
+                    return res.json(newSprint);
+                });
+            }
         });
     });
 
