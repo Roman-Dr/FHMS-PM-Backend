@@ -100,18 +100,14 @@ router.route('/projects/:project_id/sprints/:id')
     .get(function (req, res) {
         var sprintId = req.params.id;
 
-        Project.findById(sprintId, function (err, item) {
+        Sprint.findById(sprintId, function (err, item) {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
 
             console.log('GET: Sprint with id ' + sprintId);
-            if (item) {
-                res.json(item);
-            } else {
-                res.send();
-            }
+            return res.json(item);
         });
     })
 
@@ -129,40 +125,32 @@ router.route('/projects/:project_id/sprints/:id')
     .put(function (req, res) {
         var projectId = req.params.project_id;
         var sprintId = req.params.id;
-
-        var validator = new SprintValidator();
-        validator.validate(req.body, function (validationResult) {
-            if (!validationResult.isValid()) {
-                return res.status(460).send(validationResult.toResult());
-            } else {
-                Sprints.findById(sprintId, function (err, sprint) {
-                    if (err) {
-                        console.error(err);
-                        return res.send(err);
-                    }
-
-                    console.log('PUT: Update Sprint for project id ' + projectId);
-
-                    sprint.sprintName = req.body.sprintName;
-                    sprint.startDate = req.body.startDate;
-                    sprint.endDate = req.body.endDate;
-
-                    var newSprint = sprint.id(sprintId);
-                    newSprint.sprintName = req.body.sprintName;
-                    newSprint.startDate = req.body.startDate;
-                    newSprint.endDate = req.body.endDate;
-
-                    sprint.save(function (err) {
-                        if (err) {
-                            console.error(err);
-                            return res.send(err);
-                        } else {
-                            console.log('Sprint ' + sprintId + ' updated.');
-                            return res.json(200);
-                        }
-                    });
-                });
+        Sprint.findById(sprintId, function (err, sprint) {
+            if (err) {
+                console.error(err);
+                return res.send(err);
             }
+            /*
+             var validator = new SprintValidator();
+             validator.validate(req.body, function (validationResult) {
+             if (!validationResult.isValid()) {
+             return res.status(460).send(validationResult.toResult());
+             } else {*/
+            console.log('PUT: Update Sprint for project id ' + projectId);
+            sprint.sprintName = req.body.sprintName;
+            sprint.startDate = req.body.startDate;
+            sprint.endDate = req.body.endDate;
+
+            sprint.save(function (err) {
+                if (err) {
+                    console.error(err);
+                    return res.send(err);
+                }
+                console.log('Sprint ' + sprintId + ' updated.');
+                return res.json(200);
+            });
+            /*}
+             });*/
         });
     })
 
@@ -211,7 +199,7 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
         var sprintCapacityId = req.params.id;
 
 
-        Sprint.find({ 'sprintCapacity.sprintId': sprintId }, function (err, item) {
+        Sprint.find({'sprintCapacity.sprintId': sprintId}, function (err, item) {
             if (err) {
                 console.error(err);
                 return res.send(err);
@@ -286,7 +274,7 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
         var sprintId = req.params.sprint_id;
         var sprintCapacityId = req.params.id;
 
-        Sprint.find({ 'sprintCapacity._id': sprintCapacityId }, 'sprintCapacity.$', function (err, sprintcapacity) {
+        Sprint.find({'sprintCapacity._id': sprintCapacityId}, 'sprintCapacity.$', function (err, sprintcapacity) {
             if (err) {
                 console.error(err);
                 return res.send(err);
