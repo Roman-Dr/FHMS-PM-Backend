@@ -12,7 +12,7 @@ function SprintValidator() {
     this.helper = new Validator();
 }
 
-SprintValidator.prototype.validate = function (sprint) {
+SprintValidator.prototype.validate = function (sprint, callback) {
     var validationResult = new ValidationResult();
 
     if (!sprint.sprintName) {
@@ -26,14 +26,8 @@ SprintValidator.prototype.validate = function (sprint) {
     if (!sprint.endDate) {
         validationResult.add('endDate', 'Das Enddatum muss gesetzt werden.');
     }
-    /*
-    else {
-        if (sprint.endDate.isBefore(sprint.startDate)) {
-            validationResult.add('endDate', 'Das Enddatum muss weiter in der Zukunft sein als das Startdatum.');
-        }
-    }*/
 
-    return validationResult;
+    callback(validationResult);
 }
 ;
 

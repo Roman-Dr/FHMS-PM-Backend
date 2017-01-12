@@ -7,6 +7,7 @@ var Sprint = mongoose.model('Sprint');
 var Project = mongoose.model('Project');
 
 var SprintValidator = require('./../validation/sprintValidator');
+var SprintCapacityValidator = require('./../validation/sprintCapacityValidator');
 
 router.route('/projects/:project_id/sprints')
 /**
@@ -51,31 +52,29 @@ router.route('/projects/:project_id/sprints')
         var projectId = req.params.project_id;
 
         var validator = new SprintValidator();
-        var validationResult = validator.validate(req.body);
-        if (!validationResult.isValid()) {
-            return res.status(460).send(validationResult.toResult());
-        }
-
-        Project.findById(projectId, function (err, project) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-            else {
-                var newSprint = new Sprint();
-
-                newSprint.sprintName = req.body.sprintName;
-                newSprint.startDate = req.body.startDate;
-                newSprint.endDate = req.body.endDate;
-                // sprintCapacity ergänzen
-                newSprint.projectId = projectId;
-
-                newSprint.save(function (err) {
+        validator.validate(req.body, function (validationResult) {
+            if (!validationResult.isValid()) {
+                return res.status(460).send(validationResult.toResult());
+            } else {
+                Project.findById(projectId, function (err, project) {
                     if (err) {
                         console.error(err);
                         return res.send(err);
                     }
-                    return res.json(newSprint._id);
+                    var newSprint = new Sprint();
+                    newSprint.sprintName = req.body.sprintName;
+                    newSprint.startDate = req.body.startDate;
+                    newSprint.endDate = req.body.endDate;
+                    // sprintCapacity ergänzen
+                    newSprint.projectId = projectId;
+
+                    newSprint.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        }
+                        return res.json(newSprint._id);
+                    });
                 });
             }
         });
@@ -125,32 +124,32 @@ router.route('/projects/:project_id/sprints/:id')
     .put(function (req, res) {
         var projectId = req.params.project_id;
         var sprintId = req.params.id;
-        Sprint.findById(sprintId, function (err, sprint) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-            /*
-             var validator = new SprintValidator();
-             validator.validate(req.body, function (validationResult) {
-             if (!validationResult.isValid()) {
-             return res.status(460).send(validationResult.toResult());
-             } else {*/
-            console.log('PUT: Update Sprint for project id ' + projectId);
-            sprint.sprintName = req.body.sprintName;
-            sprint.startDate = req.body.startDate;
-            sprint.endDate = req.body.endDate;
 
-            sprint.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    return res.send(err);
-                }
-                console.log('Sprint ' + sprintId + ' updated.');
-                return res.json(200);
-            });
-            /*}
-             });*/
+        var validator = new SprintValidator();
+        validator.validate(req.body, function (validationResult) {
+            if (!validationResult.isValid()) {
+                return res.status(460).send(validationResult.toResult());
+            } else {
+                Sprint.findById(sprintId, function (err, sprint) {
+                    if (err) {
+                        console.error(err);
+                        return res.send(err);
+                    }
+                    console.log('PUT: Update Sprint for project id ' + projectId);
+                    sprint.sprintName = req.body.sprintName;
+                    sprint.startDate = req.body.startDate;
+                    sprint.endDate = req.body.endDate;
+
+                    sprint.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        }
+                        console.log('Sprint ' + sprintId + ' updated.');
+                        return res.json(200);
+                    });
+                });
+            }
         });
     })
 
@@ -188,7 +187,7 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
  * @apiSuccess {ObjectId} projectId ProjectId of the sprint.
  * @apiSuccess {SprintCapacity[]} sprintcapacities List of sprint capacities of one sprint.
  * @apiSuccess {ObjectId} sprintcapacities._id Sprint capacities unique identifier.
- * @apiSuccess {ObjectId} sprintcapacities.authorId userId of the user that in the sprint team.
+ * @apiSuccess {ObjectId} sprintcapacities.userId userId of the user that in the sprint team.
  * @apiSuccess {ObjectId} sprintcapacities.sprintId sprintId of corresponding sprint.
  * @apiSuccess {Number} sprintcapacities.daysOff Number off Day offs.
  * @apiSuccess {Number} sprintcapacities.capacityPerDay Number of how many hours this person work on the sprint.
@@ -215,6 +214,8 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
      * @apiName AddSprintCapacity
      * @apiGroup SprintCapacity
      *
+     * @apiParam {ObjectId} userId userId of the user that in the sprint team.
+     * @apiParam {Number} daysOff Number off Day offs.
      * @apiParam {Number} daysOff Number off Day offs.
      * @apiParam {Number} capacityPerDay Number of how many hours this person work on the sprint.
      *
@@ -226,31 +227,39 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
         var sprintId = req.params.sprint_id;
         var sprintCapacityId = req.params.id;
 
-        Sprint.findById(sprintId, function (err, sprint) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
+        var validator = new SprintCapacityValidator();
+        validator.validate(req.body, function (validationResult) {
+            if (!validationResult.isValid()) {
+                return res.status(460).send(validationResult.toResult());
+            } else {
+
+                Sprint.findById(sprintId, function (err, sprint) {
+                    if (err) {
+                        console.error(err);
+                        return res.send(err);
+                    }
+                    console.log('POST: Create new sprint capacity for sprint id ' + sprintId);
+
+                    var newSprintCapacity = new SprintCapacity();
+
+                    newSprintCapacity.userId = req.body.userId;
+                    newSprintCapacity.sprintId = sprintId;
+                    newSprintCapacity.daysOff = req.body.daysOff;
+                    newSprintCapacity.capacityPerDay = req.body.capacityPerDay;
+
+                    sprint.sprintCapacity.push(newSprintCapacity);
+
+                    sprint.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        } else {
+                            console.log('New sprint capacity in sprint ' + sprintId + ' created.');
+                            return res.json(newSprintCapacity._id);
+                        }
+                    });
+                });
             }
-            console.log('POST: Create new sprint capacity for sprint id ' + sprintId);
-
-            var newSprintCapacity = new SprintCapacity();
-
-            //newSprintCapacity.userId = ?;
-            newSprintCapacity.sprintId = sprintId;
-            newSprintCapacity.daysOff = req.body.daysOff;
-            newSprintCapacity.capacityPerDay = req.body.capacityPerDay;
-
-            sprint.sprintCapacity.push(newSprintCapacity);
-
-            sprint.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    return res.send(err);
-                } else {
-                    console.log('New sprint capacity in sprint ' + sprintId + ' created.');
-                    return res.json(newSprintCapacity._id);
-                }
-            });
         });
     });
 
@@ -301,33 +310,39 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
         var sprintId = req.params.sprint_id;
         var sprintCapacityId = req.params.id;
 
-
-        SprintCapacity.findById(sprintCapacityId, function (err, sprintCapacity) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-
-            console.log('PUT: Update sprint capacity for sprint id ' + sprintId);
-
-            sprintCapacity.startDate = req.body.startDate;
-            sprintCapacity.capacityPerDay = req.body.capacityPerDay;
-
-            var newSprintCapacity = sprintCapacity.SprintCapacity.id(sprintCapacityId);
-            //newSprintCapacity.userId = ?;
-            newSprintCapacity.daysOff = req.body.daysOff;
-            newSprintCapacity.capacityPerDay = req.body.capacityPerDay;
-
-            sprintCapacity.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    return res.send(err);
+        var validator = new SprintCapacityValidator();
+        validator.validate(req.body, function (validationResult) {
+                if (!validationResult.isValid()) {
+                    return res.status(460).send(validationResult.toResult());
                 } else {
-                    console.log('Sprint Capacity ' + sprintCapacityId + ' was updated.');
-                    return res.json(200);
+
+                    Sprint.findById(sprintId, function (err, item) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        }
+
+                        var sprintCapacity = item.sprintCapacity.id(sprintCapacityId);
+
+                        console.log('PUT: Update sprint capacity for sprint id ' + sprintId);
+
+                        sprintCapacity.userId = req.body.userId;
+                        sprintCapacity.daysOff = req.body.daysOff;
+                        sprintCapacity.capacityPerDay = req.body.capacityPerDay;
+
+                        item.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.send(err);
+                            } else {
+                                console.log('Sprint Capacity ' + sprintCapacityId + ' was updated.');
+                                return res.json(200);
+                            }
+                        });
+                    });
                 }
-            });
-        });
+            }
+        );
     })
 
     /**
@@ -339,15 +354,30 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
      *
      */
     .delete(function (req, res) {
+        var projectId = req.params.project_id;
+        var sprintId = req.params.sprint_id;
         var sprintCapacityId = req.params.id;
 
-        Sprint.findByIdAndRemove(sprintCapacityId, function (err, res) {
+        Sprint.findById(sprintId, function (err, item) {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
+
+            var sprintCapacity = item.sprintCapacity.id(sprintCapacityId);
+
+            if (sprintCapacity != undefined) {
+                sprintCapacity.remove();
+            }
+            item.save(function (err) {
+                if (err) {
+                    console.error(err);
+                    return res.send(err);
+                } else {
+                    return res.json(200);
+                }
+            });
         });
-        return res.status(200).send();
     });
 
 
