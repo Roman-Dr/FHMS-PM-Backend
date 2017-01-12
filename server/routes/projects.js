@@ -44,7 +44,7 @@ router.route('/projects')
      *      }
      *     ]
      */
-    .get(function (req, res) {
+    .get(function (req, isLoggedIn, res) {
         Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
             if (err) {
                 console.error(err);
@@ -230,3 +230,11 @@ router.route('/projects/:id')
     });
 
 module.exports = router;
+
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()){
+        return next();
+    }
+    return res.status(400).send();
+}
