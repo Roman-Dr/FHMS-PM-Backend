@@ -44,15 +44,20 @@ router.route('/projects')
      *      }
      *     ]
      */
-    .get(function (req, isLoggedIn, res) {
-        Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
+    .get(function (req, res) {
+        if (!req.isAuthenticated()){
+            console.log('NOT AUTHENTICATED');
+            return res.status(400).send();
+        }else {
+            Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
+                if (err) {
+                    console.error(err);
+                    return res.send(err);
+                }
 
-            res.json(items);
-        });
+                res.json(items);
+            });
+        }
     })
     /**
      * @api {post} /projects/ Create a new project.
@@ -230,11 +235,3 @@ router.route('/projects/:id')
     });
 
 module.exports = router;
-
-// route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()){
-        return next();
-    }
-    return res.status(400).send();
-}
