@@ -71,7 +71,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.disable('etag');
 
-/*app.use(function (req, res, next) {
+app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -88,7 +88,7 @@ app.disable('etag');
 
     // Pass to next layer of middleware
     next();
-});*/
+});
 
 // Register routes with modules
 //app.use('/', routes);
