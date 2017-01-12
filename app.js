@@ -61,9 +61,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //required for passport
 app.use(session({
     secret: 'topsecret', // Server side secret to encrypt the passwords
-    resave: true,
-    saveUninitialized: true,
-    cookie: { httpOnly: false, path: '' }
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -71,7 +71,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.disable('etag');
 
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -88,7 +88,7 @@ app.use(function (req, res, next) {
 
     // Pass to next layer of middleware
     next();
-});
+});*/
 
 // Register routes with modules
 //app.use('/', routes);
