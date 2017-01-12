@@ -3,7 +3,7 @@ var schema = mongoose.Schema;
 
 
 var sprintCapacitySchema = new schema({
-    authorId: mongoose.Schema.Types.ObjectId,
+    userId: mongoose.Schema.Types.ObjectId,
     sprintId: mongoose.Schema.Types.ObjectId,
     daysOff: Number,
     capacityPerDay: Number
