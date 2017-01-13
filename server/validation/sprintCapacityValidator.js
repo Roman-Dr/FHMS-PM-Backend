@@ -15,7 +15,6 @@ function SprintCapacityValidator() {
 SprintCapacityValidator.prototype.validate = function (sprintCapacity, callback) {
     var validationResult = new ValidationResult();
 
-/*
     if (sprintCapacity.daysOff) {
         if(!Number.isInteger(sprintCapacity.daysOff)) {
             validationResult.add('daysOff', 'DaysOff muss eine Zahl sein');
@@ -27,7 +26,6 @@ SprintCapacityValidator.prototype.validate = function (sprintCapacity, callback)
         validationResult.add('capacityPerDay', 'Die Kapazität pro Tag muss eine Zahl sein.');
         }
     }
-*/
 
     callback(validationResult);
 }

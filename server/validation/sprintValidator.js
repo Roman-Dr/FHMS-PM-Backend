@@ -15,7 +15,6 @@ function SprintValidator() {
 SprintValidator.prototype.validate = function (sprint, callback) {
     var validationResult = new ValidationResult();
 
-    /*
     if (!sprint.sprintName) {
         validationResult.add('sprintName', 'Der Name darf nicht leer sein.');
     }
@@ -27,7 +26,6 @@ SprintValidator.prototype.validate = function (sprint, callback) {
     if (!sprint.endDate) {
         validationResult.add('endDate', 'Das Enddatum muss gesetzt werden.');
     }
-    */
 
     callback(validationResult);
 }
