@@ -306,7 +306,7 @@ router.route('/projects/:project_id/backlogitems/:id')
                     return res.send(err);
                 }
             });
-        return res.status(200).send();
+        return res.json(200);
     });
 
 module.exports = router;
