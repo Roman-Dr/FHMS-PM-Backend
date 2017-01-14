@@ -15,7 +15,11 @@ var taskSchema = new schema({
         },
         priority: Number,
         effort: Number,
-        description: String
+        description: String,
+        projectId: mongoose.Schema.Types.ObjectId,
+        projectDisplayName: String,
+        backlogItemId: mongoose.Schema.Types.ObjectId,
+        backlogItemDisplayName: String
     }, {versionKey: false}
 );
 

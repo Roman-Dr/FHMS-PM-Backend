@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Project =  mongoose.model('Project');
 var moment = require('moment');
 
 var Validator = require('./../validation/validatorHelper');

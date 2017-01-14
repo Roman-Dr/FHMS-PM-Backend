@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var UserValidator = require('./../validation/userValidator');
 var User = mongoose.model('User');
 
