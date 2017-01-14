@@ -135,7 +135,7 @@ router.route('/projects/:project_id/backlogitems/:id')
                 console.error(err);
                 return res.send(err);
             }
-            if (!backlogItem) return res.status(404).send();
+            if (!backlogItem) return res.status(200).json("Not Found!");
 
             return res.json(backlogItem);
         });
