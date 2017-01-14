@@ -89,7 +89,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks')
             if (!validationResult.isValid()) {
                 return res.status(460).send(validationResult.toResult());
             } else {
-                fillValues(req, true);
+                fillValues(req, res, true);
             }
         });
     });
@@ -175,7 +175,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
             if (!validationResult.isValid()) {
                 return res.status(460).send(validationResult.toResult());
             } else {
-                fillValues(req, false);
+                fillValues(req, res, false);
             }
         });
     })
@@ -216,7 +216,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
         });
     });
 
-function fillValues(req, created) {
+function fillValues(req, res, created) {
     var projectId = req.params.project_id;
     var backlogItemId = req.params.backlog_item_id;
     var authorId = req.body.authorId;

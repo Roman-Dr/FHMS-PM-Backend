@@ -3,16 +3,17 @@ var moment = require('moment');
 
 var Validator = require('./../validation/validatorHelper');
 var ValidationResult = require('./../validation/validationResult');
+var helper = new Validator;
 
 
 function TaskValidator() {
-    this.helper = new Validator();
+    helper = new Validator();
 }
 
 TaskValidator.prototype.validate = function(task) {
-    this.helper.isUserIdValid(task.body.authorId, function(userIsValid) {
-        this.helper.isProjectIdValid(task.params.project_id, function(projectIsValid){
-            this.helper.isBacklogItemIdValid(task.params.backlog_item_id, function(backlogItemIsValid){
+    helper.isUserIdValid(task.body.authorId, function(userIsValid) {
+        helper.isProjectIdValid(task.params.project_id, function(projectIsValid){
+            helper.isBacklogItemIdValid(task.params.backlog_item_id, function(backlogItemIsValid){
                 var validationResult = new ValidationResult();
 
                 if(!userIsValid) {

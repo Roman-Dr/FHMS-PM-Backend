@@ -3,16 +3,17 @@ var moment = require('moment');
 
 var Validator = require('./../validation/validatorHelper');
 var ValidationResult = require('./../validation/validationResult');
+var helper;
 
 
 function BacklogItemValidator() {
-    this.helper = new Validator();
+    helper = new Validator();
 }
 
-BacklogItemValidator.prototype.validate = function(backlogItem) {
-    this.helper.isUserIdValid(backlogItem.body.authorId, function(userIsValid) {
-        this.helper.isProjectIdValid(backlogItem.params.project_id, function(projectIsValid){
-            this.helper.isUserStoryIdValid(backlogItem.body.userStoryId, function(userStoryIsValid){
+BacklogItemValidator.prototype.validate = function(req, callback) {
+    helper.isUserIdValid(req.body.authorId, function(userIsValid) {
+        helper.isProjectIdValid(req.params.project_id, function(projectIsValid){
+            helper.isUserStoryIdValid(req.params.project_id, req.body.userStoryId, function(userStoryIsValid){
                 var validationResult = new ValidationResult();
 
                 if(!userIsValid) {
@@ -27,7 +28,7 @@ BacklogItemValidator.prototype.validate = function(backlogItem) {
                     validationResult.add('userStory', 'Die ID der UserStory ist ungültig.');
                 }
 
-                if(!backlogItem.title){
+                if(!req.body.title){
                     validationResult.add('title', 'Der Titel muss gesetzt sein.');
                 }
                 callback(validationResult);

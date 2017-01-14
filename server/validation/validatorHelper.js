@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
-var UserStory = mongoose.model('UserStory');
 var Project = mongoose.model('Project');
 var User = mongoose.model('User');
+var BacklogItem = mongoose.model('BacklogItem');
 
 // Constructor
 function Validator() {
@@ -27,13 +27,18 @@ Validator.prototype.isProjectIdValid = function (id, callback) {
         }
     });
 };
-Validator.prototype.isUserStoryIdValid = function (id, callback) {
-    UserStory.findById(id, function (err, user) {
-        if (err || user == undefined) {
+Validator.prototype.isUserStoryIdValid = function (project_id, id, callback) {
+    Project.findById(project_id, function (err, project) {
+        if (err || project == undefined) {
             callback(false);
         }
         else {
-            callback(true);
+            var userStory = project.userStories.id(id);
+            if(err || userStory == undefined){
+                callback(false);
+            } else {
+                callback(true);
+            }
         }
     });
 };
