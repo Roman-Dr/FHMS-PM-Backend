@@ -215,7 +215,7 @@ router.route('/projects/:project_id/backlogitems/:id')
                     return res.send(err);
                 }
             });
-        return res.status(200).json(200);
+        return res.status(200).json("Success");
     });
 
 function fillValues(req, newBacklogItem) {

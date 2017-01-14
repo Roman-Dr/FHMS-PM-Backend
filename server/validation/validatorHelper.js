@@ -37,5 +37,15 @@ Validator.prototype.isUserStoryIdValid = function (id, callback) {
         }
     });
 };
+Validator.prototype.isBacklogItemIdValid = function (id, callback) {
+    BacklogItem.findById(id, function (err, user) {
+        if (err || user == undefined) {
+            callback(false);
+        }
+        else {
+            callback(true);
+        }
+    });
+};
 
 module.exports = Validator;
