@@ -21,6 +21,7 @@ var projects = require('./server/routes/projects');
 var userstories = require('./server/routes/userstories');
 var databaseInitializer = require('./server/routes/databaseInitializer');
 var backlogItems = require('./server/routes/backlogItems');
+var tasks = require('./server/routes/tasks')
 var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 
@@ -100,6 +101,7 @@ app.use('/api', users);
 app.use('/api', userstories);
 app.use('/api', projects);
 app.use('/api', backlogItems);
+app.use('/api', tasks);
 app.use('/api', sprints);
 app.use('/api', planningPoker);
 app.use('/system', databaseInitializer);

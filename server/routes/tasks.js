@@ -8,7 +8,7 @@ var User = mongoose.model('User');
 var Project = mongoose.model('Project');
 var Task = mongoose.model('Task');
 
-var TaskValidator = requie('./../validation/taskValidtor');
+var TaskValidator = require('./../validation/taskValidator');
 
 router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks')
 
