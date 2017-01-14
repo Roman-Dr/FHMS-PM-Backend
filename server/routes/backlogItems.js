@@ -206,7 +206,6 @@ router.route('/projects/:project_id/backlogitems/:id')
      *
      */
     .delete(function (req, res) {
-        console.log("test")
         var id = req.params.id;
 
         BacklogItem.findByIdAndRemove(id,
@@ -216,7 +215,7 @@ router.route('/projects/:project_id/backlogitems/:id')
                     return res.send(err);
                 }
             });
-        return res.json(200);
+        return res.status(200).json(200);
     });
 
 function fillValues(req, newBacklogItem) {
