@@ -28,7 +28,7 @@ var backlogItemSchema = new schema({
         assignedToDisplayName: String,
         state: {
             type: String,
-            enum: ['New', 'Approved', 'Committed', 'Done', 'Removed'],
+            enum: ['New', 'Approved', 'Committed', 'Done', 'Removed'], //TODO: An Scrumboard anpassen
             default: 'New'
         },
         priority: Number,

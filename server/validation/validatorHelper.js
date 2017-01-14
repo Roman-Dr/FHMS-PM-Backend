@@ -27,5 +27,15 @@ Validator.prototype.isProjectIdValid = function (id, callback) {
         }
     });
 };
+Validator.prototype.isUserStoryIdValid = function (id, callback) {
+    UserStory.findById(id, function (err, user) {
+        if (err || user == undefined) {
+            callback(false);
+        }
+        else {
+            callback(true);
+        }
+    });
+};
 
 module.exports = Validator;
