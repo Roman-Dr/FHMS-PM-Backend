@@ -7,7 +7,7 @@ var userSchema = new schema({
         password: String,
         firstname: String,
         lastname: String,
-        birthdate: String
+        birthdate: Date
     },
     {versionKey: false} // DISABLE VERSIONING (_v)
     );

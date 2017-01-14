@@ -1,6 +1,6 @@
-/**
- * Created by michelehmen on 23.12.16.
- */
+var UserValidator = require('./../validation/userValidator');
+var User = mongoose.model('User');
+
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
@@ -40,6 +40,9 @@ module.exports = function(app, passport) {
      * @apiName Login
      * @apiGroup Benutzerverwaltung
      *
+     * @apiParam {String} email Email of the user.
+     * @apiParam {String} password Password of the user.
+     *
      * @apiSuccess {StatusCode} StatusCode 200 for successful login.
      *
      * @apiSuccessExample {json} Success-Response:
@@ -67,6 +70,12 @@ module.exports = function(app, passport) {
      * @apiName Signup
      * @apiGroup Benutzerverwaltung
      *
+     * @apiParam {String} email Email of the user.
+     * @apiParam {String} password Password of the user.
+     * @apiParam {String} firstname Firstname of the user.
+     * @apiParam {String} lastname Lastname of the user.
+     * @apiParam {Date} birthdate Birthdate of the user.
+     *
      * @apiSuccess {StatusCode} StatusCode 201 for creating an Account successfully..
      *
      * @apiSuccessExample {json} Success-Response:
@@ -78,14 +87,21 @@ module.exports = function(app, passport) {
      * @apiError {StatusCode} StatusCode 409 for failed signup.
      */
     app.post('/api/user/signup', function(req, res, next) {
-        passport.authenticate('local-signup', function(err, user) {
-            if (err) { return next(err); }
-            if (!user) { return res.status(409).json("Conflict"); }
-            req.logIn(user, function(err) {
-                if (err) { return next(err); }
-                return res.status(201).json("Creating an Account was successful!");
-            });
-        })(req, res, next);
+        var validator = new UserValidator();
+        validator.validate(req, function(validationResult){
+            if(!validationResult.isValid()){
+                return res.status(460).send(validationResult.toResult());
+            }else {
+                passport.authenticate('local-signup', function(err, user) {
+                    if (err) { return next(err); }
+                    if (!user) { return res.status(409).json("Conflict"); }
+                    req.logIn(user, function(err) {
+                        if (err) { return next(err); }
+                        return res.status(201).json("Creating an Account was successful!");
+                    });
+                })(req, res, next);
+            }
+        });
     });
 
     // =============================================================================
@@ -100,16 +116,25 @@ module.exports = function(app, passport) {
      * @apiName Unlink
      * @apiGroup Benutzerverwaltung
      *
+     * @apiParam {ObjectId} id Unique identifier of the user.
+     *
      * @apiSuccess {StatusCode} StatusCode 200 for unlinking an Account successfully.
      *
      * @apiError {StatusCode} StatusCode 409 for failed signup.
      */
     app.get('/api/user/unlink', isLoggedIn, function(req, res) {
-        var user            = req.user;
-        user.email    = undefined;
-        user.password = undefined;
-        user.save();
-        return res.status(200).json("Success");
+        User.findById(req.body.id, function(err, user) {
+            if (err){
+                return res.send(err);
+            }
+            user.email = undefined;
+            user.password = undefined;
+            user.firstname = undefined;
+            user.lastname = undefined;
+            user.birthdate = undefined;
+            user.save();
+            return res.status(200).json("Success");
+        });
     });
 
 
