@@ -7,6 +7,7 @@ var BacklogItem = mongoose.model('BacklogItem');
 var User = mongoose.model('User');
 var Project = mongoose.model('Project');
 var UserStory = mongoose.model('UserStory');
+var Sprint = mongoose.model('Sprint');
 
 var BacklogItemValidator = require('./../validation/backlogItemValidator');
 
@@ -150,8 +151,7 @@ router.route('/projects/:project_id/backlogitems/:id')
      * @apiParam {ObjectId} id Unique identifier of a backlogitem.
      * @apiParam {String} title The text of the backlogitem.
      * @apiParam {ObjectId} authorId Assigned author of the backlogitem
-     * @apiParam {Date} timestamp Timestamp of the user story.
-     * @apiParam {ObjectId} assignedToId ID of assigned user.
+     * @apiParam {ObjectId} [assignedToId] ID of assigned user.
      * @apiParam {Enum} state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
      * @apiParam {String} description Description of the backlogitem.
      * @apiParam {ObjectId} sprintId Assigned sprint of the backlogitem.
@@ -223,6 +223,7 @@ function fillValues(req, res, newBacklogItem) {
     var authorId = req.body.authorId;
     var assignedToId = req.body.assignedToId;
     var userStoryId = req.body.userStoryId;
+    var sprintId = req.body.sprintId;
 
     Project.findById(projectId, function (err, project) {
         if (err) {
@@ -236,41 +237,52 @@ function fillValues(req, res, newBacklogItem) {
                 if (err) {
                     return res.send(err);
                 }
-
-                newBacklogItem.assignedToId = assignedToId;
-                if (assignedTo == undefined) {
-                    newBacklogItem.assignedToDisplayName = undefined;
-                } else {
-                    newBacklogItem.assignedToDisplayName = assignedTo.displayName();
-                }
-
-                newBacklogItem.userStoryId = userStoryId;
-                var userStory = project.userStories.id(userStoryId);
-                if(userStory == undefined) {
-                    newBacklogItem.userStoryDisplayName = undefined;
-                }else{
-                    newBacklogItem.userStoryDisplayName = userStory.title;
-                }
-
-                newBacklogItem.title = req.body.title;
-                newBacklogItem.authorId = authorId;
-                newBacklogItem.authorDisplayName = author.displayName();
-                newBacklogItem.creationDate = moment();
-
-                newBacklogItem.state = req.body.state;
-                newBacklogItem.description = req.body.description;
-                newBacklogItem.sprintId = req.body.sprintId;
-                newBacklogItem.projectId = projectId;
-                newBacklogItem.projectDisplayTitle = project.displayName;
-                newBacklogItem.priority = req.body.priority;
-                newBacklogItem.effort = req.body.effort;
-
-                newBacklogItem.save(function (err) {
-                    if (err) {
-                        console.error(err);
+                Sprint.findById(sprintId, function (err, sprint){
+                    if(err){
                         return res.send(err);
                     }
-                    return res.json(newBacklogItem);
+                    newBacklogItem.assignedToId = assignedToId;
+                    if (assignedTo == undefined) {
+                        newBacklogItem.assignedToDisplayName = undefined;
+                    } else {
+                        newBacklogItem.assignedToDisplayName = assignedTo.displayName();
+                    }
+
+                    newBacklogItem.userStoryId = userStoryId;
+                    var userStory = project.userStories.id(userStoryId);
+                    if(userStory == undefined) {
+                        newBacklogItem.userStoryDisplayName = undefined;
+                    }else{
+                        newBacklogItem.userStoryDisplayName = userStory.title;
+                    }
+
+                    newBacklogItem.sprintIds.push(req.body.sprintId);
+                    if(sprint == undefined){
+                        newBacklogItem.sprintDisplayNames.push(undefined);
+                    }else{
+                        newBacklogItem.sprintDisplayNames.push(sprint.sprintName);
+                    }
+
+                    newBacklogItem.title = req.body.title;
+                    newBacklogItem.authorId = authorId;
+                    newBacklogItem.authorDisplayName = author.displayName();
+                    newBacklogItem.creationDate = moment();
+
+                    newBacklogItem.state = req.body.state;
+                    newBacklogItem.description = req.body.description;
+                    newBacklogItem.projectId = projectId;
+                    newBacklogItem.projectDisplayTitle = project.displayName;
+                    newBacklogItem.priority = req.body.priority;
+                    newBacklogItem.effort = req.body.effort;
+
+                    newBacklogItem.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        }
+                        return res.json(newBacklogItem);
+                    });
+
                 });
             });
         });
