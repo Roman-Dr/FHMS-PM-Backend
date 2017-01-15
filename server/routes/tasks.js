@@ -234,7 +234,7 @@ function fillValues(req, res, created) {
 
                 var newTask = new Task();
                 if(!created){
-                    newTask = backlogItem.tasks.id(taskId);
+                    newTask = backlogItem.tasks.id(req.params.id);
                 }
 
                 newTask.assignedToId = assignedToId;
