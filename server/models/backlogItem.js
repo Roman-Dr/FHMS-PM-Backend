@@ -10,7 +10,7 @@ var taskSchema = new schema({
         assignedToDisplayName: String,
         state: {
             type: String,
-            enum: ['Done', 'In Progress', 'Removed', 'To Do'],
+            enum: ['New','Done', 'In Progress', 'Removed', 'To Do'],
             default: 'New'
         },
         priority: Number,

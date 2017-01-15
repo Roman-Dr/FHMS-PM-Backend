@@ -10,7 +10,7 @@ function TaskValidator() {
     helper = new Validator();
 }
 
-TaskValidator.prototype.validate = function(task) {
+TaskValidator.prototype.validate = function(task, callback) {
     helper.isUserIdValid(task.body.authorId, function(userIsValid) {
         helper.isProjectIdValid(task.params.project_id, function(projectIsValid){
             helper.isBacklogItemIdValid(task.params.backlog_item_id, function(backlogItemIsValid){
@@ -28,7 +28,7 @@ TaskValidator.prototype.validate = function(task) {
                     validationResult.add('backlogItem', 'Die ID des BeacklogItems ist ungültig');
                 }
 
-                if(!task.title){
+                if(!task.body.title){
                     validationResult.add('title', 'Der Titel muss gesetzt sein.');
                 }
                 callback(validationResult);

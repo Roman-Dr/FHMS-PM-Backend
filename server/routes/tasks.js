@@ -28,7 +28,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks')
      * @apiSuccess {Date} tasks.creationDate Creationdate of the task.
      * @apiSuccess {ObjectId} tasks.assignedToId ID of assigned user.
      * @apiSuccess {String} tasks.assignedToDisplayName Name of assigned user.
-     * @apiSuccess {Enum} tasks.state State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiSuccess {Enum} tasks.state State of the task. Values: 'New' 'Done' 'In Progress' 'Removed' 'To Do'.
      * @apiSuccess {Number} tasks.priority Priority of the task.
      * @apiSuccess {Number} tasks.effort Effort in hours.
      * @apiSuccess {String} tasks.description Description of the task.
@@ -59,7 +59,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks')
      * @apiParam {String} title The text of the task.
      * @apiParam {ObjectId} authorId Assigned author of the task
      * @apiParam {ObjectId} [assignedToId] ID of assigned user.
-     * @apiParam {Enum} [state] State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiParam {Enum} [state] State of the task. Values: 'New' 'Done' 'In Progress' 'Removed' 'To Do'.
      * @apiParam {Number} [priority] Priority of the task.
      * @apiParam {Number} [effort] Effort in hours.
      * @apiParam {String} [description] Description of the task.
@@ -71,7 +71,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks')
      * @apiSuccess {Date} creationDate Creationdate of the task.
      * @apiSuccess {ObjectId} assignedToId ID of assigned user.
      * @apiSuccess {String} assignedToDisplayName Name of assigned user.
-     * @apiSuccess {Enum} state State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiSuccess {Enum} state State of the task. Values: 'New' 'Done' 'In Progress' 'Removed' 'To Do'.
      * @apiSuccess {Number} priority Priority of the task.
      * @apiSuccess {Number} effort Effort in hours.
      * @apiSuccess {String} description Description of the task.
@@ -110,7 +110,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
      * @apiSuccess {Date} creationDate Creationdate of the task.
      * @apiSuccess {ObjectId} assignedToId ID of assigned user.
      * @apiSuccess {String} assignedToDisplayName Name of assigned user.
-     * @apiSuccess {Enum} state State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiSuccess {Enum} state State of the task. Values: 'New' 'Done' 'In Progress' 'Removed' 'To Do'.
      * @apiSuccess {Number} priority Priority of the task.
      * @apiSuccess {Number} effort Effort in hours.
      * @apiSuccess {String} description Description of the task.
@@ -144,7 +144,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
      * @apiParam {String} title The text of the task.
      * @apiParam {ObjectId} authorId Assigned author of the task
      * @apiParam {ObjectId} [assignedToId] ID of assigned user.
-     * @apiParam {Enum} [state] State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiParam {Enum} [state] State of the task. Values: 'New' 'Done' 'In Progress' 'Removed' 'To Do'.
      * @apiParam {Number} [priority] Priority of the task.
      * @apiParam {Number} [effort] Effort in hours.
      * @apiParam {String} [description] Description of the task.
@@ -156,7 +156,7 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
      * @apiSuccess {Date} creationDate Creationdate of the task.
      * @apiSuccess {ObjectId} assignedToId ID of assigned user.
      * @apiSuccess {String} assignedToDisplayName Name of assigned user.
-     * @apiSuccess {Enum} state State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiSuccess {Enum} state State of the task. Values: 'New' 'Done' 'In Progress' 'Removed' 'To Do'.
      * @apiSuccess {Number} priority Priority of the task.
      * @apiSuccess {Number} effort Effort in hours.
      * @apiSuccess {String} description Description of the task.
