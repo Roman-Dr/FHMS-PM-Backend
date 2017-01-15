@@ -58,14 +58,13 @@ router.route('/projects/:project_id/backlogitems')
      * @apiParam {ObjectId} project_id Unique identifier of a project.
      * @apiParam {String} title The text of the backlogitem.
      * @apiParam {ObjectId} authorId Assigned author of the backlogitem
-     * @apiParam {ObjectId} assignedToId ID of assigned user.
-     * @apiParam {Enum} state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
-     * @apiParam {String} description Description of the backlogitem.
-     * @apiParam {ObjectId} sprintId Assigned sprint of the backlogitem.
-     * @apiParam {ObjectId} projectId Assigned project of the backlogitem.
-     * @apiParam {Number} effort Effort in hours.
-     * @apiParam {Number} priority Priority for backlogitem.
-     * @apiParam {ObjectId} userStoryId ID of assigned userstory.
+     * @apiParam {ObjectId} [assignedToId] ID of assigned user.
+     * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+     * @apiParam {String} [description] Description of the backlogitem.
+     * @apiParam {ObjectId} [sprintId] Assigned sprint of the backlogitem.
+     * @apiParam {Number} [effort] Effort in hours.
+     * @apiParam {Number} [priority] Priority for backlogitem.
+     * @apiParam {ObjectId} [userStoryId] ID of assigned userstory.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the backlogitem.
      * @apiSuccess {String} title The text of the backlogitem.
@@ -152,13 +151,12 @@ router.route('/projects/:project_id/backlogitems/:id')
      * @apiParam {String} title The text of the backlogitem.
      * @apiParam {ObjectId} authorId Assigned author of the backlogitem
      * @apiParam {ObjectId} [assignedToId] ID of assigned user.
-     * @apiParam {Enum} state State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
-     * @apiParam {String} description Description of the backlogitem.
-     * @apiParam {ObjectId} sprintId Assigned sprint of the backlogitem.
-     * @apiParam {ObjectId} projectId Assigned project of the backlogitem.
-     * @apiParam {Number} effort Effort in hours.
-     * @apiParam {Number} priority Priority for backlogitem.
-     * @apiParam {ObjectId} userStoryId ID of assigned userstory.
+     * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+     * @apiParam {String} [description] Description of the backlogitem.
+     * @apiParam {ObjectId} [sprintId] Assigned sprint of the backlogitem.
+     * @apiParam {Number} [effort] Effort in hours.
+     * @apiParam {Number} [priority] Priority for backlogitem.
+     * @apiParam {ObjectId} [userStoryId] ID of assigned userstory.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the backlogitem.
      * @apiSuccess {String} title The text of the backlogitem.

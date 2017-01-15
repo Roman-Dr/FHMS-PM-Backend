@@ -58,13 +58,11 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks')
      * @apiParam {ObjectID} backlog_item_id Unique identifier of a backlogitem.
      * @apiParam {String} title The text of the task.
      * @apiParam {ObjectId} authorId Assigned author of the task
-     * @apiParam {ObjectId} assignedToId ID of assigned user.
-     * @apiParam {Enum} state State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
-     * @apiParam {Number} priority Priority of the task.
-     * @apiParam {Number} effort Effort in hours.
-     * @apiParam {String} description Description of the task.
-     * @apiParam {ObjectId} project_id Assigned project of the task.
-     * @apiParam {ObjectId} backlog_item_id Assigned backlogitem of the task.
+     * @apiParam {ObjectId} [assignedToId] ID of assigned user.
+     * @apiParam {Enum} [state] State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiParam {Number} [priority] Priority of the task.
+     * @apiParam {Number} [effort] Effort in hours.
+     * @apiParam {String} [description] Description of the task.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the task.
      * @apiSuccess {String} title The text of the task.
@@ -145,13 +143,11 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
      * @apiParam {ObjectId} id Unique identifier of a task.
      * @apiParam {String} title The text of the task.
      * @apiParam {ObjectId} authorId Assigned author of the task
-     * @apiParam {ObjectId} assignedToId ID of assigned user.
-     * @apiParam {Enum} state State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
-     * @apiParam {Number} priority Priority of the task.
-     * @apiParam {Number} effort Effort in hours.
-     * @apiParam {String} description Description of the task.
-     * @apiParam {ObjectId} project_id Assigned project of the task.
-     * @apiParam {ObjectId} backlog_item_id Assigned backlogitem of the task.
+     * @apiParam {ObjectId} [assignedToId] ID of assigned user.
+     * @apiParam {Enum} [state] State of the task. Values: 'Done' 'In Progress' 'Removed' 'To Do'.
+     * @apiParam {Number} [priority] Priority of the task.
+     * @apiParam {Number} [effort] Effort in hours.
+     * @apiParam {String} [description] Description of the task.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the task.
      * @apiSuccess {String} title The text of the task.
@@ -238,7 +234,7 @@ function fillValues(req, res, created) {
 
                 var newTask = new Task();
                 if(!created){
-                    newTask = backlogItem.tasks.id(taskId);;
+                    newTask = backlogItem.tasks.id(taskId);
                 }
 
                 newTask.assignedToId = assignedToId;
