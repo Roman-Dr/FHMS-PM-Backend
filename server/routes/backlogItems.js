@@ -38,6 +38,8 @@ router.route('/projects/:project_id/backlogitems')
  * @apiSuccess {Number} backlogitems.priority Priority for backlogitem.
  * @apiSuccess {ObjectId} backllogitems.userStoryId ID of assigned userstory.
  * @apiSuccess {String} backlogitems.userStoryDisplayName Title of assigned userstory.
+ * @apiSuccess {ObjectId[]} backlogitems.sprintIds Array of the assigned sprint IDs.
+ * @apiSuccess {String[]} backlogitems.sprintDisplayNames Array of the names of the assigned sprints.
  */
     .get(function (req, res) {
         var projectId = req.params.project_id;
@@ -65,6 +67,7 @@ router.route('/projects/:project_id/backlogitems')
      * @apiParam {Number} [effort] Effort in hours.
      * @apiParam {Number} [priority] Priority for backlogitem.
      * @apiParam {ObjectId} [userStoryId] ID of assigned userstory.
+     * @apiParam {ObjectId} [sprintId] ID of assigned sprint.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the backlogitem.
      * @apiSuccess {String} title The text of the backlogitem.
@@ -83,6 +86,8 @@ router.route('/projects/:project_id/backlogitems')
      * @apiSuccess {Number} priority Priority for backlogitem.
      * @apiSuccess {ObjectId} userStoryId ID of assigned userstory.
      * @apiSuccess {String} userStoryDisplayName Title of assigned userstory.
+     * @apiSuccess {ObjectId[]} sprintIds Array of the assigned sprint IDs.
+     * @apiSuccess {String[]} sprintDisplayNames Array of the names of the assigned sprints.
      */
     .post(function (req, res) {
 
@@ -124,6 +129,8 @@ router.route('/projects/:project_id/backlogitems/:id')
  * @apiSuccess {Number} priority Priority for backlogitem.
  * @apiSuccess {ObjectId} userStoryId ID of assigned userstory.
  * @apiSuccess {String} userStoryDisplayName Title of assigned userstory.
+ * @apiSuccess {ObjectId[]} sprintIds Array of the assigned sprint IDs.
+ * @apiSuccess {String[]} sprintDisplayNames Array of the names of the assigned sprints.
  *
  */
     .get(function (req, res) {
@@ -157,6 +164,7 @@ router.route('/projects/:project_id/backlogitems/:id')
      * @apiParam {Number} [effort] Effort in hours.
      * @apiParam {Number} [priority] Priority for backlogitem.
      * @apiParam {ObjectId} [userStoryId] ID of assigned userstory.
+     * @apiParam {ObjectId} [sprintId] ID of assigned sprint.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the backlogitem.
      * @apiSuccess {String} title The text of the backlogitem.
@@ -175,6 +183,8 @@ router.route('/projects/:project_id/backlogitems/:id')
      * @apiSuccess {Number} priority Priority for backlogitem.
      * @apiSuccess {ObjectId} userStoryId ID of assigned userstory.
      * @apiSuccess {String} userStoryDisplayName Title of assigned userstory.
+     * @apiSuccess {ObjectId[]} sprintIds Array of the assigned sprint IDs.
+     * @apiSuccess {String[]} sprintDisplayNames Array of the names of the assigned sprints.
      *
      */
     .put(function (req, res) {
