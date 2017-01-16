@@ -32,7 +32,7 @@ var backlogItemSchema = new schema({
         assignedToDisplayName: String,
         state: {
             type: String,
-            enum: ['New', 'Approved', 'Committed', 'Done', 'Removed'], //TODO: An Scrumboard anpassen
+            enum: ['New', 'Approved', 'Committed', 'Done', 'Removed'],
             default: 'New'
         },
         priority: Number,
@@ -44,7 +44,12 @@ var backlogItemSchema = new schema({
         projectId: mongoose.Schema.Types.ObjectId,
         projectDisplayTitle: String,
         userStoryId: mongoose.Schema.Types.ObjectId,
-        userStoryDisplayName: String
+        userStoryDisplayName: String,
+        itemType: {
+            type: String,
+            enum: ['BacklogItem', 'Bug'],
+            default: 'BacklogItem'
+        }
     }, {versionKey: false} // DISABLE VERSIONING (_v)
 );
 

@@ -40,6 +40,7 @@ router.route('/projects/:project_id/backlogitems')
  * @apiSuccess {String} backlogitems.userStoryDisplayName Title of assigned userstory.
  * @apiSuccess {ObjectId[]} backlogitems.sprintIds Array of the assigned sprint IDs.
  * @apiSuccess {String[]} backlogitems.sprintDisplayNames Array of the names of the assigned sprints.
+ * @apiSuccess {Enum} backlogitems.itemType Type of the backlogitem. Values: 'BacklogItem' 'Bug'.
  */
     .get(function (req, res) {
         var projectId = req.params.project_id;
@@ -68,6 +69,7 @@ router.route('/projects/:project_id/backlogitems')
      * @apiParam {Number} [priority] Priority for backlogitem.
      * @apiParam {ObjectId} [userStoryId] ID of assigned userstory.
      * @apiParam {ObjectId} [sprintId] ID of assigned sprint.
+     * @apiParam {Enum} [itemType] Type of the backlogitem. Values: 'BacklogItem' 'Bug'.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the backlogitem.
      * @apiSuccess {String} title The text of the backlogitem.
@@ -88,6 +90,7 @@ router.route('/projects/:project_id/backlogitems')
      * @apiSuccess {String} userStoryDisplayName Title of assigned userstory.
      * @apiSuccess {ObjectId[]} sprintIds Array of the assigned sprint IDs.
      * @apiSuccess {String[]} sprintDisplayNames Array of the names of the assigned sprints.
+     * @apiSuccess {Enum} itemType Type of the backlogitem. Values: 'BacklogItem' 'Bug'.
      */
     .post(function (req, res) {
 
@@ -131,6 +134,7 @@ router.route('/projects/:project_id/backlogitems/:id')
  * @apiSuccess {String} userStoryDisplayName Title of assigned userstory.
  * @apiSuccess {ObjectId[]} sprintIds Array of the assigned sprint IDs.
  * @apiSuccess {String[]} sprintDisplayNames Array of the names of the assigned sprints.
+ * @apiSuccess {Enum} itemType Type of the backlogitem. Values: 'BacklogItem' 'Bug'.
  *
  */
     .get(function (req, res) {
@@ -165,6 +169,7 @@ router.route('/projects/:project_id/backlogitems/:id')
      * @apiParam {Number} [priority] Priority for backlogitem.
      * @apiParam {ObjectId} [userStoryId] ID of assigned userstory.
      * @apiParam {ObjectId} [sprintId] ID of assigned sprint.
+     * @apiParam {Enum} [itemType] Type of the backlogitem. Values: 'BacklogItem' 'Bug'.
      *
      * @apiSuccess {ObjectId} _id Unique identifier of the backlogitem.
      * @apiSuccess {String} title The text of the backlogitem.
@@ -185,6 +190,7 @@ router.route('/projects/:project_id/backlogitems/:id')
      * @apiSuccess {String} userStoryDisplayName Title of assigned userstory.
      * @apiSuccess {ObjectId[]} sprintIds Array of the assigned sprint IDs.
      * @apiSuccess {String[]} sprintDisplayNames Array of the names of the assigned sprints.
+     * @apiSuccess {Enum} itemType Type of the backlogitem. Values: 'BacklogItem' 'Bug'.
      *
      */
     .put(function (req, res) {
@@ -224,6 +230,33 @@ router.route('/projects/:project_id/backlogitems/:id')
                 }
             });
         return res.status(200).json("Success");
+    });
+
+router.route('/projects/:project_id/backlogitems/:id/state')
+
+    /**
+     * @api {put} /projects/:project_id/backlogitem/:id/state Update state of an existing backlogitem.
+     * @apiName UpdateBacklogItemState
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     * @apiParam {ObjectId} id Unique identifier of a backlogitem.
+     * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+     *
+     */
+    .put(function (req, res) {
+        BacklogItem.findById(id, function (err, backlogItem){
+            if(err){
+                return res.send(err);
+            }
+            backlogitem.state = req.body.state;
+            backlogItem.save(function (err){
+                if(err){
+                    return res.send(err);
+                }
+                return res.status(200).json("Updated state successfully!");
+            });
+        });
     });
 
 function fillValues(req, res, newBacklogItem) {
