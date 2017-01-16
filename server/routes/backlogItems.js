@@ -297,11 +297,11 @@ function fillValues(req, res, newBacklogItem) {
                         newBacklogItem.userStoryDisplayName = userStory.title;
                     }
 
-                    newBacklogItem.sprintIds.push(req.body.sprintId);
+                    newBacklogItem.sprintId = req.body.sprintId;
                     if(sprint == undefined){
-                        newBacklogItem.sprintDisplayNames.push(undefined);
+                        newBacklogItem.sprintDisplayName = undefined;
                     }else{
-                        newBacklogItem.sprintDisplayNames.push(sprint.sprintName);
+                        newBacklogItem.sprintDisplayName = sprint.sprintName;
                     }
 
                     newBacklogItem.title = req.body.title;
