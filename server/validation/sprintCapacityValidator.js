@@ -15,16 +15,12 @@ function SprintCapacityValidator() {
 SprintCapacityValidator.prototype.validate = function (sprintCapacity, callback) {
     var validationResult = new ValidationResult();
 
-    if (sprintCapacity.daysOff) {
-        if(!Number.isInteger(sprintCapacity.daysOff)) {
-            validationResult.add('daysOff', 'DaysOff muss eine Zahl sein');
-        }
+    if (!sprintCapacity.daysOff) {
+            validationResult.add('daysOff', 'DaysOff muss gesetzt sein');
     }
 
-    if (sprintCapacity.capacityPerDay) {
-        if(!Number.isInteger(sprintCapacity.capacityPerDay)) {
-        validationResult.add('capacityPerDay', 'Die Kapazität pro Tag muss eine Zahl sein.');
-        }
+    if (!sprintCapacity.capacityPerDay) {
+        validationResult.add('capacityPerDay', 'Die Kapazität pro Tag muss gesetzt sein.');
     }
 
     callback(validationResult);
