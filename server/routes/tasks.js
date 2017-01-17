@@ -129,7 +129,13 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
                 console.error(err);
                 return res.send(err);
             }
-            return res.json(backlogItem.tasks.id(taskId));
+            var task = backlogItem.tasks.id(taskId);
+
+            if (task == null) {
+                return res.status(404).json("Not Found!");
+            }else{
+                return res.status(200).json(task);
+            }
         });
     })
 
@@ -177,12 +183,13 @@ router.route('/projects/:project_id/backlogitems/:backlog_item_id/tasks/:id')
     })
 
     /**
-     * @api {delete} /projects/:project_id/backlogitem/:id Delete an existing backlogitem.
-     * @apiName DeleteBacklogItem
+     * @api {delete} /projects/:project_id/backlogitem/:backlog_item_id/tasks/:id Delete an existing task.
+     * @apiName DeleteBacklogItemTask
      * @apiGroup Backlog
      *
-     * @apiParam {ObjectId} backlogitems.project_id Unique identifier of a project.
-     * @apiParam {ObjectId} backlogitems.id Unique identifier of the backlogitem.
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     * @apiParam {ObjectId} backlog_item_id Unique identifier of the backlogitem.
+     * @apiParam {ObjectId} id Unique identifier of the task.
      *
      */
     .delete(function (req, res) {
