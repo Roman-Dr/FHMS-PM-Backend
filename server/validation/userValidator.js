@@ -11,7 +11,7 @@ function UserValidator() {
     this.helper = new Validator();
 }
 
-UserValidator.prototype.validate = function(user) {
+UserValidator.prototype.validate = function(user, callback) {
     var validationResult = new ValidationResult();
 
     if(!user.email) {
@@ -27,7 +27,7 @@ UserValidator.prototype.validate = function(user) {
         validationResult.add('firstname', 'Der Nachname darf nicht leer sein.');
     }
 
-    return validationResult;
+    callback(validationResult);
 };
 
 module.exports = UserValidator;

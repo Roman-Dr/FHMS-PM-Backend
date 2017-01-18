@@ -196,7 +196,7 @@ router.route('/projects/:project_id/backlogitems/:id')
     .put(function (req, res) {
 
         var validator = new BacklogItemValidator();
-        validator.validate(req.body, function (validationResult) {
+        validator.validate(req, function (validationResult) {
             if (!validationResult.isValid()) {
                 return res.status(460).send(validationResult.toResult());
             } else {

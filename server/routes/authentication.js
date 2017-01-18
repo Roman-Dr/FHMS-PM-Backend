@@ -57,7 +57,7 @@ module.exports = function(app, passport) {
     app.post('/api/user/login', function(req, res, next) {
         passport.authenticate('local-login', function(err, user) {
             if (err) { return next(err); }
-            if (!user) { res.send(401,{ success : false, message : 'authentication failed' }); }
+            if (!user) { res.status(401).json({ success : false, message : 'authentication failed' }); }
             req.logIn(user, function(err) {
                 if (err) { return next(err); }
                 return res.status(200).json(user.id);
@@ -89,7 +89,7 @@ module.exports = function(app, passport) {
      */
     app.post('/api/user/signup', function(req, res, next) {
         var validator = new UserValidator();
-        validator.validate(req, function(validationResult){
+        validator.validate(req.body, function(validationResult){
             if(!validationResult.isValid()){
                 return res.status(460).send(validationResult.toResult());
             }else {
