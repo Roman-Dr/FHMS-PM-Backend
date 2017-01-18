@@ -235,7 +235,7 @@ router.route('/projects/:project_id/backlogitems/:id')
 router.route('/projects/:project_id/backlogitems/:id/state')
 
     /**
-     * @api {put} /projects/:project_id/backlogitem/:id/state Update state of an existing backlogitem.
+     * @api {put} /projects/:project_id/backlogitems/:id/state Update state of an existing backlogitem.
      * @apiName UpdateBacklogItemState
      * @apiGroup Backlog
      *
@@ -257,6 +257,20 @@ router.route('/projects/:project_id/backlogitems/:id/state')
                 return res.status(200).json("Updated state successfully!");
             });
         });
+    });
+
+router.route('/projects/:project_id/backlogitem/state')
+
+    /**
+     * @api {get} /projects/:project_id/backlogitem/state Get all possible state values
+     * @apiName GetStateValues
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     *
+     */
+    .get(function (req, res){
+        return res.status(200).json({"state": ["New", "Approved", "Committed", "Done", "Removed"]});
     });
 
 function fillValues(req, res, newBacklogItem) {
