@@ -24,6 +24,7 @@ var backlogItems = require('./server/routes/backlogItems');
 var tasks = require('./server/routes/tasks')
 var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
+var burnDownChart = require('./server/routes/burnDownChart');
 
 
 var session = require('express-session');
@@ -104,6 +105,7 @@ app.use('/api', backlogItems);
 app.use('/api', tasks);
 app.use('/api', sprints);
 app.use('/api', planningPoker);
+app.use('/api', burnDownChart);
 app.use('/system', databaseInitializer);
 // END REGISTER API MODULES
 
