@@ -5,6 +5,7 @@ var router = express.Router();
 var SprintCapacity = mongoose.model('SprintCapacity');
 var Sprint = mongoose.model('Sprint');
 var Project = mongoose.model('Project');
+var User = mongoose.model('User');
 
 var SprintValidator = require('./../validation/sprintValidator');
 var SprintCapacityValidator = require('./../validation/sprintCapacityValidator');
@@ -62,6 +63,7 @@ router.route('/projects/:project_id/sprints')
                         return res.send(err);
                     }
                     var newSprint = new Sprint();
+                    newSprint.projectDisplayName = project.displayName;
                     newSprint.sprintName = req.body.sprintName;
                     newSprint.startDate = req.body.startDate;
                     newSprint.endDate = req.body.endDate;
@@ -135,18 +137,25 @@ router.route('/projects/:project_id/sprints/:id')
                         console.error(err);
                         return res.send(err);
                     }
-                    console.log('PUT: Update Sprint for project id ' + projectId);
-                    sprint.sprintName = req.body.sprintName;
-                    sprint.startDate = req.body.startDate;
-                    sprint.endDate = req.body.endDate;
-
-                    sprint.save(function (err) {
+                    Project.findById(projectId, function (err, project) {
                         if (err) {
                             console.error(err);
                             return res.send(err);
                         }
-                        console.log('Sprint ' + sprintId + ' updated.');
-                        return res.json(200);
+                        console.log('PUT: Update Sprint for project id ' + projectId);
+                        sprint.projectDisplayName = project.displayName;
+                        sprint.sprintName = req.body.sprintName;
+                        sprint.startDate = req.body.startDate;
+                        sprint.endDate = req.body.endDate;
+
+                        sprint.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.send(err);
+                            }
+                            console.log('Sprint ' + sprintId + ' updated.');
+                            return res.json(200);
+                        });
                     });
                 });
             }
@@ -242,7 +251,21 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
 
                     var newSprintCapacity = new SprintCapacity();
 
+
+                    var bodyUserId = req.body.userId;
+                    if (bodyUserId) {
+                        User.findById(bodyUserId, function (err, user) {
+                            if (err) {
+                                console.error(err);
+                                return res.send(err);
+                            }
+                            newSprintCapacity.userDisplayName = user.displayName();
+                        });
+                    }
+
+
                     newSprintCapacity.userId = req.body.userId;
+
                     newSprintCapacity.sprintId = sprintId;
                     newSprintCapacity.daysOff = req.body.daysOff;
                     newSprintCapacity.capacityPerDay = req.body.capacityPerDay;
@@ -322,22 +345,31 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
                             return res.send(err);
                         }
 
-                        var sprintCapacity = item.sprintCapacity.id(sprintCapacityId);
-
-                        console.log('PUT: Update sprint capacity for sprint id ' + sprintId);
-
-                        sprintCapacity.userId = req.body.userId;
-                        sprintCapacity.daysOff = req.body.daysOff;
-                        sprintCapacity.capacityPerDay = req.body.capacityPerDay;
-
-                        item.save(function (err) {
+                        User.findById(req.body.userId, function (err, user) {
                             if (err) {
                                 console.error(err);
                                 return res.send(err);
-                            } else {
-                                console.log('Sprint Capacity ' + sprintCapacityId + ' was updated.');
-                                return res.json(200);
                             }
+
+
+                            var sprintCapacity = item.sprintCapacity.id(sprintCapacityId);
+
+                            console.log('PUT: Update sprint capacity for sprint id ' + sprintId);
+
+                            sprintCapacity.userDisplayName = user.displayName();
+                            sprintCapacity.userId = req.body.userId;
+                            sprintCapacity.daysOff = req.body.daysOff;
+                            sprintCapacity.capacityPerDay = req.body.capacityPerDay;
+
+                            item.save(function (err) {
+                                if (err) {
+                                    console.error(err);
+                                    return res.send(err);
+                                } else {
+                                    console.log('Sprint Capacity ' + sprintCapacityId + ' was updated.');
+                                    return res.json(200);
+                                }
+                            });
                         });
                     });
                 }

@@ -4,6 +4,7 @@ var schema = mongoose.Schema;
 
 var sprintCapacitySchema = new schema({
     userId: mongoose.Schema.Types.ObjectId,
+    userDisplayName: String,
     sprintId: mongoose.Schema.Types.ObjectId,
     daysOff: Number,
     capacityPerDay: Number
@@ -16,6 +17,7 @@ var sprintSchema = new schema({
     startDate: Date,
     endDate: Date,
     projectId: mongoose.Schema.Types.ObjectId,
+    projectDisplayName: String,
     sprintCapacity: [sprintCapacitySchema]
 },
     {versionKey: false}
