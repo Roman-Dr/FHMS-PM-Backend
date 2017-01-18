@@ -194,6 +194,8 @@ router.route('/projects/:project_id/backlogitems/:id')
      *
      */
     .put(function (req, res) {
+        var id = req.params.id;
+        var projectId = req.params.project_id;
 
         var validator = new BacklogItemValidator();
         validator.validate(req, function (validationResult) {
