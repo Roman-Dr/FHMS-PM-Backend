@@ -53,7 +53,7 @@ var corsOptions = {
 app.use('/doc', express.static('doc'));
 
 
-app.use(cors());
+//app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser('topsecret'));
 app.use(bodyParser.json());
@@ -71,7 +71,6 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-app.disable('etag');
 
 app.use(function (req, res, next) {
     var allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://10.60.67.20:4200'];
