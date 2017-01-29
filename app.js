@@ -48,7 +48,7 @@ var corsOptions = {
     credentials: true
 };
 
-app.options('*', cors(corsOptions));
+//app.options('*', cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
 
@@ -74,19 +74,16 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.disable('etag');
 
 app.use(function (req, res, next) {
+    var allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://10.60.67.20:4200'];
+    var origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', true);
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
+    return next();
 });
 
 // Register routes with modules
