@@ -42,18 +42,20 @@ require('./server/config/passport')(passport); // pass passport for configuratio
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+var whitelist = ['http://10.60.67.20:4200', 'http://localhost:4200'];
 var corsOptions = {
-    origin: 'http://10.60.67.20:4200',
+    origin: function (origin, callback) {
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1
+        callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
+    },
     optionsSuccessStatus: 200,
     credentials: true
 };
 
-//app.options('*', cors(corsOptions));
+app.options('*', cors(corsOptions));
+app.use(cors());
 
 app.use('/doc', express.static('doc'));
-
-
-//app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser('topsecret'));
 app.use(bodyParser.json());
@@ -71,33 +73,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-app.options('*', function (req, res, next) {
-    var allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://10.60.67.20:4200'];
-    var origin = req.headers.origin;
-    if(allowedOrigins.indexOf(origin) > -1){
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'x-requested-with, content-type, Authorization');
-    res.header('Access-Control-Allow-Credentials', true);
 
-    return next();
-});
-app.use(function (req, res, next) {
-    var allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://10.60.67.20:4200'];
-    var origin = req.headers.origin;
-    if(allowedOrigins.indexOf(origin) > -1){
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'x-requested-with, content-type, Authorization');
-    res.header('Access-Control-Allow-Credentials', true);
-
-    return next();
-});
-
-// Register routes with modules
-//app.use('/', routes);
 
 //
 // REGISTER API MODULES
