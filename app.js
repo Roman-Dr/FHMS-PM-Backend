@@ -21,7 +21,7 @@ var projects = require('./server/routes/projects');
 var userstories = require('./server/routes/userstories');
 var databaseInitializer = require('./server/routes/databaseInitializer');
 var backlogItems = require('./server/routes/backlogItems');
-var tasks = require('./server/routes/tasks')
+var tasks = require('./server/routes/tasks');
 var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 var burnDownChart = require('./server/routes/burnDownChart');
@@ -53,7 +53,7 @@ var corsOptions = {
 };
 
 app.options('*', cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
 app.use(logger('dev'));
