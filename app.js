@@ -43,7 +43,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 var corsOptions = {
-    origin: 'http://localhost:4200',
+    origin: 'http://localhost:4200, http://10.60.67.20:4200',
     optionsSuccessStatus: 200,
     credentials: true
 };
@@ -74,9 +74,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.disable('etag');
 
 app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', ['http://localhost:4200', 'http://10.60.67.20:4200']);
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
