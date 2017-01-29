@@ -78,7 +78,7 @@ app.options('*', function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
+    res.header('Access-Control-Allow-Headers', 'x-requested-with, content-type, Authorization');
     res.header('Access-Control-Allow-Credentials', true);
 
     return next();
@@ -90,7 +90,7 @@ app.use(function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
+    res.header('Access-Control-Allow-Headers', 'x-requested-with, content-type, Authorization');
     res.header('Access-Control-Allow-Credentials', true);
 
     return next();
