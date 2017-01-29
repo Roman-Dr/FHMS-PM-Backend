@@ -43,7 +43,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 var corsOptions = {
-    origin: 'http://localhost:4200, http://10.60.67.20:4200',
+    origin: 'http://10.60.67.20:4200',
     optionsSuccessStatus: 200,
     credentials: true
 };
@@ -71,7 +71,18 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+app.options('*', function (req, res, next) {
+    var allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://10.60.67.20:4200'];
+    var origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', true);
 
+    return next();
+});
 app.use(function (req, res, next) {
     var allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://10.60.67.20:4200'];
     var origin = req.headers.origin;
