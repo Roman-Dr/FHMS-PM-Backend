@@ -235,7 +235,7 @@ router.route('/projects/:project_id/backlogitems/:id')
     });
 
 
-router.route('/projects/:project_id/backlogitems/:state')
+router.route('/projects/:project_id/backlogitem/:state')
 
 /**
  * @api {get} /projects/:project_id/backlogitems/:state Get all BacklogItem with a specific state.
