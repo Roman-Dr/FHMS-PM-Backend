@@ -234,26 +234,54 @@ router.route('/projects/:project_id/backlogitems/:id')
         return res.status(200).json("Success");
     });
 
+
+router.route('/projects/:project_id/backlogitem/:state')
+
+/**
+ * @api {get} /projects/:project_id/backlogitems/:state Get all BacklogItem with a specific state.
+ * @apiName GetBacklogItemByState
+ * @apiGroup Backlog
+ *
+ * @apiParam {ObjectId} project_id Unique identifier of a project.
+ * @apiParam {ObjectId} id Unique identifier of a backlogitem.
+ * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+ *
+ */
+    .get(function (req, res) {
+        var state = req.params.state;
+        var projectId = req.params.project_id;
+
+        BacklogItem.find({state: state, projectId: projectId}, function (err, backlogItem) {
+            if (err) {
+                console.error(err);
+                return res.send(err);
+            }
+            if (!backlogItem) return res.status(200).json("Not Found!");
+
+            return res.json(backlogItem);
+        });
+    });
+
 router.route('/projects/:project_id/backlogitems/:id/state')
 
-    /**
-     * @api {put} /projects/:project_id/backlogitems/:id/state Update state of an existing backlogitem.
-     * @apiName UpdateBacklogItemState
-     * @apiGroup Backlog
-     *
-     * @apiParam {ObjectId} project_id Unique identifier of a project.
-     * @apiParam {ObjectId} id Unique identifier of a backlogitem.
-     * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
-     *
-     */
+/**
+ * @api {put} /projects/:project_id/backlogitems/:id/state Update state of an existing backlogitem.
+ * @apiName UpdateBacklogItemState
+ * @apiGroup Backlog
+ *
+ * @apiParam {ObjectId} project_id Unique identifier of a project.
+ * @apiParam {ObjectId} id Unique identifier of a backlogitem.
+ * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+ *
+ */
     .put(function (req, res) {
-        BacklogItem.findById(id, function (err, backlogItem){
-            if(err){
+        BacklogItem.findById(id, function (err, backlogItem) {
+            if (err) {
                 return res.send(err);
             }
             backlogitem.state = req.body.state;
-            backlogItem.save(function (err){
-                if(err){
+            backlogItem.save(function (err) {
+                if (err) {
                     return res.send(err);
                 }
                 return res.status(200).json("Updated state successfully!");
@@ -263,15 +291,15 @@ router.route('/projects/:project_id/backlogitems/:id/state')
 
 router.route('/projects/:project_id/backlogitem/state')
 
-    /**
-     * @api {get} /projects/:project_id/backlogitem/state Get all possible state values
-     * @apiName GetStateValues
-     * @apiGroup Backlog
-     *
-     * @apiParam {ObjectId} project_id Unique identifier of a project.
-     *
-     */
-    .get(function (req, res){
+/**
+ * @api {get} /projects/:project_id/backlogitem/state Get all possible state values
+ * @apiName GetStateValues
+ * @apiGroup Backlog
+ *
+ * @apiParam {ObjectId} project_id Unique identifier of a project.
+ *
+ */
+    .get(function (req, res) {
         return res.status(200).json({"state": ["New", "Approved", "Committed", "Done", "Removed"]});
     });
 
@@ -294,8 +322,8 @@ function fillValues(req, res, newBacklogItem) {
                 if (err) {
                     return res.send(err);
                 }
-                Sprint.findById(sprintId, function (err, sprint){
-                    if(err){
+                Sprint.findById(sprintId, function (err, sprint) {
+                    if (err) {
                         return res.send(err);
                     }
                     newBacklogItem.assignedToId = assignedToId;
@@ -307,16 +335,16 @@ function fillValues(req, res, newBacklogItem) {
 
                     newBacklogItem.userStoryId = userStoryId;
                     var userStory = project.userStories.id(userStoryId);
-                    if(userStory == undefined) {
+                    if (userStory == undefined) {
                         newBacklogItem.userStoryDisplayName = undefined;
-                    }else{
+                    } else {
                         newBacklogItem.userStoryDisplayName = userStory.title;
                     }
 
                     newBacklogItem.sprintId = req.body.sprintId;
-                    if(sprint == undefined){
+                    if (sprint == undefined) {
                         newBacklogItem.sprintDisplayName = undefined;
-                    }else{
+                    } else {
                         newBacklogItem.sprintDisplayName = sprint.sprintName;
                     }
 
