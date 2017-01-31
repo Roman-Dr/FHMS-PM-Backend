@@ -100,7 +100,7 @@ router.route('/projects/:project_id/backlogitems')
                 return res.status(460).send(validationResult.toResult());
             } else {
                 var newBacklogItem = new BacklogItem();
-                fillValues(req, res, newBacklogItem);
+                fillValues(req, res, newBacklogItem, true);
             }
         });
     });
@@ -206,7 +206,7 @@ router.route('/projects/:project_id/backlogitems/:id')
                     if (err) {
                         return res.send(err);
                     }
-                    fillValues(req, res, newBacklogItem);
+                    fillValues(req, res, newBacklogItem, false);
                 });
             }
         });
@@ -303,7 +303,7 @@ router.route('/projects/:project_id/backlogitem/state')
         return res.status(200).json({"state": ["New", "Approved", "Committed", "Done", "Removed"]});
     });
 
-function fillValues(req, res, newBacklogItem) {
+function fillValues(req, res, newBacklogItem, isNew) {
     var projectId = req.params.project_id;
     var authorId = req.body.authorId;
     var assignedToId = req.body.assignedToId;
@@ -348,15 +348,21 @@ function fillValues(req, res, newBacklogItem) {
                         newBacklogItem.sprintDisplayName = sprint.sprintName;
                     }
 
-                    newBacklogItem.title = req.body.title;
-                    newBacklogItem.authorId = authorId;
-                    newBacklogItem.authorDisplayName = author.displayName();
-                    newBacklogItem.creationDate = moment();
 
+                    if(isNew) {
+                        newBacklogItem.creationDate = moment();
+                        newBacklogItem.itemType = req.body.itemType;
+
+                        newBacklogItem.authorId = authorId;
+                        newBacklogItem.authorDisplayName = author.displayName();
+
+                        newBacklogItem.projectId = projectId;
+                        newBacklogItem.projectDisplayTitle = project.displayName;
+                    }
+
+                    newBacklogItem.title = req.body.title;
                     newBacklogItem.state = req.body.state;
                     newBacklogItem.description = req.body.description;
-                    newBacklogItem.projectId = projectId;
-                    newBacklogItem.projectDisplayTitle = project.displayName;
                     newBacklogItem.priority = req.body.priority;
                     newBacklogItem.effort = req.body.effort;
 
