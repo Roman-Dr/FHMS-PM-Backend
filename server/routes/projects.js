@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var router = express.Router();
 
 var Project =  mongoose.model('Project');
+var User =  mongoose.model('User');
 var ProjectValidator = require('./../validation/projectValidator');
 
 router.route('/projects')
@@ -166,7 +167,19 @@ router.route('/projects/:id')
                 return res.status(404).send('Project does not exists.');
             }
 
-            res.json(item);
+            console.log('Loaded: ' + JSON.stringify(item));
+
+            User.find({ _id: { $in: item.stakeholders } }, function (errStakeholders, stakeholders) {
+                console.log('Stakeholders: ' + JSON.stringify(stakeholders));
+
+                User.find({ _id: { $in: item.contributors } }, function (errContributors, contributors) {
+                    console.log('Contributors: ' + JSON.stringify(contributors));
+
+                    return res.json({ _id: item._id, owner: item.owner, dueDate: item.dueDate,
+                        description: item.description, displayName: item.displayName,
+                        contributors: contributors, stakeholders: stakeholders });
+                });
+            });
         });
     })
     /**
@@ -233,5 +246,26 @@ router.route('/projects/:id')
 
         return res.json(200);
     });
+
+router.get('/projects/:id/contributors', function (req, res) {
+    Project.findById(req.params.id, 'contributors', function (err, item) {
+        if (err) {
+            console.error(err);
+            return res.status(404).send('Project does not exists.');
+        }
+
+        res.json(item.contributors);
+    });
+});
+router.get('/projects/:id/stakeholders', function (req, res) {
+    Project.findById(req.params.id, 'stakeholders', function (err, item) {
+        if (err) {
+            console.error(err);
+            return res.status(404).send('Project does not exists.');
+        }
+
+        res.json(item.stakeholders);
+    });
+});
 
 module.exports = router;

@@ -265,6 +265,7 @@ function fillValues(req, res, created) {
                 newTask.backlogItemDisplayName = backlogItem.title;
                 newTask.priority = req.body.priority;
                 newTask.effort = req.body.effort;
+                newTask.remainingWork = req.body.remainingWork;
 
                 if(created) {
                     backlogItem.tasks.push(newTask);
