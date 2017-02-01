@@ -235,18 +235,17 @@ router.route('/projects/:project_id/backlogitems/:id')
     });
 
 
-router.route('/projects/:project_id/backlogitem/:state')
-
-/**
- * @api {get} /projects/:project_id/backlogitems/:state Get all BacklogItem with a specific state.
- * @apiName GetBacklogItemByState
- * @apiGroup Backlog
- *
- * @apiParam {ObjectId} project_id Unique identifier of a project.
- * @apiParam {ObjectId} id Unique identifier of a backlogitem.
- * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
- *
- */
+router.route('/projects/:project_id/backlogitems/:state')
+    /**
+     * @api {get} /projects/:project_id/backlogitems/:state Get all BacklogItem with a specific state.
+     * @apiName GetBacklogItemByState
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     * @apiParam {ObjectId} id Unique identifier of a backlogitem.
+     * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+     *
+     */
     .get(function (req, res) {
         var state = req.params.state;
         var projectId = req.params.project_id;
@@ -261,25 +260,28 @@ router.route('/projects/:project_id/backlogitem/:state')
             return res.json(backlogItem);
         });
     });
-
-router.route('/projects/:project_id/backlogitems/:id/state')
-
-/**
- * @api {put} /projects/:project_id/backlogitems/:id/state Update state of an existing backlogitem.
- * @apiName UpdateBacklogItemState
- * @apiGroup Backlog
- *
- * @apiParam {ObjectId} project_id Unique identifier of a project.
- * @apiParam {ObjectId} id Unique identifier of a backlogitem.
- * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
- *
- */
+router.route('/projects/:project_id/backlogitems/:backlogItem_id/:state')
+    /**
+     * @api {put} /projects/:project_id/backlogitems/:id/state Update state of an existing backlogitem.
+     * @apiName UpdateBacklogItemState
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     * @apiParam {ObjectId} id Unique identifier of a backlogitem.
+     * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
+     *
+     */
     .put(function (req, res) {
-        BacklogItem.findById(id, function (err, backlogItem) {
+        var projectId = req.params.project_id;
+        var backlogItemId = req.params.backlogItem_id;
+        var state = req.params.state;
+
+        console.log("Update state of backlog item...");
+        BacklogItem.findById(backlogItemId, function (err, backlogItem) {
             if (err) {
                 return res.send(err);
             }
-            backlogitem.state = req.body.state;
+            backlogItem.state = state;
             backlogItem.save(function (err) {
                 if (err) {
                     return res.send(err);
@@ -289,19 +291,18 @@ router.route('/projects/:project_id/backlogitems/:id/state')
         });
     });
 
-router.route('/projects/:project_id/backlogitem/state')
-
-/**
- * @api {get} /projects/:project_id/backlogitem/state Get all possible state values
- * @apiName GetStateValues
- * @apiGroup Backlog
- *
- * @apiParam {ObjectId} project_id Unique identifier of a project.
- *
- */
-    .get(function (req, res) {
+    /**
+     * @api {get} /projects/:project_id/backlogitem/state Get all possible state values
+     * @apiName GetStateValues
+     * @apiGroup Backlog
+     *
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     *
+     */
+    router.get('/projects/:project_id/backlogitem/state', function (req, res) {
         return res.status(200).json({"state": ["New", "Approved", "Committed", "Done", "Removed"]});
     });
+
 
 function fillValues(req, res, newBacklogItem, isNew) {
     var projectId = req.params.project_id;
@@ -349,7 +350,7 @@ function fillValues(req, res, newBacklogItem, isNew) {
                     }
 
 
-                    if(isNew) {
+                    if (isNew) {
                         newBacklogItem.creationDate = moment();
                         newBacklogItem.itemType = req.body.itemType;
 

@@ -8,22 +8,29 @@ var sprintCapacitySchema = new schema({
     sprintId: mongoose.Schema.Types.ObjectId,
     daysOff: Number,
     capacityPerDay: Number
-},
+}, {versionKey: false});
+
+var sprintBurnDownMeasureSchema = new schema({
+    dateOfMeasurement: Date,
+    remainingWorkTillNow: Number
+}, {versionKey: false});
+
+var sprintSchema = new schema({
+        sprintName: String,
+        startDate: Date,
+        endDate: Date,
+        effort: Number,
+        remainingWork: Number,
+        projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
+        projectDisplayName: String,
+        sprintCapacity: [sprintCapacitySchema],
+        sprintBurnDownMeasures: [sprintBurnDownMeasureSchema]
+    },
     {versionKey: false}
 );
 
-var sprintSchema = new schema({
-    sprintName: String,
-    startDate: Date,
-    endDate: Date,
-    projectId: mongoose.Schema.Types.ObjectId,
-    projectDisplayName: String,
-    sprintCapacity: [sprintCapacitySchema]
-},
-    {versionKey: false}
-    );
-
 module.exports = {
     Sprint: mongoose.model('Sprint', sprintSchema),
-    SprintCapacity: mongoose.model('SprintCapacity', sprintCapacitySchema)
+    SprintCapacity: mongoose.model('SprintCapacity', sprintCapacitySchema),
+    SprintBurnDownMeasure: mongoose.model('SprintBurnDownMeasure', sprintBurnDownMeasureSchema)
 };

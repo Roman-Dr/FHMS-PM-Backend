@@ -5,7 +5,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var schedule = require('node-schedule');
 
 // IMPORT MODELS
 require('./server/models/user');
@@ -28,7 +28,6 @@ var planningPoker = require('./server/routes/planningPoker');
 var burnDownChart = require('./server/routes/burnDownChart');
 var roadmap = require('./server/routes/roadmaps');
 var roadmapItems = require('./server/routes/roadmapItems');
-
 
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -96,6 +95,13 @@ app.use('/api', roadmapItems);
 
 require('./server/routes/authentication.js')(app, passport);
 
+//
+// SCHEDULE FUNCTIONS
+//
+var jobBurnDownMeasure = require('./server/jobs/calculateBurnDownMeasureJob');
+// Executes every minute!
+schedule.scheduleJob('*/1 * * * *', jobBurnDownMeasure.calculateRemainingWork);
+// END SCHEDULING FUNCTIONS
 
 //======ERROR=======
 
