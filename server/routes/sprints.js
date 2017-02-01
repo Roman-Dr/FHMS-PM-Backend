@@ -1,5 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var moment = require('moment');
+
 var router = express.Router();
 
 var SprintCapacity = mongoose.model('SprintCapacity');
@@ -65,8 +67,8 @@ router.route('/projects/:project_id/sprints')
                     var newSprint = new Sprint();
                     newSprint.projectDisplayName = project.displayName;
                     newSprint.sprintName = req.body.sprintName;
-                    newSprint.startDate = req.body.startDate;
-                    newSprint.endDate = req.body.endDate;
+                    newSprint.startDate = new Date(req.body.startDate);
+                    newSprint.endDate =  new Date(req.body.endDate);
                     // sprintCapacity ergänzen
                     newSprint.projectId = projectId;
 
@@ -145,8 +147,8 @@ router.route('/projects/:project_id/sprints/:id')
                         console.log('PUT: Update Sprint for project id ' + projectId);
                         sprint.projectDisplayName = project.displayName;
                         sprint.sprintName = req.body.sprintName;
-                        sprint.startDate = req.body.startDate;
-                        sprint.endDate = req.body.endDate;
+                        sprint.startDate =  new Date(req.body.startDate);
+                        sprint.endDate =  new Date(req.body.endDate);
 
                         sprint.save(function (err) {
                             if (err) {
@@ -411,6 +413,54 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
             });
         });
     });
+
+router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, res) {
+    Sprint.findById(req.params.sprint_id, function(err, sprint){
+        var startDate = moment(sprint.startDate);
+        var endDate = moment(sprint.endDate);
+        var differenceDays = Math.abs(startDate.diff(endDate, 'days'));
+        var idealEffortPerDay = sprint.effort / differenceDays;
+
+        var result = { sprintId: sprint._id, sprintName: sprint.sprintName, startDate: sprint.startDate, endDate: sprint.endDate, idealPoints: [], realityPoints: [] };
+
+        console.log("Difference days: " + differenceDays);
+
+        var previousRemainingWork = 0;
+
+        for (var i = 0;i<differenceDays;i++) {
+            var date = moment(sprint.startDate).add(i, 'days');
+            var remainingWorkThatDay = 0;
+
+            result.idealPoints.push({ date: date, index: i, value: idealEffortPerDay });
+
+            for(var j = 0;j<sprint.sprintBurnDownMeasures.length; j++) {
+                var burnDownMeasure = sprint.sprintBurnDownMeasures[j];
+
+                if(compare(burnDownMeasure.dateOfMeasurement, date) == 0) {
+                    remainingWorkThatDay = burnDownMeasure.remainingWorkTillNow;
+                    previousRemainingWork = remainingWorkThatDay;
+                    break;
+                }
+            }
+
+            if(remainingWorkThatDay == 0) {
+                remainingWorkThatDay = previousRemainingWork;
+            }
+
+            result.realityPoints.push({ date: date, index: i, value: remainingWorkThatDay });
+        }
+
+        return res.json(result);
+    });
+});
+
+compare = function compare(dateTimeA, dateTimeB) {
+    var momentA = moment(dateTimeA,"DD/MM/YYYY");
+    var momentB = moment(dateTimeB,"DD/MM/YYYY");
+    if (momentA > momentB) return 1;
+    else if (momentA < momentB) return -1;
+    else return 0;
+}
 
 
 module.exports = router;

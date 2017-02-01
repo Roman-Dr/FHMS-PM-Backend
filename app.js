@@ -26,7 +26,6 @@ var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 var burnDownChart = require('./server/routes/burnDownChart');
 
-
 var session = require('express-session');
 var flash = require('connect-flash');
 
@@ -52,8 +51,8 @@ var corsOptions = {
     credentials: true
 };
 
-app.options('*', cors(corsOptions));
-app.use(cors(corsOptions));
+//app.options('*', cors(corsOptions));
+//app.use(cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
 app.use(logger('dev'));
@@ -91,6 +90,9 @@ app.use('/system', databaseInitializer);
 
 require('./server/routes/authentication.js')(app, passport);
 
+var jobBurnDownMeasure = require('./server/jobs/calculateBurnDownMeasureJob');
+
+jobBurnDownMeasure.calculateRemainingWork();
 
 //======ERROR=======
 
