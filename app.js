@@ -13,6 +13,7 @@ require('./server/models/project');
 require('./server/models/backlogItem');
 require('./server/models/sprint');
 require('./server/models/planningPoker');
+require('./server/models/roadmap');
 // END IMPORT MODELS
 
 //var routes = require('./server/routes/index');
@@ -25,6 +26,8 @@ var tasks = require('./server/routes/tasks');
 var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 var burnDownChart = require('./server/routes/burnDownChart');
+var roadmap = require('./server/routes/roadmaps');
+var roadmapItems = require('./server/routes/roadmapItems');
 
 
 var session = require('express-session');
@@ -53,7 +56,7 @@ var corsOptions = {
 };
 
 app.options('*', cors(corsOptions));
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
 app.use(logger('dev'));
@@ -87,6 +90,8 @@ app.use('/api', sprints);
 app.use('/api', planningPoker);
 app.use('/api', burnDownChart);
 app.use('/system', databaseInitializer);
+app.use('/api', roadmap);
+app.use('/api', roadmapItems);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);
