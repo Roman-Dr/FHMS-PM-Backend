@@ -5,7 +5,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var schedule = require('node-schedule');
 
 // IMPORT MODELS
 require('./server/models/user');
@@ -90,9 +90,13 @@ app.use('/system', databaseInitializer);
 
 require('./server/routes/authentication.js')(app, passport);
 
+//
+// SCHEDULE FUNCTIONS
+//
 var jobBurnDownMeasure = require('./server/jobs/calculateBurnDownMeasureJob');
-
-jobBurnDownMeasure.calculateRemainingWork();
+// Executes every minute!
+schedule.scheduleJob('*/1 * * * *', jobBurnDownMeasure.calculateRemainingWork);
+// END SCHEDULING FUNCTIONS
 
 //======ERROR=======
 
