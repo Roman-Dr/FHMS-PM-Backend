@@ -3,21 +3,21 @@ var mongoose = require('mongoose');
 var router = express.Router();
 
 var Roadmap = mongoose.model('Roadmap');
-var RoadmapItem = mongoose.model('Roadmap');
+var Initiative = mongoose.model('Initiative');
 var Project = mongoose.model('Project');
 var Feature = mongoose.model('Feature');
 
 
-router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems')
+router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives')
 
 /**
- * @api {get} /projects/:project_id/roadmaps/:roadmap_id/roadmapitems Get all roadmapitems for one roadmap.
- * @apiName GetRoadmapItems
+ * @api {get} /projects/:project_id/roadmaps/:roadmap_id/initiatives Get all initiatives for one roadmap.
+ * @apiName GetInitiatives
  * @apiGroup Roadmap
  *
  * @apiParam {ObjectId} project_id Unique identifier of a project.
  *
- * @apiSuccess {RoadmapItem[]} roadmapItems List of roadmapItems.
+ * @apiSuccess {Initiative[]} initiatives List of initiatives.
  */
     .get(function (req, res) {
         var projectId = req.params.project_id;
@@ -26,39 +26,39 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems')
             if (err) {
                 return res.send(err);
             }
-            return res.json(roadmap.roadmapItems);
+            return res.json(roadmap.initiatives);
 
         });
     })
 
     /**
-     * @api {post} /projects/:project_id/roadmaps/:roadmap_id/roadmapitems Create a new roadmapItem.
-     * @apiName AddRoadmapItem
+     * @api {post} /projects/:project_id/roadmaps/:roadmap_id/initiatives Create a new initiative.
+     * @apiName AddInitiative
      * @apiGroup Roadmap
      *
      * @apiParam {ObjectId} project_id Unique identifier of a project.
      * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
      *
-     * @apiSuccess {RoadmapItem} roadmapItem Roadmapitem
+     * @apiSuccess {Initiative} initiative Initiative
      */
     .post(function (req, res) {
 
-        var newRoadmapItem = new RoadmapItem();
-        fillValues(req, res, newRoadmapItem);
+        var newInitiative = new Initiative();
+        fillValues(req, res, newInitiative);
     });
 
-router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id')
+router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id')
 
 /**
- * @api {put} /projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id Create a new roadmapItem.
- * @apiName EditRoadmapItem
+ * @api {put} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id Create a new initiative.
+ * @apiName EditInitiative
  * @apiGroup Roadmap
  *
  * @apiParam {ObjectId} project_id Unique identifier of a project.
  * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
- * @apiParam {ObjectId} id Unique identifier of a roadmapitem.
+ * @apiParam {ObjectId} id Unique identifier of an initiative.
  *
- * @apiSuccess {RoadmapItem} roadmapItem Roadmapitem
+ * @apiSuccess {Initiative} initiative Initiative
  */
     .put(function (req, res) {
         var projectId = req.params.project_id;
@@ -69,20 +69,20 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id')
                 return res.send(err);
             }
 
-            var newRoadmapItem = roadmap.roadmapItems.id(id);
+            var newInitiative = roadmap.initiatives.id(id);
 
-            fillValues(req, res, newRoadmapItem);
+            fillValues(req, res, newInitiative);
         });
     })
 
     /**
-     * @api {delete} /projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id Removes roadmapItem.
-     * @apiName DeleteRoadmapItem
+     * @api {delete} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id Removes initiative.
+     * @apiName DeleteInitiative
      * @apiGroup Roadmap
      *
      * @apiParam {ObjectId} project_id Unique identifier of a project.
      * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
-     * @apiParam {ObjectId} id Unique identifier of a roadmapitem.
+     * @apiParam {ObjectId} id Unique identifier of an initiative.
      *
      * @apiSuccess {Statuscode} statusCode 200
      */
@@ -94,10 +94,10 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id')
                 console.error(err);
                 return res.send(err);
             }
-            var roadmapItem = roadmap.roadmapItems.id(id);
+            var initiative = roadmap.initiatives.id(id);
 
-            if (roadmapItem != undefined) {
-                roadmapItem.remove();
+            if (initiative != undefined) {
+                initiative.remove();
             }
             roadmap.save(function (err) {
                 if (err) {
@@ -112,16 +112,16 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id')
 
     //=========FEATURE=========
 
-router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id/features')
+router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/features')
 
 /**
- * @api {post} /projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id/feature Create a new feature for a roadmapItem.
- * @apiName AddFeatureToItem
+ * @api {post} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/feature Create a new feature for an initiative.
+ * @apiName AddFeatureToInitiative
  * @apiGroup Roadmap
  *
  * @apiParam {ObjectId} project_id Unique identifier of a project.
  * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
- * @apiParam {ObjectId} id Unique identifier of a roadmapitem.
+ * @apiParam {ObjectId} id Unique identifier of an initiative.
  *
  */
     .post(function (req, res) {
@@ -133,12 +133,12 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id/featur
                 return res.send(err);
             }
 
-            var roadmapItem = roadmap.roadmapItems.id(id);
+            var initiative = roadmap.initiatives.id(id);
 
             var feature = new Feature();
             feature.title = req.body.title;
 
-            roadmapItem.features.push(feature);
+            initiative.features.push(feature);
 
             roadmap.save(function (err) {
                 if (err) {
@@ -152,13 +152,13 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id/featur
     })
 
     /**
-     * @api {delete} /projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id/feature Delete feature from a roadmapItem.
-     * @apiName DeleteFeatureFromItem
+     * @api {delete} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/feature Delete feature from an initiative.
+     * @apiName DeleteFeatureFromInitiative
      * @apiGroup Roadmap
      *
      * @apiParam {ObjectId} project_id Unique identifier of a project.
      * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
-     * @apiParam {ObjectId} id Unique identifier of a roadmapitem.
+     * @apiParam {ObjectId} id Unique identifier of an initiative.
      * @apiParam {ObjectId} featureId Unique identifier of a feature.
      *
      */
@@ -172,9 +172,9 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/roadmapitems/:id/featur
                 return res.send(err);
             }
 
-            var roadmapItem = roadmap.roadmapItems.id(id);
+            var initiative = roadmap.initiatives.id(id);
 
-            var feature = roadmapItem.features.id(featureId);
+            var feature = initiative.features.id(featureId);
 
             if(feature != undefined){
                 feature.remove();
@@ -199,19 +199,19 @@ function fillValues(req, res, created) {
             return res.send(err);
         }
 
-        var newRoadmapItem = new RoadmapItem();
+        var newInitiative = new Initiative();
         if (!created) {
-            newRoadmapItem = roadmap.roadmapItems.id(req.params.id);
+            newInitiative = roadmap.initiatives.id(req.params.id);
         }
 
-        newRoadmapItem.title = req.body.title;
-        newRoadmapItem.startDate = req.body.startDate;
-        newRoadmapItem.endDate = req.body.endDate;
-        newRoadmapItem.description = req.body.description;
-        newRoadmapItem.goal = req.body.goal;
+        newInitiative.title = req.body.title;
+        newInitiative.startDate = req.body.startDate;
+        newInitiative.endDate = req.body.endDate;
+        newInitiative.description = req.body.description;
+        newInitiative.goal = req.body.goal;
 
         if (created) {
-            roadmap.roadmapItems.push(newRoadmapItem);
+            roadmap.initiatives.push(newInitiative);
         }
 
         roadmap.save(function (err) {
@@ -219,7 +219,7 @@ function fillValues(req, res, created) {
                 console.error(err);
                 return res.send(err);
             }
-            return res.json(newRoadmapItem);
+            return res.json(newInitiative);
         });
 
     });

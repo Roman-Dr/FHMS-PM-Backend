@@ -27,7 +27,7 @@ var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 var burnDownChart = require('./server/routes/burnDownChart');
 var roadmap = require('./server/routes/roadmaps');
-var roadmapItems = require('./server/routes/roadmapItems');
+var initiatives = require('./server/routes/initiative');
 
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -90,7 +90,7 @@ app.use('/api', planningPoker);
 app.use('/api', burnDownChart);
 app.use('/system', databaseInitializer);
 app.use('/api', roadmap);
-app.use('/api', roadmapItems);
+app.use('/api', initiatives);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);

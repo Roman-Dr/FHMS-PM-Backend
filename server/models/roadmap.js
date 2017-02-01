@@ -6,7 +6,7 @@ var featureSchema = new schema({
     }, {versionKey: false} // DISABLE VERSIONING (_v)
 );
 
-var roadmapItemSchema = new schema({
+var initiativeSchema = new schema({
         title: String,
         startDate: Date,
         endDate: Date,
@@ -20,12 +20,12 @@ var roadmapSchema = new schema({
         title: String,
         projectId: mongoose.Schema.Types.ObjectId,
         projectDisplayTitle: String,
-        roadmapItems: [roadmapItemSchema]
+        roadmapItems: [initiativeSchema]
     }, {versionKey: false} // DISABLE VERSIONING (_v)
 );
 
 module.exports = {
-    RoadmapItem: mongoose.model('RoadmapItem', roadmapItemSchema),
+    RoadmapItem: mongoose.model('Initiative', initiativeSchema),
     Roadmap: mongoose.model('Roadmap', roadmapSchema),
     Feature: mongoose.model('Feature', featureSchema)
 };
