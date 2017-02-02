@@ -13,6 +13,7 @@ require('./server/models/project');
 require('./server/models/backlogItem');
 require('./server/models/sprint');
 require('./server/models/planningPoker');
+require('./server/models/initiative');
 // END IMPORT MODELS
 
 //var routes = require('./server/routes/index');
@@ -26,6 +27,7 @@ var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 var planningPokerRound = require('./server/routes/planningPokerRound');
 var burnDownChart = require('./server/routes/burnDownChart');
+var initiatives = require('./server/routes/initiative');
 
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -88,6 +90,7 @@ app.use('/api', planningPoker);
 app.use('/api', planningPokerRound);
 app.use('/api', burnDownChart);
 app.use('/system', databaseInitializer);
+app.use('/api', initiatives);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);

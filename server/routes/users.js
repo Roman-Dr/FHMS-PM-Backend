@@ -22,8 +22,10 @@ router.route('/user')
                 console.error(err);
                 return res.send(err);
             }
-
-            res.json(users);
+            if(!users){
+                return res.status(404).json("No User ist created!");
+            }
+            return res.json(users);
         });
     })
     /**
