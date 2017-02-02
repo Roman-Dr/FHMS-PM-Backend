@@ -253,7 +253,7 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
 
                     console.log('POST: Create new sprint capacity for sprint id ' + sprintId);
 
-                    User.findById(bodyUserId, function (errorUser, user) {
+                    User.findById(req.body.userId, function (errorUser, user) {
                         if (errorUser) {
                             console.error(errorUser);
                             return res.send(errorUser);
