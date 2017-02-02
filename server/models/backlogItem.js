@@ -10,10 +10,15 @@ var taskSchema = new schema({
         assignedToDisplayName: String,
         state: {
             type: String,
-            enum: ['New','Done', 'In Progress', 'Removed', 'To Do'],
+            enum: ['New', 'Done', 'In Progress', 'Removed', 'To Do'],
             default: 'New'
         },
-        priority: Number,
+        priority: {
+            type: String,
+            enum: ['Low', 'Normal', 'High'],
+            default: 'Normal'
+        },
+        remainingWork: Number,
         effort: Number,
         description: String,
         projectId: mongoose.Schema.Types.ObjectId,
@@ -35,7 +40,11 @@ var backlogItemSchema = new schema({
             enum: ['New', 'Approved', 'Committed', 'Done', 'Removed'],
             default: 'New'
         },
-        priority: Number,
+        priority: {
+            type: String,
+            enum: ['Low', 'Normal', 'High'],
+            default: 'Normal'
+        },
         effort: Number,
         description: String,
         tasks: [taskSchema],

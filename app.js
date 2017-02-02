@@ -5,7 +5,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var schedule = require('node-schedule');
 
 // IMPORT MODELS
 require('./server/models/user');
@@ -13,6 +13,7 @@ require('./server/models/project');
 require('./server/models/backlogItem');
 require('./server/models/sprint');
 require('./server/models/planningPoker');
+require('./server/models/initiative');
 // END IMPORT MODELS
 
 //var routes = require('./server/routes/index');
@@ -25,7 +26,7 @@ var tasks = require('./server/routes/tasks');
 var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
 var burnDownChart = require('./server/routes/burnDownChart');
-
+var initiatives = require('./server/routes/initiative');
 
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -87,10 +88,18 @@ app.use('/api', sprints);
 app.use('/api', planningPoker);
 app.use('/api', burnDownChart);
 app.use('/system', databaseInitializer);
+app.use('/api', initiatives);
 // END REGISTER API MODULES
 
 require('./server/routes/authentication.js')(app, passport);
 
+//
+// SCHEDULE FUNCTIONS
+//
+var jobBurnDownMeasure = require('./server/jobs/calculateBurnDownMeasureJob');
+// Executes every minute!
+schedule.scheduleJob('*/1 * * * *', jobBurnDownMeasure.calculateRemainingWork);
+// END SCHEDULING FUNCTIONS
 
 //======ERROR=======
 
