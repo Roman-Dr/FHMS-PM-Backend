@@ -2,16 +2,15 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 
-var Roadmap = mongoose.model('Roadmap');
 var Initiative = mongoose.model('Initiative');
 var Project = mongoose.model('Project');
 var Feature = mongoose.model('Feature');
 
 
-router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives')
+router.route('/projects/:project_id/initiatives')
 
 /**
- * @api {get} /projects/:project_id/roadmaps/:roadmap_id/initiatives Get all initiatives for one roadmap.
+ * @api {get} /projects/:project_id/initiatives Get all initiatives for one roadmap.
  * @apiName GetInitiatives
  * @apiGroup Roadmap
  *
@@ -22,17 +21,17 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives')
     .get(function (req, res) {
         var projectId = req.params.project_id;
 
-        Roadmap.findOne({projectId: projectId}, function (err, roadmap) {
+        Initiative.find({projectId: projectId}, function (err, initiative) {
             if (err) {
                 return res.send(err);
             }
-            return res.json(roadmap.initiatives);
+            return res.json(initiative);
 
         });
     })
 
     /**
-     * @api {post} /projects/:project_id/roadmaps/:roadmap_id/initiatives Create a new initiative.
+     * @api {post} /projects/:project_id/initiatives Create a new initiative.
      * @apiName AddInitiative
      * @apiGroup Roadmap
      *
@@ -47,10 +46,10 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives')
         fillValues(req, res, newInitiative);
     });
 
-router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id')
+router.route('/projects/:project_id/initiatives/:id')
 
 /**
- * @api {put} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id Create a new initiative.
+ * @api {put} /projects/:project_id/initiatives/:id Create a new initiative.
  * @apiName EditInitiative
  * @apiGroup Roadmap
  *
@@ -64,19 +63,17 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id')
         var projectId = req.params.project_id;
         var id = req.params.id;
 
-        Roadmap.findOne({projectId: projectId}, function (err, roadmap) {
+        Initiative.findOne({projectId: projectId, _id: id}, function (err, initiative) {
             if (err) {
                 return res.send(err);
             }
 
-            var newInitiative = roadmap.initiatives.id(id);
-
-            fillValues(req, res, newInitiative);
+            fillValues(req, res, initiative);
         });
     })
 
     /**
-     * @api {delete} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id Removes initiative.
+     * @api {delete} /projects/:project_id/initiatives/:id Removes initiative.
      * @apiName DeleteInitiative
      * @apiGroup Roadmap
      *
@@ -88,34 +85,23 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id')
      */
     .delete(function (req, res) {
         var projectId = req.params.project_id;
+        var id = req.params.id;
 
-        Roadmap.findOne(projectId, function (err, roadmap) {
+        Initiative.findOneAndRemove({projectId: projectId, _id: id}, function (err, initiative) {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
-            var initiative = roadmap.initiatives.id(id);
-
-            if (initiative != undefined) {
-                initiative.remove();
-            }
-            roadmap.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    return res.send(err);
-                } else {
-                    return res.status(200).json("Success!");
-                }
-            });
+            return res.status(200).json("Success!");
         });
     });
 
-    //=========FEATURE=========
+//=========FEATURE=========
 
-router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/features')
+router.route('/projects/:project_id/initiatives/:id/features')
 
 /**
- * @api {post} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/feature Create a new feature for an initiative.
+ * @api {post} /projects/:project_id/initiatives/:id/feature Create a new feature for an initiative.
  * @apiName AddFeatureToInitiative
  * @apiGroup Roadmap
  *
@@ -128,31 +114,30 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/feature
         var projectId = req.params.project_id;
         var id = req.params.id;
 
-        Roadmap.findOne({projectId: projectId}, function (err, roadmap) {
+        Initiative.findOne({projectId: projectId, _id: id}, function (err, initiative) {
             if (err) {
                 return res.send(err);
             }
-
-            var initiative = roadmap.initiatives.id(id);
 
             var feature = new Feature();
             feature.title = req.body.title;
 
             initiative.features.push(feature);
 
-            roadmap.save(function (err) {
+
+            initiative.save(function (err) {
                 if (err) {
                     console.error(err);
                     return res.send(err);
-                } else {
-                    return res.status(200).json("Success!");
                 }
+                return res.status(200).json("Success!");
             });
         });
-    })
+    });
 
+router.route('/projects/:project_id/initiatives/:initiative_id/features/:id')
     /**
-     * @api {delete} /projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/feature Delete feature from an initiative.
+     * @api {delete} /projects/:project_id/initiatives/:id/feature Delete feature from an initiative.
      * @apiName DeleteFeatureFromInitiative
      * @apiGroup Roadmap
      *
@@ -164,64 +149,46 @@ router.route('/projects/:project_id/roadmaps/:roadmap_id/initiatives/:id/feature
      */
     .delete(function (req, res) {
         var projectId = req.params.project_id;
-        var id = req.params.id;
-        var featureId = req.body.featureId;
+        var initiativeId = req.params.initiative_id;
+        var featureId = req.body.Id;
 
-        Roadmap.findOne({projectId: projectId}, function (err, roadmap) {
+        Initiative.findOne({projectId: projectId, _id: initiativeId}, function (err, initiative) {
             if (err) {
                 return res.send(err);
             }
 
-            var initiative = roadmap.initiatives.id(id);
 
             var feature = initiative.features.id(featureId);
 
-            if(feature != undefined){
+            if (feature != undefined) {
                 feature.remove();
             }
 
-            roadmap.save(function (err) {
+            initiative.save(function (err) {
                 if (err) {
                     console.error(err);
                     return res.send(err);
-                } else {
-                    return res.status(200).json("Success!");
                 }
+                return res.status(200).json("Success!");
             });
         });
     });
 
-function fillValues(req, res, created) {
-    var projectId = req.params.project_id;
+function fillValues(req, res, newInitiative) {
 
-    Roadmap.findOne({projectId: projectId}, function (err, roadmap) {
+    newInitiative.projectId = req.params.project_id;
+    newInitiative.title = req.body.title;
+    newInitiative.startDate = req.body.startDate;
+    newInitiative.endDate = req.body.endDate;
+    newInitiative.description = req.body.description;
+    newInitiative.goal = req.body.goal;
+
+    newInitiative.save(function (err) {
         if (err) {
+            console.error(err);
             return res.send(err);
         }
-
-        var newInitiative = new Initiative();
-        if (!created) {
-            newInitiative = roadmap.initiatives.id(req.params.id);
-        }
-
-        newInitiative.title = req.body.title;
-        newInitiative.startDate = req.body.startDate;
-        newInitiative.endDate = req.body.endDate;
-        newInitiative.description = req.body.description;
-        newInitiative.goal = req.body.goal;
-
-        if (created) {
-            roadmap.initiatives.push(newInitiative);
-        }
-
-        roadmap.save(function (err) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-            return res.json(newInitiative);
-        });
-
+        return res.json(newInitiative);
     });
 
 }
