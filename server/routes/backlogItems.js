@@ -234,34 +234,6 @@ router.route('/projects/:project_id/backlogitems/:id')
         return res.status(200).json("Success");
     });
 
-
-router.route('/projects/:project_id/backlogitem/:state')
-
-/**
- * @api {get} /projects/:project_id/backlogitems/:state Get all BacklogItem with a specific state.
- * @apiName GetBacklogItemByState
- * @apiGroup Backlog
- *
- * @apiParam {ObjectId} project_id Unique identifier of a project.
- * @apiParam {ObjectId} id Unique identifier of a backlogitem.
- * @apiParam {Enum} [state] State of the backlogitem. Values: 'New' 'Approved' 'Committed' 'Done' 'Removed'.
- *
- */
-    .get(function (req, res) {
-        var state = req.params.state;
-        var projectId = req.params.project_id;
-
-        BacklogItem.find({state: state, projectId: projectId}, function (err, backlogItem) {
-            if (err) {
-                console.error(err);
-                return res.send(err);
-            }
-            if (!backlogItem) return res.status(200).json("Not Found!");
-
-            return res.json(backlogItem);
-        });
-    });
-
 router.route('/projects/:project_id/backlogitems/:id/state')
 
 /**
