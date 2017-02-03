@@ -5,6 +5,7 @@ var moment = require('moment');
 var router = express.Router();
 
 var SprintCapacity = mongoose.model('SprintCapacity');
+var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
 var Sprint = mongoose.model('Sprint');
 var Project = mongoose.model('Project');
 var User = mongoose.model('User');
@@ -407,6 +408,46 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
             });
         });
     });
+router.route('/projects/:project_id/sprints/:sprint_id/burnDown')
+.post(function (req, res) {
+    var sprintId = req.params.sprint_id;
+
+
+    var validator = new SprintCapacityValidator();
+    validator.validate(req.body, function (validationResult) {
+        if (!validationResult.isValid()) {
+            return res.status(460).send(validationResult.toResult());
+        } else {
+
+            Sprint.findById(sprintId, function (errorSprint, sprint) {
+
+                if (errorSprint) {
+                    console.error(errorSprint);
+                    return res.send(errorSprint);
+                }
+
+                    var burndownMeasure = new SprintBurnDownMeasure();
+
+                    burndownMeasure.dateOfMeasurement = req.body.dateOfMeasurement;
+                    burndownMeasure.remainingWorkTillNow = req.remainingWorkTillNow();
+
+                    sprint.sprintBurnDownMeasures.push(burndownMeasure);
+
+                    sprint.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.send(err);
+                        } else {
+                            console.log('New sprint burn down measure in sprint ' + sprintId + ' created.');
+                            return res.json(burndownMeasure._id);
+                        }
+                    });
+            });
+        }
+    });
+});
+
+
 
 router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, res) {
     Sprint.findById(req.params.sprint_id, function(err, sprint){
