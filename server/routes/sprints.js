@@ -423,7 +423,7 @@ router.route('/projects/:project_id/sprints/:sprint_id/burnDown')
                     var burndownMeasure = new SprintBurnDownMeasure();
 
                     burndownMeasure.dateOfMeasurement = req.body.dateOfMeasurement;
-                    burndownMeasure.remainingWorkTillNow = req.remainingWorkTillNow();
+                    burndownMeasure.remainingWorkTillNow = req.body.remainingWorkTillNow();
 
                     sprint.sprintBurnDownMeasures.push(burndownMeasure);
 
