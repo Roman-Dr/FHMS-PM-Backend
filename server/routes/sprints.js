@@ -408,37 +408,6 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
             });
         });
     });
-router.route('/projects/:project_id/sprints/:sprint_id/burnDown')
-.post(function (req, res) {
-    var sprintId = req.params.sprint_id;
-
-
-            Sprint.findById(sprintId, function (errorSprint, sprint) {
-
-                if (errorSprint) {
-                    console.error(errorSprint);
-                    return res.send(errorSprint);
-                }
-
-                    var burndownMeasure = new SprintBurnDownMeasure();
-
-                    burndownMeasure.dateOfMeasurement = req.body.dateOfMeasurement;
-                    burndownMeasure.remainingWorkTillNow = req.body.remainingWorkTillNow();
-
-                    sprint.sprintBurnDownMeasures.push(burndownMeasure);
-
-                    sprint.save(function (err) {
-                        if (err) {
-                            console.error(err);
-                            return res.send(err);
-                        } else {
-                            console.log('New sprint burn down measure in sprint ' + sprintId + ' created.');
-                            return res.json(burndownMeasure._id);
-                        }
-                    });
-            });
-});
-
 
 
 router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, res) {
