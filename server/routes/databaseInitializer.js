@@ -9,6 +9,8 @@ var Project = mongoose.model('Project');
 var User = mongoose.model('User');
 var Initiative = mongoose.model('Initiative');
 var Feature = mongoose.model('Feature');
+var Sprint = mongoose.model('Sprint');
+var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure')
 
 router.route('/databaseInitialisation')
     .get(function (req, res) {
@@ -55,6 +57,7 @@ router.route('/databaseInitialisation')
         // END CREATE USERS
 
 
+
         //
         // CREATE PROJECTS
         //
@@ -79,9 +82,45 @@ router.route('/databaseInitialisation')
 
 
         //
+        // CREATE SPRINTS
+        //
+        var sprint1 = new Sprint();
+        sprint1.sprintName = "Sprint 1";
+        sprint1.startDate = moment().add(180, 'days');
+        sprint1.endDate = moment().add(180, 'days');
+        sprint1.projectId(project1);
+        sprint1.save();
+
+        var sprint2 = new Sprint();
+        sprint2.sprintName = "Sprint 2";
+        sprint2.startDate = moment().add(180, 'days');
+        sprint2.endDate = moment().add(180, 'days');
+        sprint2.projectId(project1);
+        sprint2.save();
+
+
+        var sprintBurnDownMesure1 = new SprintBurnDownMeasure;
+        sprintBurnDownMesure1.dateOfMeasurement = moment().add(180, 'days');
+        sprintBurnDownMesure1.remainingWorkTillNow = 40;
+        sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure1);
+
+        var sprintBurnDownMesure2 = new SprintBurnDownMeasure;
+        sprintBurnDownMesure2.dateOfMeasurement = moment().add(180, 'days');
+        sprintBurnDownMesure2.remainingWorkTillNow = 30;
+        sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure2);
+
+
+        var sprintBurnDownMesure3 = new SprintBurnDownMeasure;
+        sprintBurnDownMesure3.dateOfMeasurement = moment().add(180, 'days');
+        sprintBurnDownMesure3.remainingWorkTillNow = 20;
+        sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure3);
+
+
+
+        //
         // CREATE USERSTORIESs
         //
-        for (var i = 1; i <= 100; i++) {
+        for (var i = 1; i <= 30; i++) {
             var p1UserStory = new UserStory();
             p1UserStory.title = "Anforderung " + i;
             p1UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
@@ -90,7 +129,7 @@ router.route('/databaseInitialisation')
             p1UserStory.complete = false;
             project1.userStories.push(p1UserStory);
         }
-        for (var i = 1; i <= 100; i++) {
+        for (var i = 1; i <= 30; i++) {
             var p2UserStory = new UserStory();
             p2UserStory.title = "Anforderung " + i;
             p2UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
