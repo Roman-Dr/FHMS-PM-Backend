@@ -56,7 +56,7 @@ router.route('/projects/:project_id/activePlanningPokers')
         var projectId = req.params.project_id;
         PlanningPoker.find({ project: projectId, isActive: true }, function (err, activePlanningPokers) {
             return res.json(activePlanningPokers);
-        }).populate(['participants', 'moderator', 'project']);
+        }).populate(['item', 'moderator']);
     });
 
 router.route('/projects/:project_id/planningPokers/:planning_poker_id')
@@ -68,7 +68,7 @@ router.route('/projects/:project_id/planningPokers/:planning_poker_id')
             }
 
             res.json(item);
-        }).populate(['participants', 'moderator', 'project']);
+        }).populate(['participants', 'moderator', 'item']);
     })
     .delete(function(req, res) {
         PlanningPoker.findByIdAndRemove(req.params.planning_poker_id, function (deleteErr, deleteRes) {
@@ -120,7 +120,7 @@ router.route('/projects/:project_id/planningPokers/:planning_poker_id/activeRoun
             } else {
                return res.send();
             }
-        });
+        }).populate(['rounds', 'rounds.votes', 'rounds.votes.voter']);
     });
 router.route('/projects/:project_id/planningPokers/:planning_poker_id/participants')
     .post(function(req, res){
