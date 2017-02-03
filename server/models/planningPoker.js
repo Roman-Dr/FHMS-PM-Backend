@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 
 var planningPokerRoundVoteSchema = new schema({
-    voter: mongoose.Schema.Types.ObjectId,
+    voterId: mongoose.Schema.Types.ObjectId,
+    voterDisplayName: String,
     effort: Number,
     reason: String
 }, { versionKey: false});
@@ -16,8 +17,6 @@ var planningPokerRoundSchema = new schema({
     },
     votesCount: Number,
     votes: [planningPokerRoundVoteSchema],
-    minEffort: planningPokerRoundVoteSchema,
-    maxEffort: planningPokerRoundVoteSchema,
     electedEffort: Number
 }, { versionKey: false});
 
