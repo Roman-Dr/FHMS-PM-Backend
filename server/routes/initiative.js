@@ -178,8 +178,8 @@ function fillValues(req, res, newInitiative) {
 
     newInitiative.projectId = req.params.project_id;
     newInitiative.title = req.body.title;
-    newInitiative.startDate = req.body.startDate;
-    newInitiative.endDate = req.body.endDate;
+    newInitiative.startDate = new Date(req.body.startDate);
+    newInitiative.endDate = new Date(req.body.endDate);
     newInitiative.description = req.body.description;
     newInitiative.goal = req.body.goal;
 
