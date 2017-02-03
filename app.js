@@ -25,6 +25,7 @@ var backlogItems = require('./server/routes/backlogItems');
 var tasks = require('./server/routes/tasks');
 var sprints = require('./server/routes/sprints');
 var planningPoker = require('./server/routes/planningPoker');
+var planningPokerRound = require('./server/routes/planningPokerRound');
 var burnDownChart = require('./server/routes/burnDownChart');
 var initiatives = require('./server/routes/initiative');
 
@@ -86,6 +87,7 @@ app.use('/api', backlogItems);
 app.use('/api', tasks);
 app.use('/api', sprints);
 app.use('/api', planningPoker);
+app.use('/api', planningPokerRound);
 app.use('/api', burnDownChart);
 app.use('/system', databaseInitializer);
 app.use('/api', initiatives);
@@ -101,7 +103,13 @@ var jobBurnDownMeasure = require('./server/jobs/calculateBurnDownMeasureJob');
 schedule.scheduleJob('*/1 * * * *', jobBurnDownMeasure.calculateRemainingWork);
 // END SCHEDULING FUNCTIONS
 
-//======ERROR=======
+// Disables caching
+app.use(function (req, res, next) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next()
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

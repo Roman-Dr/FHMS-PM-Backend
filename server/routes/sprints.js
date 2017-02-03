@@ -244,44 +244,40 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities')
                 return res.status(460).send(validationResult.toResult());
             } else {
 
-                Sprint.findById(sprintId, function (err, sprint) {
-                    if (err) {
-                        console.error(err);
-                        return res.send(err);
+                Sprint.findById(sprintId, function (errorSprint, sprint) {
+
+                    if (errorSprint) {
+                        console.error(errorSprint);
+                        return res.send(errorSprint);
                     }
+
                     console.log('POST: Create new sprint capacity for sprint id ' + sprintId);
 
-                    var newSprintCapacity = new SprintCapacity();
+                    User.findById(req.body.userId, function (errorUser, user) {
+                        if (errorUser) {
+                            console.error(errorUser);
+                            return res.send(errorUser);
+                        }
 
+                        var newSprintCapacity = new SprintCapacity();
 
-                    var bodyUserId = req.body.userId;
-                    if (bodyUserId) {
-                        User.findById(bodyUserId, function (err, user) {
+                        newSprintCapacity.userId = req.body.userId;
+                        newSprintCapacity.userDisplayName = user.displayName();
+                        newSprintCapacity.sprintId = sprintId;
+                        newSprintCapacity.daysOff = req.body.daysOff;
+                        newSprintCapacity.capacityPerDay = req.body.capacityPerDay;
+
+                        sprint.sprintCapacity.push(newSprintCapacity);
+
+                        sprint.save(function (err) {
                             if (err) {
                                 console.error(err);
                                 return res.send(err);
+                            } else {
+                                console.log('New sprint capacity in sprint ' + sprintId + ' created.');
+                                return res.json(newSprintCapacity._id);
                             }
-                            newSprintCapacity.userDisplayName = user.displayName();
                         });
-                    }
-
-
-                    newSprintCapacity.userId = req.body.userId;
-
-                    newSprintCapacity.sprintId = sprintId;
-                    newSprintCapacity.daysOff = req.body.daysOff;
-                    newSprintCapacity.capacityPerDay = req.body.capacityPerDay;
-
-                    sprint.sprintCapacity.push(newSprintCapacity);
-
-                    sprint.save(function (err) {
-                        if (err) {
-                            console.error(err);
-                            return res.send(err);
-                        } else {
-                            console.log('New sprint capacity in sprint ' + sprintId + ' created.');
-                            return res.json(newSprintCapacity._id);
-                        }
                     });
                 });
             }
@@ -352,14 +348,12 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
                                 console.error(err);
                                 return res.send(err);
                             }
-
-
                             var sprintCapacity = item.sprintCapacity.id(sprintCapacityId);
 
                             console.log('PUT: Update sprint capacity for sprint id ' + sprintId);
 
-                            sprintCapacity.userDisplayName = user.displayName();
                             sprintCapacity.userId = req.body.userId;
+                            sprintCapacity.userDisplayName = user.displayName();
                             sprintCapacity.daysOff = req.body.daysOff;
                             sprintCapacity.capacityPerDay = req.body.capacityPerDay;
 
