@@ -54,8 +54,8 @@ var corsOptions = {
     credentials: true
 };
 
-/*app.options('*', cors(corsOptions));
-app.use(cors(corsOptions));*/
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use('/doc', express.static('doc'));
 app.use(logger('dev'));
