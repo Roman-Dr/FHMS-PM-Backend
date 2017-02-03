@@ -413,12 +413,6 @@ router.route('/projects/:project_id/sprints/:sprint_id/burnDown')
     var sprintId = req.params.sprint_id;
 
 
-    var validator = new SprintCapacityValidator();
-    validator.validate(req.body, function (validationResult) {
-        if (!validationResult.isValid()) {
-            return res.status(460).send(validationResult.toResult());
-        } else {
-
             Sprint.findById(sprintId, function (errorSprint, sprint) {
 
                 if (errorSprint) {
@@ -443,8 +437,6 @@ router.route('/projects/:project_id/sprints/:sprint_id/burnDown')
                         }
                     });
             });
-        }
-    });
 });
 
 
