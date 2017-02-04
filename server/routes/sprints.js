@@ -445,14 +445,7 @@ router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, re
             }
 
             result.idealPoints.push({ date: date, dateFormatted: dateFormatted, index: i, value: sprint.effort - i*idealEffortPerDay });
-            if(date <= today) {
-                result.realityPoints.push({
-                    date: date,
-                    dateFormatted: dateFormatted,
-                    index: i,
-                    value: remainingWorkThatDay
-                });
-            }
+            result.realityPoints.push({ date: date, dateFormatted: dateFormatted, index: i, value: remainingWorkThatDay });
         }
 
         return res.json(result);
