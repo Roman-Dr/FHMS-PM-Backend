@@ -27,7 +27,7 @@ router.route('/projects/:project_id/initiatives')
             }
             return res.json(initiative);
 
-        });
+        }).sort({startDate: 1});
     })
 
     /**
@@ -100,16 +100,29 @@ router.route('/projects/:project_id/initiatives/:id')
 
 router.route('/projects/:project_id/initiatives/:id/features')
 
-/**
- * @api {post} /projects/:project_id/initiatives/:id/feature Create a new feature for an initiative.
- * @apiName AddFeatureToInitiative
- * @apiGroup Roadmap
- *
- * @apiParam {ObjectId} project_id Unique identifier of a project.
- * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
- * @apiParam {ObjectId} id Unique identifier of an initiative.
- *
- */
+    .get(function (req, res) {
+        var projectId = req.params.project_id;
+        var id = req.params.id;
+
+        Initiative.findOne({projectId: projectId, _id: id}, function (err, initiative) {
+            if (err) {
+                return res.send(err);
+            }
+
+            return res.json(initiative.features);
+        });
+    })
+
+    /**
+     * @api {post} /projects/:project_id/initiatives/:id/feature Create a new feature for an initiative.
+     * @apiName AddFeatureToInitiative
+     * @apiGroup Roadmap
+     *
+     * @apiParam {ObjectId} project_id Unique identifier of a project.
+     * @apiParam {ObjectId} roadmap_id Unique identifier of a roadmap.
+     * @apiParam {ObjectId} id Unique identifier of an initiative.
+     *
+     */
     .post(function (req, res) {
         var projectId = req.params.project_id;
         var id = req.params.id;
@@ -150,7 +163,7 @@ router.route('/projects/:project_id/initiatives/:initiative_id/features/:id')
     .delete(function (req, res) {
         var projectId = req.params.project_id;
         var initiativeId = req.params.initiative_id;
-        var featureId = req.body.Id;
+        var featureId = req.params.id;
 
         Initiative.findOne({projectId: projectId, _id: initiativeId}, function (err, initiative) {
             if (err) {
@@ -178,8 +191,12 @@ function fillValues(req, res, newInitiative) {
 
     newInitiative.projectId = req.params.project_id;
     newInitiative.title = req.body.title;
-    newInitiative.startDate = new Date(req.body.startDate);
-    newInitiative.endDate = new Date(req.body.endDate);
+    if(req.body.startDate != null){
+        newInitiative.startDate = new Date(req.body.startDate);
+    }
+    if(req.body.endDate != null){
+        newInitiative.endDate = new Date(req.body.endDate);
+    }
     newInitiative.description = req.body.description;
     newInitiative.goal = req.body.goal;
 
