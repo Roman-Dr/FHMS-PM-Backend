@@ -15,22 +15,27 @@ var sprintBurnDownMeasureSchema = new schema({
     remainingWorkTillNow: Number
 }, {versionKey: false});
 
+var sprintRetrospectiveSchema = new schema({
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    comment: String
+}, {versionKey: false});
+
 var sprintSchema = new schema({
-        sprintName: String,
-        startDate: Date,
-        endDate: Date,
-        effort: Number,
-        remainingWork: Number,
-        projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
-        projectDisplayName: String,
-        sprintCapacity: [sprintCapacitySchema],
-        sprintBurnDownMeasures: [sprintBurnDownMeasureSchema]
-    },
-    {versionKey: false}
-);
+    sprintName: String,
+    startDate: Date,
+    endDate: Date,
+    effort: Number,
+    remainingWork: Number,
+    projectId: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
+    projectDisplayName: String,
+    sprintCapacity: [sprintCapacitySchema],
+    sprintBurnDownMeasures: [sprintBurnDownMeasureSchema],
+    retrospective: [sprintRetrospectiveSchema]
+}, {versionKey: false});
 
 module.exports = {
     Sprint: mongoose.model('Sprint', sprintSchema),
     SprintCapacity: mongoose.model('SprintCapacity', sprintCapacitySchema),
-    SprintBurnDownMeasure: mongoose.model('SprintBurnDownMeasure', sprintBurnDownMeasureSchema)
+    SprintBurnDownMeasure: mongoose.model('SprintBurnDownMeasure', sprintBurnDownMeasureSchema),
+    SprintRetrospective: mongoose.model('SprintRetrospective', sprintRetrospectiveSchema)
 };
