@@ -414,6 +414,7 @@ router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, re
     Sprint.findById(req.params.sprint_id, function(err, sprint){
         var startDate = moment(sprint.startDate);
         var endDate = moment(sprint.endDate);
+        var today = moment();
         var differenceDays = Math.abs(startDate.diff(endDate, 'days'));
         var idealEffortPerDay = sprint.effort / differenceDays;
 
@@ -444,7 +445,14 @@ router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, re
             }
 
             result.idealPoints.push({ date: date, dateFormatted: dateFormatted, index: i, value: sprint.effort - i*idealEffortPerDay });
-            result.realityPoints.push({ date: date, dateFormatted: dateFormatted, index: i, value: remainingWorkThatDay });
+            if(date <= today) {
+                result.realityPoints.push({
+                    date: date,
+                    dateFormatted: dateFormatted,
+                    index: i,
+                    value: remainingWorkThatDay
+                });
+            }
         }
 
         return res.json(result);
