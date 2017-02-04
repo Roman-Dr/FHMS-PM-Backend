@@ -93,14 +93,16 @@ router.route('/databaseInitialisation')
         sprint1.sprintName = "Sprint 1";
         sprint1.startDate = moment().add(180, 'days');
         sprint1.endDate = moment().add(180, 'days');
-        sprint1.projectId(project1);
+        sprint1.projectId = project1.id;
+        sprint1.projectDisplayName = project1.displayName;
         sprint1.save();
 
         var sprint2 = new Sprint();
         sprint2.sprintName = "Sprint 2";
         sprint2.startDate = moment().add(180, 'days');
         sprint2.endDate = moment().add(180, 'days');
-        sprint2.projectId(project1);
+        sprint2.projectId = project1.id;
+        sprint2.projectDisplayName = project1.displayName;
         sprint2.save();
 
 
