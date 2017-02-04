@@ -16,7 +16,8 @@ var sprintBurnDownMeasureSchema = new schema({
 }, {versionKey: false});
 
 var sprintRetrospectiveSchema = new schema({
-    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    userId: mongoose.Schema.Types.ObjectId,
+    userDisplayName: String,
     comment: String
 }, {versionKey: false});
 
