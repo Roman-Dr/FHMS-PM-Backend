@@ -5,6 +5,7 @@ var moment = require('moment');
 var router = express.Router();
 
 var SprintCapacity = mongoose.model('SprintCapacity');
+var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
 var Sprint = mongoose.model('Sprint');
 var Project = mongoose.model('Project');
 var User = mongoose.model('User');
@@ -407,6 +408,7 @@ router.route('/projects/:project_id/sprints/:sprint_id/sprintcapacities/:id')
             });
         });
     });
+
 
 router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, res) {
     Sprint.findById(req.params.sprint_id, function(err, sprint){

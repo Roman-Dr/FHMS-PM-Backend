@@ -24,6 +24,7 @@ var databaseInitializer = require('./server/routes/databaseInitializer');
 var backlogItems = require('./server/routes/backlogItems');
 var tasks = require('./server/routes/tasks');
 var sprints = require('./server/routes/sprints');
+var sprintRetrospective = require('./server/routes/sprintRetrospective');
 var planningPoker = require('./server/routes/planningPoker');
 var planningPokerRound = require('./server/routes/planningPokerRound');
 var burnDownChart = require('./server/routes/burnDownChart');
@@ -47,8 +48,11 @@ app.set('view engine', 'ejs');
 var whitelist = ['http://10.60.67.20:4200', 'http://localhost:4200'];
 var corsOptions = {
     origin: function (origin, callback) {
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1
-        callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        //callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
+
+        // !!! ONLY FOR TESTING PURPOSES !!!
+        callback(null, origin);
     },
     optionsSuccessStatus: 200,
     credentials: true
@@ -86,6 +90,7 @@ app.use('/api', projects);
 app.use('/api', backlogItems);
 app.use('/api', tasks);
 app.use('/api', sprints);
+app.use('/api', sprintRetrospective);
 app.use('/api', planningPoker);
 app.use('/api', planningPokerRound);
 app.use('/api', burnDownChart);
