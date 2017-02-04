@@ -10,7 +10,8 @@ var User = mongoose.model('User');
 var Initiative = mongoose.model('Initiative');
 var Feature = mongoose.model('Feature');
 var Sprint = mongoose.model('Sprint');
-var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure')
+var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
+var PlanningPoker = mongoose.model('PlanningPoker');
 
 router.route('/databaseInitialisation')
     .get(function (req, res) {
@@ -26,6 +27,10 @@ router.route('/databaseInitialisation')
         Initiative.remove({}, function (err) {
         }).exec();
         Feature.remove({}, function (err) {
+        }).exec();
+        Sprint.remove({}, function (err) {
+        }).exec();
+        PlanningPoker.remove({}, function (err) {
         }).exec();
         // END REMOVE COLLECTIONS
         //
@@ -210,8 +215,7 @@ router.route('/databaseInitialisation')
             p2Initiative.save();
         }
 
-
-        res.sendStatus(200)
+        return res.status(200).send();
     });
 
 module.exports = router;
