@@ -425,7 +425,7 @@ router.get('/projects/:project_id/sprints/:sprint_id/burnDown', function(req, re
 
         for (var i = 0;i<=differenceDays;i++) {
             var date = moment(sprint.startDate).add(i, 'days');
-            var remainingWorkThatDay = idealEffortPerDay;
+            var remainingWorkThatDay = 0;
 
             var dateFormatted = moment(date).format('DD.MM.YYYY');
 
