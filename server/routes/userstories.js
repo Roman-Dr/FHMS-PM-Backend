@@ -77,16 +77,13 @@ router.route('/projects/:project_id/userStories')
 
                         var newUserStory = new UserStory();
 
-                        newUserStory.title = req.body.title;
+                        newUserStory.role = req.body.role;
+                        newUserStory.feature = req.body.feature;
+                        newUserStory.benefit = req.body.benefit;
                         newUserStory.authorId = authorId;
+                        newUserStory.authorDisplayName = user.displayName();
                         newUserStory.complete = req.body.complete;
                         newUserStory.creationDate = Date.now();
-
-                        if(user == undefined) {
-                            newUserStory.authorDisplayName = undefined;
-                        } else {
-                            newUserStory.authorDisplayName = user.displayName();
-                        }
 
                         project.userStories.push(newUserStory);
 
@@ -174,15 +171,12 @@ router.route('/projects/:project_id/userStories/:id')
                             console.error(error);
                         }
 
-                        userStory.title = req.body.title;
+                        userStory.role = req.body.role;
+                        userStory.feature = req.body.feature;
+                        userStory.benefit = req.body.benefit;
                         userStory.authorId = authorId;
+                        userStory.authorDisplayName = user.displayName();
                         userStory.complete = req.body.complete;
-
-                        if(user == undefined) {
-                            userStory.authorDisplayName = undefined;
-                        } else {
-                            userStory.authorDisplayName = user.displayName();
-                        }
 
                         project.save(function (err) {
                             if(err){

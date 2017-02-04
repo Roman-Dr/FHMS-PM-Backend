@@ -19,16 +19,18 @@ UserStoryValidator.prototype.validate = function(userStory, callback) {
         if(!isUserValid) {
             validationResult.add('authorId', 'Der Autor existiert nicht.');
         } else {
-            if (!userStory.title) {
-                validationResult.add('title', 'Der Titel darf nicht leer sein.');
+            if (!userStory.role) {
+                validationResult.add('role', 'Die Rolle darf nicht leer sein.');
+            }
+            if (!userStory.feature) {
+                validationResult.add('feature', 'Das/Der Ziel/Wunsch darf nicht leer sein.');
+            }
+            if (!userStory.benefit) {
+                validationResult.add('benefit', 'Der Nutzen darf nicht leer sein.');
             }
 
-            if (!userStory.complete) {
-                validationResult.add('complete', 'Der Status muss gesetzt werden.');
-            } else {
-                if (userStory.complete != "true" && userStory.complete != "false") {
-                    validationResult.add('complete', 'Der Status muss ein boolescher Wert sein.');
-                }
+            if (typeof userStory.complete != "boolean") {
+                validationResult.add('complete', 'Der Status muss ein boolescher Wert sein.');
             }
 
             if (!userStory.authorId) {
