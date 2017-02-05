@@ -96,6 +96,25 @@ router.route('/projects/:project_id/initiatives/:id')
         });
     });
 
+router.route('/projects/:project_id/initiatives/filter')
+
+    .post(function (req, res) {
+        var projectId = req.params.project_id;
+
+        var from = new Date(req.body.from);
+        var to = new Date(req.body.to);
+
+        Initiative.find({projectId: projectId}, function (err, initiative) {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(initiative);
+
+        })
+            .where('startDate').gt(from).lt(to)
+            .sort({startDate: 1});
+    });
+
 //=========FEATURE=========
 
 router.route('/projects/:project_id/initiatives/:id/features')
