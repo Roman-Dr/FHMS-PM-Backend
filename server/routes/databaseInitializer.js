@@ -12,6 +12,7 @@ var Feature = mongoose.model('Feature');
 var Sprint = mongoose.model('Sprint');
 var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
 var PlanningPoker = mongoose.model('PlanningPoker');
+var BacklogItem = mongoose.model('BacklogItem');
 
 router.route('/databaseInitialisation')
     .get(function (req, res) {
@@ -59,8 +60,31 @@ router.route('/databaseInitialisation')
         user3.lastname = "Petersen";
         user3.birthdate = "1995-04-20";
         user3.save();
-        // END CREATE USERS
 
+        var user4 = new User();
+        user4.email = "l.mueller@scrumjs.de";
+        user4.password = user4.generateHash("123");
+        user4.firstname = "Lieschen";
+        user4.lastname = "Müller";
+        user4.birthdate = "1988-08-08";
+        user4.save();
+
+        var user5 = new User();
+        user5.email = "j.doe@scrumjs.de";
+        user5.password = user5.generateHash("123");
+        user5.firstname = "John";
+        user5.lastname = "Doe";
+        user5.birthdate = "1993-03-03";
+        user5.save();
+
+        var user6 = new User();
+        user6.email = "j.controlletti@scrumjs.de";
+        user6.password = user6.generateHash("123");
+        user6.firstname = "Johnny";
+        user6.lastname = "Controlletti";
+        user6.birthdate = "1976-06-09";
+        user6.save();
+        // END CREATE USERS
 
 
         //
@@ -76,12 +100,12 @@ router.route('/databaseInitialisation')
         project1.save();
 
         var project2 = new Project();
-        project2.displayName = "Taschenrechner";
-        project2.description = "Der echte Alleskönner!";
-        project2.owner = user2._id;
-        project2.dueDate = moment().add(360, 'days');
-        project2.stakeholders.push(user1._id, user3._id);
-        project2.contributors.push(user1._id, user2._id);
+        project2.displayName = "ScrumJS";
+        project2.description = "Ein spitzenmäßiges PM-Tool!";
+        project2.owner = user6._id;
+        project2.dueDate = "2017-02-10";
+        project2.stakeholders.push(user6._id);
+        project2.contributors.push(user1._id, user2._id, user3._id, user4._id, user5._id);
         project2.save();
         // END CREATE USERS
 
@@ -105,6 +129,21 @@ router.route('/databaseInitialisation')
         sprint2.projectDisplayName = project1.displayName;
         sprint2.save();
 
+        var p2sprint1 = new Sprint();
+        p2sprint1.sprintName = "Sprint 1";
+        p2sprint1.startDate = "2016-12-22";
+        p2sprint1.endDate = "2017-01-15";
+        p2sprint1.projectId = project2.id;
+        p2sprint1.projectDisplayName = project2.displayName;
+        p2sprint1.save();
+
+        var p2sprint2 = new Sprint();
+        p2sprint2.sprintName = "Sprint 2";
+        p2sprint2.startDate = "2017-01-16";
+        p2sprint2.endDate = "2017-02-13";
+        p2sprint2.projectId = project2.id;
+        p2sprint2.projectDisplayName = project2.displayName;
+        p2sprint2.save();
 
         var sprintBurnDownMesure1 = new SprintBurnDownMeasure;
         sprintBurnDownMesure1.dateOfMeasurement = moment().add(180, 'days');
@@ -138,18 +177,111 @@ router.route('/databaseInitialisation')
             p1UserStory.complete = false;
             project1.userStories.push(p1UserStory);
         }
-        for (var i = 1; i <= 30; i++) {
-            var p2UserStory = new UserStory();
-            p2UserStory.role = "Anwender";
-            p2UserStory.feature = "das etwas #";
-            p2UserStory.benefit = "Zeit zu sparen";
-            p2UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
-            p2UserStory.authorDisplayName = (i % 2 == 0 ? user1.displayName() : user3.displayName());
-            p2UserStory.creationDate = Date.now();
-            p2UserStory.complete = false;
-            project2.userStories.push(p2UserStory);
-        }
-        // END CREATE USERS
+
+        var p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "Product Backlog (inkl. User Story Capture) anlegen und verwalten können";
+        p2UserStory.benefit = "das Projekt besser verwalten zu können";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = false;
+        project2.userStories.push(p2UserStory);
+
+        p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "Sprint Planning / Review / Retrospective anlegen und verwalten können";
+        p2UserStory.benefit = "das Projekt besser verwalten zu können";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = false;
+        project2.userStories.push(p2UserStory);
+
+        p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "ein SCRUM Board sehen";
+        p2UserStory.benefit = "das einen besseren Überblick über die Backlogeinträge zu haben";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = false;
+        project2.userStories.push(p2UserStory);
+
+        p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "Effort Estimation (Planning Poker) durchführen";
+        p2UserStory.benefit = "bei der Aufwandsschätzung unterstützt zu werden";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = false;
+        project2.userStories.push(p2UserStory);
+
+        p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "ein Burn-Down-Chart haben";
+        p2UserStory.benefit = "das Projekt besser verwalten zu können";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = false;
+        project2.userStories.push(p2UserStory);
+
+        p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "eine Roadmap haben";
+        p2UserStory.benefit = "das Projekt besser verwalten zu können";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = false;
+        project2.userStories.push(p2UserStory);
+
+        p2UserStory = new UserStory();
+        p2UserStory.role = "Benutzer";
+        p2UserStory.feature = "Beispieldaten zur Demonstration haben";
+        p2UserStory.benefit = "die mich mit der Funktionsweise des Tools vertraut zu machen";
+        p2UserStory.authorId = (user6._id);
+        p2UserStory.authorDisplayName = (user6.displayName());
+        p2UserStory.creationDate = Date.now();
+        p2UserStory.complete = true;
+        project2.userStories.push(p2UserStory);
+        // END CREATE USERSTORIESs
+
+
+        //
+        // CREATE BACKLOG ITEMS
+        //
+
+        /*
+        var p2BacklogItem = new BacklogItem();
+        p2BacklogItem.title = "BacklogItems CRUD";
+
+        p2BacklogItem.authorId = user1.displayName();
+        p2BacklogItem.authorDisplayName = user1.displayName();
+        p2BacklogItem.creationDate = Date.now();
+        p2BacklogItem.assignedToId = user1._id;
+        p2BacklogItem.assignedToDisplayName = user1.displayName();
+        p2BacklogItem.state = "Done";
+        p2BacklogItem.priority = "Normal";
+        p2BacklogItem.effort = 2;
+        //p2BacklogItem.description = "";
+        p2BacklogItem.sprintId = p2sprint1._id;
+        p2BacklogItem.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem.projectId = project2._id;
+        p2BacklogItem.projectDisplayTitle = project2.displayName();
+
+        //TODO
+        p2BacklogItem.userStoryId =
+        //p2BacklogItem.userStoryDisplayName =
+        p2BacklogItem.save();
+        */
+
+
+
+        // END CREATE BACKLOG ITEMS
+
 
         //
         // CREATE INITIATIVES
