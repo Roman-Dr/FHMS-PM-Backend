@@ -2,12 +2,14 @@
 var schema = mongoose.Schema;
 
 var userStorySchema = new schema({
-    title: String,
+    role: String,
+    feature: String,
+    benefit: String,
     authorId: mongoose.Schema.Types.ObjectId,
     authorDisplayName: String,
     complete: Boolean,
     creationDate: Date
-    });
+}, { versionKey: false});
 
 var projectSchema = new schema({
     displayName: String,

@@ -129,7 +129,9 @@ router.route('/databaseInitialisation')
         //
         for (var i = 1; i <= 30; i++) {
             var p1UserStory = new UserStory();
-            p1UserStory.title = "Anforderung " + i;
+            p1UserStory.role = "Anwender";
+            p1UserStory.feature = "das etwas #";
+            p1UserStory.benefit = "Zeit zu sparen";
             p1UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
             p1UserStory.authorDisplayName = (i % 2 == 0 ? user1.displayName() : user3.displayName());
             p1UserStory.creationDate = Date.now();
@@ -138,7 +140,9 @@ router.route('/databaseInitialisation')
         }
         for (var i = 1; i <= 30; i++) {
             var p2UserStory = new UserStory();
-            p2UserStory.title = "Anforderung " + i;
+            p2UserStory.role = "Anwender";
+            p2UserStory.feature = "das etwas #";
+            p2UserStory.benefit = "Zeit zu sparen";
             p2UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
             p2UserStory.authorDisplayName = (i % 2 == 0 ? user1.displayName() : user3.displayName());
             p2UserStory.creationDate = Date.now();
