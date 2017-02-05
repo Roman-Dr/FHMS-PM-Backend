@@ -48,7 +48,7 @@ router.route('/projects')
     .get(function (req, res) {
         if (!req.isAuthenticated()){
             console.log('NOT AUTHENTICATED');
-            return res.status(400).send();
+            return res.status(401).send();
         }else {
             Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
                 if (err) {
