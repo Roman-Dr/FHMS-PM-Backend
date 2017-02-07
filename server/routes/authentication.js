@@ -57,7 +57,7 @@ module.exports = function(app, passport) {
     app.post('/api/user/login', function(req, res, next) {
         passport.authenticate('local-login', function(err, user) {
             if (err) { return next(err); }
-            if (!user) { res.status(401).json({ success : false, message : 'authentication failed' }); }
+            if (!user) { return res.status(401).json("Unauthorized!"); }
             req.logIn(user, function(err) {
                 if (err) { return next(err); }
                 return res.status(200).json(user.id);
