@@ -85,6 +85,39 @@ router.route('/projects/:project_id/sprints')
         });
     });
 
+router.route('/projects/:project_id/sprints/unfinished')
+/**
+ * @api {get} /projects/:project_id/sprints Get all unfinished sprints.
+ * @apiName GetUnfinishedSprints
+ * @apiGroup Sprint
+ *
+ * @apiSuccess {Sprint[]} sprints List of sprints.
+ * @apiSuccess {ObjectId} sprints._id Sprints unique identifier.
+ * @apiSuccess {String} sprints.sprintName The name of the sprint.
+ * @apiSuccess {Date} sprints.startDate Start date of the sprint.
+ * @apiSuccess {Date} sprints.endDate End date of the sprint.
+ * @apiSuccess {ObjectId} sprints.projectId ProjectId of the sprint.
+ * @apiSuccess {ObjectId[]} sprints.sprintCapacity List of capacity of the team member.
+ */
+    .get(function (req, res) {
+        var projectId = req.params.project_id;
+
+
+        var now = new Date();
+
+        Sprint.find({projectId: projectId}, function (err, sprints) {
+            if (err) {
+                console.error(err);
+                return res.send(err);
+            }
+
+            console.log('GET: Sprints for project id ' + projectId);
+            return res.json(sprints);
+
+        })
+            .where('endDate').gt(now);
+    });
+
 router.route('/projects/:project_id/sprints/:id')
 /**
  * @api {get} /projects/:project_id/sprints/:id Retrieve an existing sprint by id.
