@@ -10,6 +10,7 @@ var User = mongoose.model('User');
 var Initiative = mongoose.model('Initiative');
 var Feature = mongoose.model('Feature');
 var Sprint = mongoose.model('Sprint');
+var SprintCapacity = mongoose.model('SprintCapacity');
 var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
 var PlanningPoker = mongoose.model('PlanningPoker');
 var BacklogItem = mongoose.model('BacklogItem');
@@ -31,9 +32,14 @@ router.route('/databaseInitialisation')
         }).exec();
         Sprint.remove({}, function (err) {
         }).exec();
+        SprintCapacity.remove({}, function (err) {
+        }).exec();
+        BacklogItem.remove({}, function (err) {
+        }).exec();
         PlanningPoker.remove({}, function (err) {
         }).exec();
         // END REMOVE COLLECTIONS
+
         //
         // CREATE USERS
         //
@@ -43,6 +49,7 @@ router.route('/databaseInitialisation')
         user1.firstname = "Max";
         user1.lastname = "Mustermann";
         user1.birthdate = "1990-01-01";
+        user1.role = "Scrum Master";
         user1.save();
 
         var user2 = new User();
@@ -51,6 +58,7 @@ router.route('/databaseInitialisation')
         user2.firstname = "Fiete";
         user2.lastname = "Fietersen";
         user2.birthdate = "1991-03-05";
+        user2.role = "Development Team";
         user2.save();
 
         var user3 = new User();
@@ -59,6 +67,7 @@ router.route('/databaseInitialisation')
         user3.firstname = "Peter";
         user3.lastname = "Petersen";
         user3.birthdate = "1995-04-20";
+        user3.role = "Development Team";
         user3.save();
 
         var user4 = new User();
@@ -67,6 +76,7 @@ router.route('/databaseInitialisation')
         user4.firstname = "Lieschen";
         user4.lastname = "Müller";
         user4.birthdate = "1988-08-08";
+        user4.role = "Development Team";
         user4.save();
 
         var user5 = new User();
@@ -75,6 +85,7 @@ router.route('/databaseInitialisation')
         user5.firstname = "John";
         user5.lastname = "Doe";
         user5.birthdate = "1993-03-03";
+        user5.role = "Development Team";
         user5.save();
 
         var user6 = new User();
@@ -83,6 +94,7 @@ router.route('/databaseInitialisation')
         user6.firstname = "Johnny";
         user6.lastname = "Controlletti";
         user6.birthdate = "1976-06-09";
+        user6.role = "Product Owner";
         user6.save();
         // END CREATE USERS
 
@@ -107,7 +119,7 @@ router.route('/databaseInitialisation')
         project2.stakeholders.push(user6._id);
         project2.contributors.push(user1._id, user2._id, user3._id, user4._id, user5._id);
         project2.save();
-        // END CREATE USERS
+        // END CREATE PROJECTS
 
 
         //
@@ -132,18 +144,106 @@ router.route('/databaseInitialisation')
         var p2sprint1 = new Sprint();
         p2sprint1.sprintName = "Sprint 1";
         p2sprint1.startDate = "2016-12-22";
-        p2sprint1.endDate = "2017-01-15";
+        p2sprint1.endDate = "2017-02-10";
         p2sprint1.projectId = project2.id;
         p2sprint1.projectDisplayName = project2.displayName;
         p2sprint1.save();
 
         var p2sprint2 = new Sprint();
         p2sprint2.sprintName = "Sprint 2";
-        p2sprint2.startDate = "2017-01-16";
-        p2sprint2.endDate = "2017-02-10";
+        p2sprint2.startDate = "2017-02-11";
+        p2sprint2.endDate = "2017-05-10";
         p2sprint2.projectId = project2.id;
         p2sprint2.projectDisplayName = project2.displayName;
         p2sprint2.save();
+        // END CREATE SPRINTS
+
+        //
+        // CREATE SPRINTCAPACITYS
+        //
+        //Sprint 1
+        var p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user1._id;
+        p2SprintCapacity.userDisplayName = user1.displayName();
+        p2SprintCapacity.sprintId = p2sprint1._id;
+        p2SprintCapacity.daysOff = 2;
+        p2SprintCapacity.capacityPerDay = 7;
+        p2sprint1.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user2._id;
+        p2SprintCapacity.userDisplayName = user2.displayName();
+        p2SprintCapacity.sprintId = p2sprint1._id;
+        p2SprintCapacity.daysOff = 0;
+        p2SprintCapacity.capacityPerDay = 8;
+        p2sprint1.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user3._id;
+        p2SprintCapacity.userDisplayName = user3.displayName();
+        p2SprintCapacity.sprintId = p2sprint1._id;
+        p2SprintCapacity.daysOff = 2;
+        p2SprintCapacity.capacityPerDay = 7;
+        p2sprint1.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user4._id;
+        p2SprintCapacity.userDisplayName = user4.displayName();
+        p2SprintCapacity.sprintId = p2sprint1._id;
+        p2SprintCapacity.daysOff = 3;
+        p2SprintCapacity.capacityPerDay = 7;
+        p2sprint1.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user5._id;
+        p2SprintCapacity.userDisplayName = user5.displayName();
+        p2SprintCapacity.sprintId = p2sprint1._id;
+        p2SprintCapacity.daysOff = 0;
+        p2SprintCapacity.capacityPerDay = 6;
+        p2sprint1.sprintCapacity.push(p2SprintCapacity);
+
+        //Sprint 2
+        var p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user1._id;
+        p2SprintCapacity.userDisplayName = user1.displayName();
+        p2SprintCapacity.sprintId = p2sprint2._id;
+        p2SprintCapacity.daysOff = 3;
+        p2SprintCapacity.capacityPerDay = 6;
+        p2sprint2.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user2._id;
+        p2SprintCapacity.userDisplayName = user2.displayName();
+        p2SprintCapacity.sprintId = p2sprint2._id;
+        p2SprintCapacity.daysOff = 0;
+        p2SprintCapacity.capacityPerDay = 6;
+        p2sprint2.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user3._id;
+        p2SprintCapacity.userDisplayName = user3.displayName();
+        p2SprintCapacity.sprintId = p2sprint2._id;
+        p2SprintCapacity.daysOff = 4;
+        p2SprintCapacity.capacityPerDay = 8;
+        p2sprint2.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user4._id;
+        p2SprintCapacity.userDisplayName = user4.displayName();
+        p2SprintCapacity.sprintId = p2sprint2._id;
+        p2SprintCapacity.daysOff = 1;
+        p2SprintCapacity.capacityPerDay = 8;
+        p2sprint2.sprintCapacity.push(p2SprintCapacity);
+
+        p2SprintCapacity = new SprintCapacity();
+        p2SprintCapacity.userId = user5._id;
+        p2SprintCapacity.userDisplayName = user5.displayName();
+        p2SprintCapacity.sprintId = p2sprint2._id;
+        p2SprintCapacity.daysOff = 1;
+        p2SprintCapacity.capacityPerDay = 8;
+        p2sprint2.sprintCapacity.push(p2SprintCapacity);
+        // END CREATE SPRINTCAPACITYS
+
 
         var sprintBurnDownMesure1 = new SprintBurnDownMeasure;
         sprintBurnDownMesure1.dateOfMeasurement = moment().add(180, 'days');
@@ -160,7 +260,6 @@ router.route('/databaseInitialisation')
         sprintBurnDownMesure3.dateOfMeasurement = moment().add(180, 'days');
         sprintBurnDownMesure3.remainingWorkTillNow = 20;
         sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure3);
-
 
 
         //
@@ -273,7 +372,6 @@ router.route('/databaseInitialisation')
         //
         // CREATE BACKLOG ITEMS
         //
-
         //Sprint 1
         var p2BacklogItem = new BacklogItem();
         p2BacklogItem.title = "Projekt CRUD";
@@ -287,7 +385,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem.effort = 2;
         //p2BacklogItem.description = "";
         p2BacklogItem.sprintId = p2sprint1._id;
-        p2BacklogItem.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem.projectId = project2._id;
         p2BacklogItem.projectDisplayTitle = project2.displayName;
         p2BacklogItem.userStoryId = project2.userStories[1]._id;
@@ -306,7 +404,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem2.priority = "High";
         p2BacklogItem2.effort = 2;
         p2BacklogItem2.sprintId = p2sprint1._id;
-        p2BacklogItem2.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem2.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem2.projectId = project2._id;
         p2BacklogItem2.projectDisplayTitle = project2.displayName;
         p2BacklogItem2.userStoryId = project2.userStories[2]._id;
@@ -324,7 +422,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem3.priority = "Normal";
         p2BacklogItem3.effort = 4;
         p2BacklogItem3.sprintId = p2sprint1._id;
-        p2BacklogItem3.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem3.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem3.projectId = project2._id;
         p2BacklogItem3.projectDisplayTitle = project2.displayName;
         p2BacklogItem3.userStoryId = project2.userStories[2]._id;
@@ -342,7 +440,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem4.priority = "Normal";
         p2BacklogItem4.effort = 1;
         p2BacklogItem4.sprintId = p2sprint1._id;
-        p2BacklogItem4.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem4.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem4.projectId = project2._id;
         p2BacklogItem4.projectDisplayTitle = project2.displayName;
         p2BacklogItem4.userStoryId = project2.userStories[2]._id;
@@ -360,7 +458,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem5.priority = "Normal";
         p2BacklogItem5.effort = 1;
         p2BacklogItem5.sprintId = p2sprint1._id;
-        p2BacklogItem5.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem5.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem5.projectId = project2._id;
         p2BacklogItem5.projectDisplayTitle = project2.displayName;
         p2BacklogItem5.userStoryId = project2.userStories[2]._id;
@@ -378,7 +476,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem6.priority = "Normal";
         p2BacklogItem6.effort = 1;
         p2BacklogItem6.sprintId = p2sprint1._id;
-        p2BacklogItem6.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem6.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem6.projectId = project2._id;
         p2BacklogItem6.projectDisplayTitle = project2.displayName;
         p2BacklogItem6.userStoryId = project2.userStories[2]._id;
@@ -396,7 +494,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem7.priority = "Normal";
         p2BacklogItem7.effort = 1;
         p2BacklogItem7.sprintId = p2sprint1._id;
-        p2BacklogItem7.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem7.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem7.projectId = project2._id;
         p2BacklogItem7.projectDisplayTitle = project2.displayName;
         p2BacklogItem7.userStoryId = project2.userStories[2]._id;
@@ -414,7 +512,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem8.priority = "Normal";
         p2BacklogItem8.effort = 2;
         p2BacklogItem8.sprintId = p2sprint1._id;
-        p2BacklogItem8.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem8.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem8.projectId = project2._id;
         p2BacklogItem8.projectDisplayTitle = project2.displayName;
         p2BacklogItem8.userStoryId = project2.userStories[3]._id;
@@ -432,7 +530,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem9.priority = "Normal";
         p2BacklogItem9.effort = 3;
         p2BacklogItem9.sprintId = p2sprint1._id;
-        p2BacklogItem9.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem9.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem9.projectId = project2._id;
         p2BacklogItem9.projectDisplayTitle = project2.displayName;
         p2BacklogItem9.userStoryId = project2.userStories[1]._id;
@@ -450,7 +548,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem10.priority = "Normal";
         p2BacklogItem10.effort = 3;
         p2BacklogItem10.sprintId = p2sprint1._id;
-        p2BacklogItem10.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem10.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem10.projectId = project2._id;
         p2BacklogItem10.projectDisplayTitle = project2.displayName;
         p2BacklogItem10.userStoryId = project2.userStories[0]._id;
@@ -468,7 +566,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem11.priority = "Normal";
         p2BacklogItem11.effort = 2;
         p2BacklogItem11.sprintId = p2sprint1._id;
-        p2BacklogItem11.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem11.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem11.projectId = project2._id;
         p2BacklogItem11.projectDisplayTitle = project2.displayName;
         p2BacklogItem11.userStoryId = project2.userStories[0]._id;
@@ -486,7 +584,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem12.priority = "Normal";
         p2BacklogItem12.effort = 5;
         p2BacklogItem12.sprintId = p2sprint1._id;
-        p2BacklogItem12.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem12.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem12.projectId = project2._id;
         p2BacklogItem12.projectDisplayTitle = project2.displayName;
         p2BacklogItem12.userStoryId = project2.userStories[0]._id;
@@ -504,7 +602,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem13.priority = "Normal";
         p2BacklogItem13.effort = 3;
         p2BacklogItem13.sprintId = p2sprint1._id;
-        p2BacklogItem13.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem13.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem13.projectId = project2._id;
         p2BacklogItem13.projectDisplayTitle = project2.displayName;
         p2BacklogItem13.userStoryId = project2.userStories[2]._id;
@@ -522,7 +620,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem14.priority = "Normal";
         p2BacklogItem14.effort = 3;
         p2BacklogItem14.sprintId = p2sprint1._id;
-        p2BacklogItem14.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem14.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem14.projectId = project2._id;
         p2BacklogItem14.projectDisplayTitle = project2.displayName;
         p2BacklogItem14.userStoryId = project2.userStories[2]._id;
@@ -540,7 +638,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem15.priority = "Normal";
         p2BacklogItem15.effort = 3;
         p2BacklogItem15.sprintId = p2sprint1._id;
-        p2BacklogItem15.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem15.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem15.projectId = project2._id;
         p2BacklogItem15.projectDisplayTitle = project2.displayName;
         p2BacklogItem15.userStoryId = project2.userStories[0]._id;
@@ -558,7 +656,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem16.priority = "Normal";
         p2BacklogItem16.effort = 3;
         p2BacklogItem16.sprintId = p2sprint1._id;
-        p2BacklogItem16.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem16.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem16.projectId = project2._id;
         p2BacklogItem16.projectDisplayTitle = project2.displayName;
         p2BacklogItem16.userStoryId = project2.userStories[3]._id;
@@ -576,7 +674,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem17.priority = "Normal";
         p2BacklogItem17.effort = 8;
         p2BacklogItem17.sprintId = p2sprint1._id;
-        p2BacklogItem17.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem17.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem17.projectId = project2._id;
         p2BacklogItem17.projectDisplayTitle = project2.displayName;
         p2BacklogItem17.userStoryId = project2.userStories[1]._id;
@@ -594,7 +692,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem18.priority = "Normal";
         p2BacklogItem18.effort = 13;
         p2BacklogItem18.sprintId = p2sprint1._id;
-        p2BacklogItem18.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem18.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem18.projectId = project2._id;
         p2BacklogItem18.projectDisplayTitle = project2.displayName;
         p2BacklogItem18.userStoryId = project2.userStories[4]._id;
@@ -612,7 +710,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem19.priority = "Normal";
         p2BacklogItem19.effort = 2;
         p2BacklogItem19.sprintId = p2sprint1._id;
-        p2BacklogItem19.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem19.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem19.projectId = project2._id;
         p2BacklogItem19.projectDisplayTitle = project2.displayName;
         p2BacklogItem19.userStoryId = project2.userStories[2]._id;
@@ -630,7 +728,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem20.priority = "Normal";
         p2BacklogItem20.effort = 3;
         p2BacklogItem20.sprintId = p2sprint1._id;
-        p2BacklogItem20.sprintDisplayName = p2sprint1.displayName;
+        p2BacklogItem20.sprintDisplayName = p2sprint1.sprintName;
         p2BacklogItem20.projectId = project2._id;
         p2BacklogItem20.projectDisplayTitle = project2.displayName;
         p2BacklogItem20.userStoryId = project2.userStories[2]._id;
@@ -649,7 +747,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem21.priority = "Normal";
         p2BacklogItem21.effort = 3;
         p2BacklogItem21.sprintId = p2sprint2._id;
-        p2BacklogItem21.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem21.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem21.projectId = project2._id;
         p2BacklogItem21.projectDisplayTitle = project2.displayName;
         p2BacklogItem21.userStoryId = project2.userStories[5]._id;
@@ -667,7 +765,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem22.priority = "Normal";
         p2BacklogItem22.effort = 6;
         p2BacklogItem22.sprintId = p2sprint2._id;
-        p2BacklogItem22.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem22.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem22.projectId = project2._id;
         p2BacklogItem22.projectDisplayTitle = project2.displayName;
         p2BacklogItem22.userStoryId = project2.userStories[5]._id;
@@ -685,7 +783,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem23.priority = "Approved";
         p2BacklogItem23.effort = 7;
         p2BacklogItem23.sprintId = p2sprint2._id;
-        p2BacklogItem23.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem23.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem23.projectId = project2._id;
         p2BacklogItem23.projectDisplayTitle = project2.displayName;
         p2BacklogItem23.userStoryId = project2.userStories[3]._id;
@@ -703,7 +801,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem24.priority = "Normal";
         p2BacklogItem24.effort = 10;
         p2BacklogItem24.sprintId = p2sprint2._id;
-        p2BacklogItem24.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem24.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem24.projectId = project2._id;
         p2BacklogItem24.projectDisplayTitle = project2.displayName;
         p2BacklogItem24.userStoryId = project2.userStories[6]._id;
@@ -721,7 +819,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem25.priority = "Normal";
         p2BacklogItem25.effort = 1;
         p2BacklogItem25.sprintId = p2sprint2._id;
-        p2BacklogItem25.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem25.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem25.projectId = project2._id;
         p2BacklogItem25.projectDisplayTitle = project2.displayName;
         p2BacklogItem25.userStoryId = project2.userStories[3]._id;
@@ -739,7 +837,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem26.priority = "Normal";
         p2BacklogItem26.effort = 3;
         p2BacklogItem26.sprintId = p2sprint2._id;
-        p2BacklogItem26.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem26.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem26.projectId = project2._id;
         p2BacklogItem26.projectDisplayTitle = project2.displayName;
         p2BacklogItem26.userStoryId = project2.userStories[6]._id;
@@ -757,7 +855,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem27.priority = "Normal";
         p2BacklogItem27.effort = 1;
         p2BacklogItem27.sprintId = p2sprint2._id;
-        p2BacklogItem27.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem27.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem27.projectId = project2._id;
         p2BacklogItem27.projectDisplayTitle = project2.displayName;
         p2BacklogItem27.userStoryId = project2.userStories[8]._id;
@@ -775,7 +873,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem28.priority = "Normal";
         p2BacklogItem28.effort = 1;
         p2BacklogItem28.sprintId = p2sprint2._id;
-        p2BacklogItem28.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem28.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem28.projectId = project2._id;
         p2BacklogItem28.projectDisplayTitle = project2.displayName;
         p2BacklogItem28.userStoryId = project2.userStories[8]._id;
@@ -793,7 +891,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem29.priority = "Normal";
         p2BacklogItem29.effort = 2;
         p2BacklogItem29.sprintId = p2sprint2._id;
-        p2BacklogItem29.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem29.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem29.projectId = project2._id;
         p2BacklogItem29.projectDisplayTitle = project2.displayName;
         p2BacklogItem29.userStoryId = project2.userStories[7]._id;
@@ -811,7 +909,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem30.priority = "Normal";
         p2BacklogItem30.effort = 2;
         p2BacklogItem30.sprintId = p2sprint2._id;
-        p2BacklogItem30.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem30.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem30.projectId = project2._id;
         p2BacklogItem30.projectDisplayTitle = project2.displayName;
         p2BacklogItem30.userStoryId = project2.userStories[7]._id;
@@ -829,7 +927,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem31.priority = "Normal";
         p2BacklogItem31.effort = 1;
         p2BacklogItem31.sprintId = p2sprint2._id;
-        p2BacklogItem31.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem31.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem31.projectId = project2._id;
         p2BacklogItem31.projectDisplayTitle = project2.displayName;
         p2BacklogItem31.userStoryId = project2.userStories[3]._id;
@@ -847,7 +945,7 @@ router.route('/databaseInitialisation')
         p2BacklogItem32.priority = "Normal";
         p2BacklogItem32.effort = 1;
         p2BacklogItem32.sprintId = p2sprint2._id;
-        p2BacklogItem32.sprintDisplayName = p2sprint2.displayName;
+        p2BacklogItem32.sprintDisplayName = p2sprint2.sprintName;
         p2BacklogItem32.projectId = project2._id;
         p2BacklogItem32.projectDisplayTitle = project2.displayName;
         p2BacklogItem32.userStoryId = project2.userStories[2]._id;
@@ -862,15 +960,15 @@ router.route('/databaseInitialisation')
 
         var descs = [
             'Coloring book dreamcatcher meh, la croix mlkshk williamsburg iPhone squid cliche hoodie vexillologist cray. Glossier activated charcoal venmo raclette. Crucifix taxidermy sustainable post-ironic, etsy freegan pok pok echo park tumblr pour-over gastropub scenester poke salvia celiac. YOLO cred direct trade, irony synth tattooed ennui meggings chia.'
-            ,'Lo-fi fingerstache normcore, hella shabby chic vegan roof party small batch tilde marfa bespoke slow-carb chambray cray cred. Deep v man braid etsy, everyday carry XOXO meh tbh microdosing air plant fam. Quinoa williamsburg post-ironic, thundercats intelligentsia yr pour-over.'
-            ,'Fingerstache hammock austin tousled cliche, occupy vinyl. Pop-up tilde hoodie, skateboard tousled brooklyn try-hard scenester hexagon. Fanny pack shoreditch XOXO vexillologist jean shorts, gochujang heirloom brooklyn umami. Migas 3 wolf moon next level iceland brooklyn, bitters pour-over. Asymmetrical dreamcatcher street art trust fund.'
-            ,'Single-origin coffee chillwave readymade mixtape, pabst vice literally austin cronut meditation fingerstache echo park snackwave kitsch. Kickstarter mustache flexitarian echo park, photo booth edison bulb subway tile street art PBR&B.'
-            ,'Swag actually trust fund, messenger bag blog selfies mumblecore +1 whatever freegan kombucha leggings kinfolk. Succulents cardigan sustainable iPhone tacos. Kombucha ethical listicle blue bottle pok pok fanny pack, try-hard marfa quinoa offal. Butcher swag leggings woke wolf farm-to-table. IPhone meh slow-carb distillery.'
-            ,'Before they sold out chambray brooklyn tofu, tilde flannel portland fam art party cardigan dreamcatcher mustache. Tacos humblebrag wolf, chicharrones kinfolk vegan banh mi offal pork belly sartorial quinoa beard man braid. Pok pok freegan hot chicken gentrify, truffaut artisan vinyl synth direct trade tacos intelligentsia street art vexillologist migas small batch.'
-            ,'Truffaut slow-carb 8-bit kale chips. Food truck synth viral, vaporware humblebrag quinoa green juice DIY. Coloring book hot chicken direct trade farm-to-table chillwave, tacos hella cornhole succulents edison bulb. Jianbing tousled VHS hoodie, tofu wayfarers PBR&B fap hot chicken roof party neutra.'
-            ,'Chia pour-over offal, shabby chic deep v man braid kale chips schlitz shoreditch activated charcoal. Blog knausgaard helvetica, cardigan unicorn meh yuccie franzen direct trade. Mixtape godard edison bulb authentic retro, selfies cronut art party knausgaard pickled humblebrag slow-carb.'
-            ,'Af messenger bag mumblecore man bun marfa craft beer. Gentrify selfies brunch, raclette man bun try-hard plaid etsy franzen hell of leggings butcher organic. Ennui PBR&B disrupt, church-key shabby chic edison bulb man braid drinking vinegar gastropub sartorial banh mi kogi hot chicken distillery semiotics.'
-            ,'Venmo lo-fi cronut, enamel pin bicycle rights pok pok vice chartreuse trust fund XOXO flexitarian. Flexitarian etsy keytar ennui, messenger bag portland freegan subway tile. Shoreditch tbh tumblr, iceland yr bushwick tofu organic bespoke readymade butcher before they sold out.'
+            , 'Lo-fi fingerstache normcore, hella shabby chic vegan roof party small batch tilde marfa bespoke slow-carb chambray cray cred. Deep v man braid etsy, everyday carry XOXO meh tbh microdosing air plant fam. Quinoa williamsburg post-ironic, thundercats intelligentsia yr pour-over.'
+            , 'Fingerstache hammock austin tousled cliche, occupy vinyl. Pop-up tilde hoodie, skateboard tousled brooklyn try-hard scenester hexagon. Fanny pack shoreditch XOXO vexillologist jean shorts, gochujang heirloom brooklyn umami. Migas 3 wolf moon next level iceland brooklyn, bitters pour-over. Asymmetrical dreamcatcher street art trust fund.'
+            , 'Single-origin coffee chillwave readymade mixtape, pabst vice literally austin cronut meditation fingerstache echo park snackwave kitsch. Kickstarter mustache flexitarian echo park, photo booth edison bulb subway tile street art PBR&B.'
+            , 'Swag actually trust fund, messenger bag blog selfies mumblecore +1 whatever freegan kombucha leggings kinfolk. Succulents cardigan sustainable iPhone tacos. Kombucha ethical listicle blue bottle pok pok fanny pack, try-hard marfa quinoa offal. Butcher swag leggings woke wolf farm-to-table. IPhone meh slow-carb distillery.'
+            , 'Before they sold out chambray brooklyn tofu, tilde flannel portland fam art party cardigan dreamcatcher mustache. Tacos humblebrag wolf, chicharrones kinfolk vegan banh mi offal pork belly sartorial quinoa beard man braid. Pok pok freegan hot chicken gentrify, truffaut artisan vinyl synth direct trade tacos intelligentsia street art vexillologist migas small batch.'
+            , 'Truffaut slow-carb 8-bit kale chips. Food truck synth viral, vaporware humblebrag quinoa green juice DIY. Coloring book hot chicken direct trade farm-to-table chillwave, tacos hella cornhole succulents edison bulb. Jianbing tousled VHS hoodie, tofu wayfarers PBR&B fap hot chicken roof party neutra.'
+            , 'Chia pour-over offal, shabby chic deep v man braid kale chips schlitz shoreditch activated charcoal. Blog knausgaard helvetica, cardigan unicorn meh yuccie franzen direct trade. Mixtape godard edison bulb authentic retro, selfies cronut art party knausgaard pickled humblebrag slow-carb.'
+            , 'Af messenger bag mumblecore man bun marfa craft beer. Gentrify selfies brunch, raclette man bun try-hard plaid etsy franzen hell of leggings butcher organic. Ennui PBR&B disrupt, church-key shabby chic edison bulb man braid drinking vinegar gastropub sartorial banh mi kogi hot chicken distillery semiotics.'
+            , 'Venmo lo-fi cronut, enamel pin bicycle rights pok pok vice chartreuse trust fund XOXO flexitarian. Flexitarian etsy keytar ennui, messenger bag portland freegan subway tile. Shoreditch tbh tumblr, iceland yr bushwick tofu organic bespoke readymade butcher before they sold out.'
         ];
 
 
@@ -880,21 +978,21 @@ router.route('/databaseInitialisation')
 
             var startDate = moment();
             startDate = startDate.add(5, "days");
-            startDate = startDate.subtract(i-1, "days");
-            p1Initiative.startDate =  startDate;
+            startDate = startDate.subtract(i - 1, "days");
+            p1Initiative.startDate = startDate;
 
             var endDate = moment();
             endDate = endDate.add(35, "days");
             endDate = endDate.subtract(i, "days");
             p1Initiative.endDate = endDate;
 
-            p1Initiative.description = descs[i-1];
+            p1Initiative.description = descs[i - 1];
             p1Initiative.goal = "Be Awesome! ALWAY!";
             p1Initiative.projectId = project1._id;
 
-            for(var j = 1; j <= 10; j++){
+            for (var j = 1; j <= 10; j++) {
                 var p1Feature = new Feature();
-                p1Feature.title = "Feature"+ j;
+                p1Feature.title = "Feature" + j;
                 p1Initiative.features.push(p1Feature);
             }
             p1Initiative.save();
@@ -906,21 +1004,21 @@ router.route('/databaseInitialisation')
 
             var startDate = moment();
             startDate = startDate.add(5, "days");
-            startDate = startDate.subtract(i-1, "days");
-            p2Initiative.startDate =  startDate;
+            startDate = startDate.subtract(i - 1, "days");
+            p2Initiative.startDate = startDate;
 
             var endDate = moment();
             endDate = endDate.add(35, "days");
             endDate = endDate.subtract(i, "days");
             p2Initiative.endDate = endDate;
 
-            p2Initiative.description = descs[i-1];
+            p2Initiative.description = descs[i - 1];
             p2Initiative.goal = "Be Awesome! ALWAY!";
             p2Initiative.projectId = project2._id;
 
-            for(var j = 1; j <= 10; j++){
+            for (var j = 1; j <= 10; j++) {
                 var p2Feature = new Feature();
-                p2Feature.title = "Feature"+ j;
+                p2Feature.title = "Feature" + j;
                 p2Initiative.features.push(p2Feature);
             }
             p2Initiative.save();
