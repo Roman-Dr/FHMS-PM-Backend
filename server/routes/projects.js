@@ -3,29 +3,29 @@ var mongoose = require('mongoose');
 
 var router = express.Router();
 
-var Project =  mongoose.model('Project');
-var User =  mongoose.model('User');
+var Project = mongoose.model('Project');
+var User = mongoose.model('User');
 var ProjectValidator = require('./../validation/projectValidator');
 
 router.route('/projects')
-    /**
-     * @api {get} /projects/ Get all projects.
-     * @apiName GetProjects
-     * @apiGroup Multiprojektfaehigkeit
-     *
-     * @apiSuccess {Project[]} projects List of projects.
-     * @apiSuccess {ObjectId} projects.id Projects unique identifier.
-     * @apiSuccess {String} projects.displayName Name of the project.
-     * @apiSuccess {String} projects.description Short description of the project.
-     * @apiSuccess {Date} projects.dueDate Deadline of the project.
-     * @apiSuccess {ObjectId} projects.owner Identifier of the project owner.
-     * @apiSuccess {ObjectId[]} projects.stakeholders List of stakeholders.
-     * @apiSuccess {ObjectId[]} projects.contributors List of contributors.
-     *
-     * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
-     *     [
-     *      {
+/**
+ * @api {get} /projects/ Get all projects.
+ * @apiName GetProjects
+ * @apiGroup Multiprojektfaehigkeit
+ *
+ * @apiSuccess {Project[]} projects List of projects.
+ * @apiSuccess {ObjectId} projects.id Projects unique identifier.
+ * @apiSuccess {String} projects.displayName Name of the project.
+ * @apiSuccess {String} projects.description Short description of the project.
+ * @apiSuccess {Date} projects.dueDate Deadline of the project.
+ * @apiSuccess {ObjectId} projects.owner Identifier of the project owner.
+ * @apiSuccess {ObjectId[]} projects.stakeholders List of stakeholders.
+ * @apiSuccess {ObjectId[]} projects.contributors List of contributors.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *      {
      *          "_id": "5866bf884ad5122f20a43c16",
      *          "owner": "584ee64035141e2f8006dee8",
      *          "dueDate": "2017-01-31T00:00:00.000Z",
@@ -34,7 +34,7 @@ router.route('/projects')
      *          "contributors": ["584ee64035141e2f8006dee8"],
      *          "stakeholders": ["584edcda8138b903c8738e12","584ee76281946b3a14242877"]
      *      },
-     *      {
+ *      {
      *          "_id": "5866c2252867481cd4fed617",
      *          "owner": "584ee76281946b3a14242877",
      *          "dueDate": "2017-10-01T00:00:00.000Z",
@@ -43,22 +43,17 @@ router.route('/projects')
      *          "contributors": ["584edcda8138b903c8738e12","584ee76281946b3a14242877"],
      *          "stakeholders": ["584edcda8138b903c8738e12"]
      *      }
-     *     ]
-     */
+ *     ]
+ */
     .get(function (req, res) {
-        if (!req.isAuthenticated()){
-            console.log('NOT AUTHENTICATED');
-            return res.status(401).send();
-        }else {
-            Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
-                if (err) {
-                    console.error(err);
-                    return res.send(err);
-                }
 
-                res.json(items);
-            });
-        }
+        Project.find({}, 'owner dueDate description displayName contributors stakeholders', function (err, items) {
+            if (err) {
+                console.error(err);
+                return res.send(err);
+            }
+            res.json(items);
+        });
     })
     /**
      * @api {post} /projects/ Create a new project.
@@ -105,10 +100,10 @@ router.route('/projects')
     .post(function (req, res) {
         // Validate input
         var validator = new ProjectValidator();
-        validator.validate(req.body, function(validationResult) {
-            if(!validationResult.isValid()) {
+        validator.validate(req.body, function (validationResult) {
+            if (!validationResult.isValid()) {
                 return res.status(460).send(validationResult.toResult());
-            }else {
+            } else {
                 var newItem = new Project();
 
                 newItem.displayName = req.body.displayName;
@@ -124,31 +119,31 @@ router.route('/projects')
                         return res.send(err);
                     }
 
-                    res.json({ "id":newItem._id });
+                    res.json({"id": newItem._id});
                 });
             }
         });
     });
 
 router.route('/projects/:id')
-    /**
-     * @api {get} /projects/:id Retrive one project by its identifier.
-     * @apiName GetProject
-     * @apiGroup Multiprojektfaehigkeit
-     *
-     * @apiParam {ObjectId} id Projects unique identifier.
-     *
-     * @apiSuccess {ObjectId} id Projects unique identifier.
-     * @apiSuccess {String} displayName Name of the project.
-     * @apiSuccess {String} description Short description of the project.
-     * @apiSuccess {Date} dueDate Deadline of the project.
-     * @apiSuccess {ObjectId} owner Identifier of the project owner.
-     * @apiSuccess {ObjectId[]} stakeholders List of stakeholders.
-     * @apiSuccess {ObjectId[]} contributors List of contributors.
-     *
-     * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
+/**
+ * @api {get} /projects/:id Retrive one project by its identifier.
+ * @apiName GetProject
+ * @apiGroup Multiprojektfaehigkeit
+ *
+ * @apiParam {ObjectId} id Projects unique identifier.
+ *
+ * @apiSuccess {ObjectId} id Projects unique identifier.
+ * @apiSuccess {String} displayName Name of the project.
+ * @apiSuccess {String} description Short description of the project.
+ * @apiSuccess {Date} dueDate Deadline of the project.
+ * @apiSuccess {ObjectId} owner Identifier of the project owner.
+ * @apiSuccess {ObjectId[]} stakeholders List of stakeholders.
+ * @apiSuccess {ObjectId[]} contributors List of contributors.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
      *         "_id": "5866bf884ad5122f20a43c16",
      *         "owner": "584ee64035141e2f8006dee8",
      *         "dueDate": "2017-01-31T00:00:00.000Z",
@@ -157,9 +152,9 @@ router.route('/projects/:id')
      *         "contributors": ["584ee64035141e2f8006dee8"],
      *         "stakeholders": ["584edcda8138b903c8738e12","584ee76281946b3a14242877"]
      *     }
-     *
-     * @apiError (404) ProjectNotFound Project with id does not exists.
-     */
+ *
+ * @apiError (404) ProjectNotFound Project with id does not exists.
+ */
     .get(function (req, res) {
         Project.findById(req.params.id, 'owner dueDate description displayName contributors stakeholders', function (err, item) {
             if (err) {
@@ -169,15 +164,17 @@ router.route('/projects/:id')
 
             console.log('Loaded: ' + JSON.stringify(item));
 
-            User.find({ _id: { $in: item.stakeholders } }, function (errStakeholders, stakeholders) {
+            User.find({_id: {$in: item.stakeholders}}, function (errStakeholders, stakeholders) {
                 console.log('Stakeholders: ' + JSON.stringify(stakeholders));
 
-                User.find({ _id: { $in: item.contributors } }, function (errContributors, contributors) {
+                User.find({_id: {$in: item.contributors}}, function (errContributors, contributors) {
                     console.log('Contributors: ' + JSON.stringify(contributors));
 
-                    return res.json({ _id: item._id, owner: item.owner, dueDate: item.dueDate,
+                    return res.json({
+                        _id: item._id, owner: item.owner, dueDate: item.dueDate,
                         description: item.description, displayName: item.displayName,
-                        contributors: contributors, stakeholders: stakeholders });
+                        contributors: contributors, stakeholders: stakeholders
+                    });
                 });
             });
         });
@@ -207,10 +204,10 @@ router.route('/projects/:id')
 
                 // Validate input
                 var validator = new ProjectValidator();
-                validator.validate(req.body, function(validationResult) {
-                    if(!validationResult.isValid()) {
+                validator.validate(req.body, function (validationResult) {
+                    if (!validationResult.isValid()) {
                         return res.status(460).send(validationResult.toResult());
-                    }else {
+                    } else {
                         item.displayName = req.body.displayName;
                         item.description = req.body.description;
                         item.dueDate = req.body.dueDate;
@@ -224,7 +221,7 @@ router.route('/projects/:id')
                                 return res.send(err);
                             }
 
-                            res.json({ "id":item._id });
+                            res.json({"id": item._id});
                         });
                     }
                 });

@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var UserValidator = require('./../validation/userValidator');
 var User = mongoose.model('User');
 
-module.exports = function(app, passport) {
+module.exports.routes = function(app, passport) {
 
 // normal routes ===============================================================
 
@@ -148,3 +148,13 @@ function isLoggedIn(req, res, next) {
     }
     return res.status(400).json("User ist not logged in!");
 }
+
+module.exports.authChecker = function authChecker(req, res, next) {
+    if (req.isAuthenticated()|| req.path.substring(0,10) ==='/api/user/') {
+        next();
+    } else {
+        //res.redirect("/api/user/login");
+        return res.status(401).json("Du bist nicht eingeloggt!!!");
+    }
+}
+

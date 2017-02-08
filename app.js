@@ -29,6 +29,7 @@ var planningPoker = require('./server/routes/planningPoker');
 var planningPokerRound = require('./server/routes/planningPokerRound');
 var burnDownChart = require('./server/routes/burnDownChart');
 var initiatives = require('./server/routes/initiative');
+var authentication = require('./server/routes/authentication').authChecker;
 
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -79,11 +80,10 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-
-
 //
 // REGISTER API MODULES
 //
+app.use(authentication);
 app.use('/api', users);
 app.use('/api', userstories);
 app.use('/api', projects);
@@ -98,7 +98,7 @@ app.use('/system', databaseInitializer);
 app.use('/api', initiatives);
 // END REGISTER API MODULES
 
-require('./server/routes/authentication.js')(app, passport);
+require('./server/routes/authentication.js').routes(app, passport);
 
 //
 // SCHEDULE FUNCTIONS
