@@ -1136,55 +1136,69 @@ router.route('/databaseInitialisation')
             , 'Venmo lo-fi cronut, enamel pin bicycle rights pok pok vice chartreuse trust fund XOXO flexitarian. Flexitarian etsy keytar ennui, messenger bag portland freegan subway tile. Shoreditch tbh tumblr, iceland yr bushwick tofu organic bespoke readymade butcher before they sold out.'
         ];
 
-        /*
-         for (var i = 1; i <= 10; i++) {
-         var p1Initiative = new Initiative();
-         p1Initiative.title = "Initiative" + i;
+        var initiatives = [
+            ['Website'                          ,"2016-11-02","2017-01-30", "Online-Nutzung aller Funktionalitäten"],
+            ['Mobile Website'                   ,"2017-01-06","2017-02-08", "Nutzung aller Funktionalitäten auf mobilen Endgeräten"],
+            ['Umgestaltung User Interface'      ,"2017-02-01","2017-04-02", "Verbesserung der Nutzer-Erfahrung"],
+            ['Android Applikation'              ,"2017-02-06","2017-04-16", "Native Nutzung auf mobilen Endgeräten (Android)"],
+            ['IOS Applikation'                  ,"2017-03-11","2017-05-21", "Native Nutzung auf mobilen Endgeräten (IOS)"],
+            ['Performanceverbesserungen'        ,"2017-05-10","2017-08-09", "Schneller und intuitivere Durchführung von Berechnungen"],
+            ['Social Media Integration'         ,"2017-07-22","2017-08-26", "Ansprechen von potenziellen Nutzern"],
+            ['Partner Portal'                   ,"2017-08-15","2018-01-11", "Ausweitung auf weitere Branchen"],
+            ['Cassandra Migration'              ,"2018-01-04","2018-01-16", "Performance-Verbesserung bei großen Datenmengen"]
+        ];
 
-         var startDate = moment();
-         startDate = startDate.add(5, "days");
-         startDate = startDate.subtract(i - 1, "days");
-         p1Initiative.startDate = startDate;
+        var initiativeFeatures = [
+            ["Planungspoker", "Feature1", "Feature2"],
+            ["Feature3", "Feature3", "Feature4"],
+            ["Suchfunktion", "Profilverwaltung", "Kommunikation zw. Nutzern"],
+            ["Mobile Benachrichtigungen", "Gesicherte Kommunikation", "Feature5"],
+            ["Mobile Benachrichtigungen", "Apple Watch Integration", "Feature6"],
+            ["Schnellere Suchfunktionalität", "Feature7", "Feature8"],
+            ["Schnellere Infos über Updated", "Feedbackfähigkeit", "Kommunikation zu Nutzern"],
+            ["Feature9", "Feature10", "Feature11"],
+            ["Feature12", "Feature13", "Feature14"]
+        ];
 
-         var endDate = moment();
-         endDate = endDate.add(35, "days");
-         endDate = endDate.subtract(i, "days");
-         p1Initiative.endDate = endDate;
+        for (var i = 0; i < 9; i++) {
+            var p1Initiative = new Initiative();
+            p1Initiative.title = initiatives[i][0];
 
-         p1Initiative.description = descs[i - 1];
-         p1Initiative.goal = "Be Awesome! ALWAY!";
-         p1Initiative.projectId = project1._id;
+            startDate = new Date(initiatives[i][1]);
+            p1Initiative.startDate = startDate;
 
-         for (var j = 1; j <= 10; j++) {
-         var p1Feature = new Feature();
-         p1Feature.title = "Feature" + j;
-         p1Initiative.features.push(p1Feature);
-         }
-         p1Initiative.save();
-         }
-         */
+            var endDate = new Date(initiatives[i][2]);
+            p1Initiative.endDate = endDate;
 
-        for (var i = 1; i <= 10; i++) {
+            p1Initiative.description = descs[i];
+            p1Initiative.goal = initiatives[i][3];
+            p1Initiative.projectId = project1._id;
+
+            for (var j = 0; j < 3; j++) {
+                var p1Feature = new Feature();
+                p1Feature.title = initiativeFeatures[i][j];
+                p1Initiative.features.push(p1Feature);
+            }
+            p1Initiative.save();
+        }
+
+        for (var i = 0; i < 10; i++) {
             var p2Initiative = new Initiative();
-            p2Initiative.title = "Initiative" + i;
+            p2Initiative.title = initiatives[i][0];
 
-            var startDate = moment();
-            startDate = startDate.add(5, "days");
-            startDate = startDate.subtract(i - 1, "days");
+            startDate = new Date(initiatives[i][1]);
             p2Initiative.startDate = startDate;
 
-            var endDate = moment();
-            endDate = endDate.add(35, "days");
-            endDate = endDate.subtract(i, "days");
+            var endDate = new Date(initiatives[i][2]);
             p2Initiative.endDate = endDate;
 
-            p2Initiative.description = descs[i - 1];
-            p2Initiative.goal = "Be Awesome! ALWAY!";
+            p2Initiative.description = descs[i];
+            p2Initiative.goal = initiatives[i][3];
             p2Initiative.projectId = project2._id;
 
-            for (var j = 1; j <= 10; j++) {
+            for (var j = 0; j < 3; j++) {
                 var p2Feature = new Feature();
-                p2Feature.title = "Feature" + j;
+                p2Feature.title = initiativeFeatures[i][j];
                 p2Initiative.features.push(p2Feature);
             }
             p2Initiative.save();
