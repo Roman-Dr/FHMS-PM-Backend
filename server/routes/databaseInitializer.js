@@ -12,6 +12,7 @@ var Feature = mongoose.model('Feature');
 var Sprint = mongoose.model('Sprint');
 var SprintCapacity = mongoose.model('SprintCapacity');
 var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
+var SprintRetrospective = mongoose.model('SprintRetrospective');
 var PlanningPoker = mongoose.model('PlanningPoker');
 var BacklogItem = mongoose.model('BacklogItem');
 
@@ -33,6 +34,8 @@ router.route('/databaseInitialisation')
         Sprint.remove({}, function (err) {
         }).exec();
         SprintCapacity.remove({}, function (err) {
+        }).exec();
+        SprintRetrospective.remove({}, function (err) {
         }).exec();
         BacklogItem.remove({}, function (err) {
         }).exec();
@@ -143,16 +146,16 @@ router.route('/databaseInitialisation')
 
         var p2sprint1 = new Sprint();
         p2sprint1.sprintName = "Sprint 1";
-        p2sprint1.startDate = "2016-12-22";
-        p2sprint1.endDate = "2017-02-10";
+        p2sprint1.startDate = "2017-01-16";
+        p2sprint1.endDate = "2017-01-31";
         p2sprint1.projectId = project2.id;
         p2sprint1.projectDisplayName = project2.displayName;
         p2sprint1.save();
 
         var p2sprint2 = new Sprint();
         p2sprint2.sprintName = "Sprint 2";
-        p2sprint2.startDate = "2017-02-11";
-        p2sprint2.endDate = "2017-05-10";
+        p2sprint2.startDate = "2017-02-01";
+        p2sprint2.endDate = "2017-02-28";
         p2sprint2.projectId = project2.id;
         p2sprint2.projectDisplayName = project2.displayName;
         p2sprint2.save();
@@ -166,7 +169,7 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user1._id;
         p2SprintCapacity.userDisplayName = user1.displayName();
         p2SprintCapacity.sprintId = p2sprint1._id;
-        p2SprintCapacity.daysOff = 2;
+        p2SprintCapacity.daysOff = 6;
         p2SprintCapacity.capacityPerDay = 7;
         p2sprint1.sprintCapacity.push(p2SprintCapacity);
 
@@ -174,7 +177,7 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user2._id;
         p2SprintCapacity.userDisplayName = user2.displayName();
         p2SprintCapacity.sprintId = p2sprint1._id;
-        p2SprintCapacity.daysOff = 0;
+        p2SprintCapacity.daysOff = 5;
         p2SprintCapacity.capacityPerDay = 8;
         p2sprint1.sprintCapacity.push(p2SprintCapacity);
 
@@ -182,15 +185,15 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user3._id;
         p2SprintCapacity.userDisplayName = user3.displayName();
         p2SprintCapacity.sprintId = p2sprint1._id;
-        p2SprintCapacity.daysOff = 2;
-        p2SprintCapacity.capacityPerDay = 7;
+        p2SprintCapacity.daysOff = 7;
+        p2SprintCapacity.capacityPerDay = 4;
         p2sprint1.sprintCapacity.push(p2SprintCapacity);
 
         p2SprintCapacity = new SprintCapacity();
         p2SprintCapacity.userId = user4._id;
         p2SprintCapacity.userDisplayName = user4.displayName();
         p2SprintCapacity.sprintId = p2sprint1._id;
-        p2SprintCapacity.daysOff = 3;
+        p2SprintCapacity.daysOff = 6;
         p2SprintCapacity.capacityPerDay = 7;
         p2sprint1.sprintCapacity.push(p2SprintCapacity);
 
@@ -198,7 +201,7 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user5._id;
         p2SprintCapacity.userDisplayName = user5.displayName();
         p2SprintCapacity.sprintId = p2sprint1._id;
-        p2SprintCapacity.daysOff = 0;
+        p2SprintCapacity.daysOff = 2;
         p2SprintCapacity.capacityPerDay = 6;
         p2sprint1.sprintCapacity.push(p2SprintCapacity);
 
@@ -207,7 +210,7 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user1._id;
         p2SprintCapacity.userDisplayName = user1.displayName();
         p2SprintCapacity.sprintId = p2sprint2._id;
-        p2SprintCapacity.daysOff = 3;
+        p2SprintCapacity.daysOff = 9;
         p2SprintCapacity.capacityPerDay = 6;
         p2sprint2.sprintCapacity.push(p2SprintCapacity);
 
@@ -215,23 +218,23 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user2._id;
         p2SprintCapacity.userDisplayName = user2.displayName();
         p2SprintCapacity.sprintId = p2sprint2._id;
-        p2SprintCapacity.daysOff = 0;
-        p2SprintCapacity.capacityPerDay = 6;
+        p2SprintCapacity.daysOff = 10;
+        p2SprintCapacity.capacityPerDay = 7;
         p2sprint2.sprintCapacity.push(p2SprintCapacity);
 
         p2SprintCapacity = new SprintCapacity();
         p2SprintCapacity.userId = user3._id;
         p2SprintCapacity.userDisplayName = user3.displayName();
         p2SprintCapacity.sprintId = p2sprint2._id;
-        p2SprintCapacity.daysOff = 4;
-        p2SprintCapacity.capacityPerDay = 8;
+        p2SprintCapacity.daysOff = 12;
+        p2SprintCapacity.capacityPerDay = 4;
         p2sprint2.sprintCapacity.push(p2SprintCapacity);
 
         p2SprintCapacity = new SprintCapacity();
         p2SprintCapacity.userId = user4._id;
         p2SprintCapacity.userDisplayName = user4.displayName();
         p2SprintCapacity.sprintId = p2sprint2._id;
-        p2SprintCapacity.daysOff = 1;
+        p2SprintCapacity.daysOff = 8;
         p2SprintCapacity.capacityPerDay = 8;
         p2sprint2.sprintCapacity.push(p2SprintCapacity);
 
@@ -239,11 +242,34 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.userId = user5._id;
         p2SprintCapacity.userDisplayName = user5.displayName();
         p2SprintCapacity.sprintId = p2sprint2._id;
-        p2SprintCapacity.daysOff = 1;
+        p2SprintCapacity.daysOff = 9;
         p2SprintCapacity.capacityPerDay = 8;
         p2sprint2.sprintCapacity.push(p2SprintCapacity);
         // END CREATE SPRINTCAPACITYS
 
+
+        //
+        // CREATE SPRINTCAPACITYS
+        //
+        //Sprint 1
+        /*
+        var p2SprintRetrospective = new SprintRetrospective();
+        p2SprintRetrospective.userId = user1._id;
+        p2SprintRetrospective.userDisplayName = user1.displayName();
+        p2SprintRetrospective.comment = "Ist sehr Zuverlässig";
+        p2sprint1.retrospective.push(p2SprintRetrospective);
+        //Sprint 2
+        p2SprintRetrospective = new SprintRetrospective();
+        p2SprintRetrospective.userId = user2._id;
+        p2SprintRetrospective.userDisplayName = user2.displayName();
+        p2SprintRetrospective.comment = "Ist sehr Zuverlässig";
+        p2sprint2.retrospective.push(p2SprintRetrospective);
+        */
+        // END CREATE SPRINTCAPACITYS
+
+        //
+        // CREATE BURNDOWNMESURE
+        //
 
         var sprintBurnDownMesure1 = new SprintBurnDownMeasure;
         sprintBurnDownMesure1.dateOfMeasurement = moment().add(180, 'days');
@@ -260,6 +286,144 @@ router.route('/databaseInitialisation')
         sprintBurnDownMesure3.dateOfMeasurement = moment().add(180, 'days');
         sprintBurnDownMesure3.remainingWorkTillNow = 20;
         sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure3);
+
+
+
+        //Sprint 1
+
+        var p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-16";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 65;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-17";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 40;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-18";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 38;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-19";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 36;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-20";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 30;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-21";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 28;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-22";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 24;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-02-23";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 20;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-02-24";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 15;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-25";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 13;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-26";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 10;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-27";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 6;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-28";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 3;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-29";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 2;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-30";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 0;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+        p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-31";
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 0;
+        p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
+
+
+        //Sprint 2
+        var p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+         p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-01";
+         p2s2sprintBurnDownMesure.remainingWorkTillNow = 31;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-02";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 29;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-03";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 28;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-04";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 29;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-05";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 26;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-06";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 24;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-07";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 23;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-08";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 22;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-09";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 21;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-10";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 20;
+        p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
+
+        // ENDCREATE BURNDOWNMESURE
 
 
         //
