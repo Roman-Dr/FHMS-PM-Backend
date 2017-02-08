@@ -106,8 +106,8 @@ router.route('/databaseInitialisation')
         // CREATE PROJECTS
         //
         var project1 = new Project();
-        project1.displayName = "Miracle List";
-        project1.description = "Klon der Wunderlist App";
+        project1.displayName = "Leeres Projekt";
+        project1.description = "Zur Veranschaulicht der Multiprojektfähigkeit";
         project1.owner = user1._id;
         project1.dueDate = moment().add(180, 'days');
         project1.stakeholders.push(user2._id, user3._id);
@@ -128,21 +128,23 @@ router.route('/databaseInitialisation')
         //
         // CREATE SPRINTS
         //
-        var sprint1 = new Sprint();
-        sprint1.sprintName = "Sprint 1";
-        sprint1.startDate = moment().add(180, 'days');
-        sprint1.endDate = moment().add(180, 'days');
-        sprint1.projectId = project1.id;
-        sprint1.projectDisplayName = project1.displayName;
-        sprint1.save();
+        /*
+         var sprint1 = new Sprint();
+         sprint1.sprintName = "Sprint 1";
+         sprint1.startDate = moment().add(180, 'days');
+         sprint1.endDate = moment().add(180, 'days');
+         sprint1.projectId = project1.id;
+         sprint1.projectDisplayName = project1.displayName;
+         sprint1.save();
 
-        var sprint2 = new Sprint();
-        sprint2.sprintName = "Sprint 2";
-        sprint2.startDate = moment().add(180, 'days');
-        sprint2.endDate = moment().add(180, 'days');
-        sprint2.projectId = project1.id;
-        sprint2.projectDisplayName = project1.displayName;
-        sprint2.save();
+         var sprint2 = new Sprint();
+         sprint2.sprintName = "Sprint 2";
+         sprint2.startDate = moment().add(180, 'days');
+         sprint2.endDate = moment().add(180, 'days');
+         sprint2.projectId = project1.id;
+         sprint2.projectDisplayName = project1.displayName;
+         sprint2.save();
+         */
 
         var p2sprint1 = new Sprint();
         p2sprint1.sprintName = "Sprint 1";
@@ -253,44 +255,42 @@ router.route('/databaseInitialisation')
         //
         //Sprint 1
         /*
-        var p2SprintRetrospective = new SprintRetrospective();
-        p2SprintRetrospective.userId = user1._id;
-        p2SprintRetrospective.userDisplayName = user1.displayName();
-        p2SprintRetrospective.comment = "Ist sehr Zuverlässig";
-        p2sprint1.retrospective.push(p2SprintRetrospective);
-        //Sprint 2
-        p2SprintRetrospective = new SprintRetrospective();
-        p2SprintRetrospective.userId = user2._id;
-        p2SprintRetrospective.userDisplayName = user2.displayName();
-        p2SprintRetrospective.comment = "Ist sehr Zuverlässig";
-        p2sprint2.retrospective.push(p2SprintRetrospective);
-        */
+         var p2SprintRetrospective = new SprintRetrospective();
+         p2SprintRetrospective.userId = user1._id;
+         p2SprintRetrospective.userDisplayName = user1.displayName();
+         p2SprintRetrospective.comment = "Ist sehr Zuverlässig";
+         p2sprint1.retrospective.push(p2SprintRetrospective);
+         //Sprint 2
+         p2SprintRetrospective = new SprintRetrospective();
+         p2SprintRetrospective.userId = user2._id;
+         p2SprintRetrospective.userDisplayName = user2.displayName();
+         p2SprintRetrospective.comment = "Ist sehr Zuverlässig";
+         p2sprint2.retrospective.push(p2SprintRetrospective);
+         */
         // END CREATE SPRINTCAPACITYS
 
         //
         // CREATE BURNDOWNMESURE
         //
+        /*
+         var sprintBurnDownMesure1 = new SprintBurnDownMeasure;
+         sprintBurnDownMesure1.dateOfMeasurement = moment().add(180, 'days');
+         sprintBurnDownMesure1.remainingWorkTillNow = 40;
+         sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure1);
 
-        var sprintBurnDownMesure1 = new SprintBurnDownMeasure;
-        sprintBurnDownMesure1.dateOfMeasurement = moment().add(180, 'days');
-        sprintBurnDownMesure1.remainingWorkTillNow = 40;
-        sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure1);
-
-        var sprintBurnDownMesure2 = new SprintBurnDownMeasure;
-        sprintBurnDownMesure2.dateOfMeasurement = moment().add(180, 'days');
-        sprintBurnDownMesure2.remainingWorkTillNow = 30;
-        sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure2);
-
-
-        var sprintBurnDownMesure3 = new SprintBurnDownMeasure;
-        sprintBurnDownMesure3.dateOfMeasurement = moment().add(180, 'days');
-        sprintBurnDownMesure3.remainingWorkTillNow = 20;
-        sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure3);
+         var sprintBurnDownMesure2 = new SprintBurnDownMeasure;
+         sprintBurnDownMesure2.dateOfMeasurement = moment().add(180, 'days');
+         sprintBurnDownMesure2.remainingWorkTillNow = 30;
+         sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure2);
 
 
+         var sprintBurnDownMesure3 = new SprintBurnDownMeasure;
+         sprintBurnDownMesure3.dateOfMeasurement = moment().add(180, 'days');
+         sprintBurnDownMesure3.remainingWorkTillNow = 20;
+         sprint1.sprintBurnDownMeasures.push(sprintBurnDownMesure3);
+         */
 
         //Sprint 1
-
         var p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-16";
         p2s1sprintBurnDownMesure.remainingWorkTillNow = 65;
@@ -374,8 +374,8 @@ router.route('/databaseInitialisation')
 
         //Sprint 2
         var p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
-         p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-01";
-         p2s2sprintBurnDownMesure.remainingWorkTillNow = 31;
+        p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-01";
+        p2s2sprintBurnDownMesure.remainingWorkTillNow = 31;
         p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
 
         p2s2sprintBurnDownMesure = new SprintBurnDownMeasure;
@@ -422,24 +422,25 @@ router.route('/databaseInitialisation')
         p2s2sprintBurnDownMesure.dateOfMeasurement = "2017-02-10";
         p2s2sprintBurnDownMesure.remainingWorkTillNow = 20;
         p2sprint2.sprintBurnDownMeasures.push(p2s2sprintBurnDownMesure);
-
         // ENDCREATE BURNDOWNMESURE
 
 
         //
         // CREATE USERSTORIESs
         //
-        for (var i = 1; i <= 30; i++) {
-            var p1UserStory = new UserStory();
-            p1UserStory.role = "Anwender";
-            p1UserStory.feature = "das etwas #";
-            p1UserStory.benefit = "Zeit zu sparen";
-            p1UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
-            p1UserStory.authorDisplayName = (i % 2 == 0 ? user1.displayName() : user3.displayName());
-            p1UserStory.creationDate = Date.now();
-            p1UserStory.complete = false;
-            project1.userStories.push(p1UserStory);
-        }
+        /*
+         for (var i = 1; i <= 30; i++) {
+         var p1UserStory = new UserStory();
+         p1UserStory.role = "Anwender";
+         p1UserStory.feature = "das etwas #";
+         p1UserStory.benefit = "Zeit zu sparen";
+         p1UserStory.authorId = (i % 2 == 0 ? user1._id : user3._id);
+         p1UserStory.authorDisplayName = (i % 2 == 0 ? user1.displayName() : user3.displayName());
+         p1UserStory.creationDate = Date.now();
+         p1UserStory.complete = false;
+         project1.userStories.push(p1UserStory);
+         }
+         */
 
         var p2UserStory = new UserStory();
         p2UserStory.role = "Benutzer";
@@ -1135,32 +1136,33 @@ router.route('/databaseInitialisation')
             , 'Venmo lo-fi cronut, enamel pin bicycle rights pok pok vice chartreuse trust fund XOXO flexitarian. Flexitarian etsy keytar ennui, messenger bag portland freegan subway tile. Shoreditch tbh tumblr, iceland yr bushwick tofu organic bespoke readymade butcher before they sold out.'
         ];
 
+        /*
+         for (var i = 1; i <= 10; i++) {
+         var p1Initiative = new Initiative();
+         p1Initiative.title = "Initiative" + i;
 
-        for (var i = 1; i <= 10; i++) {
-            var p1Initiative = new Initiative();
-            p1Initiative.title = "Initiative" + i;
+         var startDate = moment();
+         startDate = startDate.add(5, "days");
+         startDate = startDate.subtract(i - 1, "days");
+         p1Initiative.startDate = startDate;
 
-            var startDate = moment();
-            startDate = startDate.add(5, "days");
-            startDate = startDate.subtract(i - 1, "days");
-            p1Initiative.startDate = startDate;
+         var endDate = moment();
+         endDate = endDate.add(35, "days");
+         endDate = endDate.subtract(i, "days");
+         p1Initiative.endDate = endDate;
 
-            var endDate = moment();
-            endDate = endDate.add(35, "days");
-            endDate = endDate.subtract(i, "days");
-            p1Initiative.endDate = endDate;
+         p1Initiative.description = descs[i - 1];
+         p1Initiative.goal = "Be Awesome! ALWAY!";
+         p1Initiative.projectId = project1._id;
 
-            p1Initiative.description = descs[i - 1];
-            p1Initiative.goal = "Be Awesome! ALWAY!";
-            p1Initiative.projectId = project1._id;
-
-            for (var j = 1; j <= 10; j++) {
-                var p1Feature = new Feature();
-                p1Feature.title = "Feature" + j;
-                p1Initiative.features.push(p1Feature);
-            }
-            p1Initiative.save();
-        }
+         for (var j = 1; j <= 10; j++) {
+         var p1Feature = new Feature();
+         p1Feature.title = "Feature" + j;
+         p1Initiative.features.push(p1Feature);
+         }
+         p1Initiative.save();
+         }
+         */
 
         for (var i = 1; i <= 10; i++) {
             var p2Initiative = new Initiative();
