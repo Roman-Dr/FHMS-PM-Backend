@@ -150,6 +150,7 @@ router.route('/databaseInitialisation')
         p2sprint1.sprintName = "Sprint 1";
         p2sprint1.startDate = "2017-01-16";
         p2sprint1.endDate = "2017-01-31";
+        p2sprint1.effort = 65;
         p2sprint1.projectId = project2.id;
         p2sprint1.projectDisplayName = project2.displayName;
         p2sprint1.save();
