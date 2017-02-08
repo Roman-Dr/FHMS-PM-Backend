@@ -108,7 +108,7 @@ router.route('/projects')
 
                 newItem.displayName = req.body.displayName;
                 newItem.description = req.body.description;
-                newItem.dueDate = req.body.dueDate;
+                newItem.dueDate = new Date(req.body.dueDate);
                 newItem.owner = req.body.owner; // TODO: Check if owner exists
                 newItem.stakeholders = req.body.stakeholders;  // TODO: Check if stakeholders exists
                 newItem.contributors = req.body.contributors;  // TODO: Check if contributors exists
@@ -210,7 +210,7 @@ router.route('/projects/:id')
                     } else {
                         item.displayName = req.body.displayName;
                         item.description = req.body.description;
-                        item.dueDate = req.body.dueDate;
+                        item.dueDate = new Date(req.body.dueDate);
                         item.owner = req.body.owner; // TODO: Check if owner exists
                         item.stakeholders = req.body.stakeholders;  // TODO: Check if stakeholders exists
                         item.contributors = req.body.contributors;  // TODO: Check if contributors exists
