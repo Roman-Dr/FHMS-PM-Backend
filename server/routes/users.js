@@ -50,6 +50,7 @@ router.route('/user')
         newUser.firstName = req.body.firstName;
         newUser.lastName = req.body.lastName;
         newUser.birthDate = req.body.birthDate;
+        newUser.role = req.body.role;
 
         newUser.save(function (err) {
             if (err) {
@@ -112,6 +113,7 @@ router.route('/user/users/:user_id')
                 user.firstName = req.body.firstName;
                 user.lastName = req.body.lastName;
                 user.birthDate = req.body.birthDate;
+                user.role = req.body.role;
 
                 user.save(function (err) {
                     if (err) {

@@ -7,7 +7,13 @@ var userSchema = new schema({
         password: String,
         firstname: String,
         lastname: String,
-        birthdate: Date
+        birthdate: Date,
+        // Nach: http://www.agile42.com/en/agile-info-center/scrum-roles/
+        role: {
+            type: String,
+            enum: ['Product Owner', 'Scrum Master', 'Development Team'],
+            default: 'Development Team'
+        }
     },
     {versionKey: false} // DISABLE VERSIONING (_v)
     );
