@@ -1161,7 +1161,7 @@ router.route('/databaseInitialisation')
             ["Feature12", "Feature13", "Feature14"]
         ];
 
-        for (var i = 0; i < 9; i++) {
+        for (var i = 0; i < initiatives.length; i++) {
             var p1Initiative = new Initiative();
             p1Initiative.title = initiatives[i][0];
 
@@ -1183,7 +1183,7 @@ router.route('/databaseInitialisation')
             p1Initiative.save();
         }
 
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < initiatives.length; i++) {
             var p2Initiative = new Initiative();
             p2Initiative.title = initiatives[i][0];
 
