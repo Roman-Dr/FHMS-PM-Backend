@@ -298,72 +298,72 @@ router.route('/databaseInitialisation')
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-17";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 40;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 60;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-18";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 38;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 53;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-19";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 36;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 53;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-20";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 30;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 48;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-21";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 28;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 42;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-22";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 24;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 38;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-02-23";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 20;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 34;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-02-24";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 15;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 30;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-25";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 13;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 26;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-26";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 10;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 22;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-27";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 6;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 15;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-28";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 3;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 10;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-29";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 2;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 6;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
         p2s1sprintBurnDownMesure.dateOfMeasurement = "2017-01-30";
-        p2s1sprintBurnDownMesure.remainingWorkTillNow = 0;
+        p2s1sprintBurnDownMesure.remainingWorkTillNow = 2;
         p2sprint1.sprintBurnDownMeasures.push(p2s1sprintBurnDownMesure);
 
         p2s1sprintBurnDownMesure = new SprintBurnDownMeasure;
