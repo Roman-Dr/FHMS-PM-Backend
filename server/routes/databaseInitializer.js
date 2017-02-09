@@ -257,6 +257,47 @@ router.route('/databaseInitialisation')
         p2SprintCapacity.daysOff = 9;
         p2SprintCapacity.capacityPerDay = 8;
         p2sprint2.sprintCapacity.push(p2SprintCapacity);
+
+        //Sprint 3
+        var p3SprintCapacity = new SprintCapacity();
+        p3SprintCapacity.userId = user1._id;
+        p3SprintCapacity.userDisplayName = user1.displayName();
+        p3SprintCapacity.sprintId = p2sprint3._id;
+        p3SprintCapacity.daysOff = 7;
+        p3SprintCapacity.capacityPerDay = 6;
+        p2sprint3.sprintCapacity.push(p3SprintCapacity);
+
+        p3SprintCapacity = new SprintCapacity();
+        p3SprintCapacity.userId = user2._id;
+        p3SprintCapacity.userDisplayName = user2.displayName();
+        p3SprintCapacity.sprintId = p2sprint3._id;
+        p3SprintCapacity.daysOff = 10;
+        p3SprintCapacity.capacityPerDay = 9;
+        p2sprint3.sprintCapacity.push(p3SprintCapacity);
+
+        p3SprintCapacity = new SprintCapacity();
+        p3SprintCapacity.userId = user3._id;
+        p3SprintCapacity.userDisplayName = user3.displayName();
+        p3SprintCapacity.sprintId = p2sprint3._id;
+        p3SprintCapacity.daysOff = 11;
+        p3SprintCapacity.capacityPerDay = 5;
+        p2sprint3.sprintCapacity.push(p3SprintCapacity);
+
+        p3SprintCapacity = new SprintCapacity();
+        p3SprintCapacity.userId = user4._id;
+        p3SprintCapacity.userDisplayName = user4.displayName();
+        p3SprintCapacity.sprintId = p2sprint3._id;
+        p3SprintCapacity.daysOff = 8;
+        p3SprintCapacity.capacityPerDay = 8;
+        p2sprint3.sprintCapacity.push(p3SprintCapacity);
+
+        p3SprintCapacity = new SprintCapacity();
+        p3SprintCapacity.userId = user5._id;
+        p3SprintCapacity.userDisplayName = user5.displayName();
+        p3SprintCapacity.sprintId = p2sprint3._id;
+        p3SprintCapacity.daysOff = 10;
+        p3SprintCapacity.capacityPerDay = 7;
+        p2sprint3.sprintCapacity.push(p3SprintCapacity);
         // END CREATE SPRINTCAPACITYS
 
 
