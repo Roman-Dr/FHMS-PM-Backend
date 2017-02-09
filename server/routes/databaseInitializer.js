@@ -163,6 +163,14 @@ router.route('/databaseInitialisation')
         p2sprint2.projectId = project2.id;
         p2sprint2.projectDisplayName = project2.displayName;
         p2sprint2.save();
+
+        var p2sprint3 = new Sprint();
+        p2sprint3.sprintName = "Sprint 3";
+        p2sprint3.startDate = "2017-03-01";
+        p2sprint3.endDate = "2017-03-31";
+        p2sprint3.projectId = project2.id;
+        p2sprint3.projectDisplayName = project2.displayName;
+        p2sprint3.save();
         // END CREATE SPRINTS
 
         //
