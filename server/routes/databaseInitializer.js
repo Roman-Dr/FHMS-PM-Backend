@@ -15,6 +15,7 @@ var SprintBurnDownMeasure = mongoose.model('SprintBurnDownMeasure');
 var SprintRetrospective = mongoose.model('SprintRetrospective');
 var PlanningPoker = mongoose.model('PlanningPoker');
 var BacklogItem = mongoose.model('BacklogItem');
+var Task = mongoose.model('Task');
 
 router.route('/databaseInitialisation')
     .get(function (req, res) {
@@ -1203,6 +1204,28 @@ router.route('/databaseInitialisation')
                 p2Initiative.features.push(p2Feature);
             }
             p2Initiative.save();
+        }
+
+        //=== TASKS ===
+        for(var i=10; i<=30; i++){
+            var task = new Task();
+            task.title = "Task "+i;
+            task.authorId= user1._id;
+            task.authorDisplayName = user1.displayName();
+            task.creationDate = new Date();
+            task.assignedToId = user1._id;
+            task.assignedToDisplayName = user1.displayName();
+            task.state = 'In Progress';
+            task.priority = 'Normal';
+            task.remainingWork = i%4;
+            task.effort= i%5;
+            task.description = "Test";
+            task.projectId = project2._id;
+            task.projectDisplayName = project2.name;
+            task.backlogItemId = p2BacklogItem23._id;
+            task.backlogItemDisplayName = p2BacklogItem23.displayName;
+            p2BacklogItem23.tasks.push(task);
+            p2BacklogItem23.save();
         }
 
         return res.status(200).send();
